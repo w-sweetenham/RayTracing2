@@ -1,0 +1,17 @@
+#/home/william/CPP/Projects/RayTracer2/src /home/william/CPP/Projects/RayTracer2/test 
+#/home/william/CPP/Projects/RayTracer2/test/TestAll.cpp
+#/home/william/CPP/Projects/RayTracer2/
+#/usr/local/lib/
+#cppunit
+HEADERS := /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h /home/william/CPP/Projects/RayTracer2/test/utils/TestUtils.h 
+OBJS := /home/william/CPP/Projects/RayTracer2/test/build/Utils.o /home/william/CPP/Projects/RayTracer2/test/build/TestUtils.o 
+
+/home/william/CPP/Projects/RayTracer2/test/TestAll: $(OBJS) $(HEADERS) /home/william/CPP/Projects/RayTracer2/test/TestAll.cpp
+	g++ /home/william/CPP/Projects/RayTracer2/test/TestAll.cpp $(OBJS) -o /home/william/CPP/Projects/RayTracer2/test/TestAll.out -I/home/william/CPP/Projects/RayTracer2/ -L/usr/local/lib/ -lcppunit
+
+/home/william/CPP/Projects/RayTracer2/test/build/Utils.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.cpp $(HEADERS)
+	g++ -c /home/william/CPP/Projects/RayTracer2/src/utils/Utils.cpp -o /home/william/CPP/Projects/RayTracer2/test/build/Utils.o -I/home/william/CPP/Projects/RayTracer2/ -L/usr/local/lib/ -lcppunit
+
+/home/william/CPP/Projects/RayTracer2/test/build/TestUtils.o: /home/william/CPP/Projects/RayTracer2/test/utils/TestUtils.cpp $(HEADERS)
+	g++ -c /home/william/CPP/Projects/RayTracer2/test/utils/TestUtils.cpp -o /home/william/CPP/Projects/RayTracer2/test/build/TestUtils.o -I/home/william/CPP/Projects/RayTracer2/ -L/usr/local/lib/ -lcppunit
+
