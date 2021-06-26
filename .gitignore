@@ -1,0 +1,11 @@
+#ignore utility script for creating makefile with python script
+CreateMakeScript.txt
+
+#Ignore executable binaries
+*.out
+
+#Ignore object files
+*.o
+
+#vscode config
+.vscode/
