@@ -22,6 +22,7 @@ class Tuple {
     Tuple(float elem1, float elem2, float elem3);
     float getElem(int n);
     bool roughlyEqual(const Tuple& other) const;
+    friend std::ostream& operator<< (std::ostream &out, const Tuple& tuple);
 };
 
 class Vec : public Tuple {

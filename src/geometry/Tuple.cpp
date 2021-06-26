@@ -18,6 +18,12 @@ bool Tuple::roughlyEqual(const Tuple& other) const {
     }
 }
 
+std::ostream& operator<< (std::ostream &out, const Tuple& tuple) {
+    out << "Elem 0: " << tuple.elems[0] << "\nElem 1:" << tuple.elems[1] << "\nElem2: " << tuple.elems[2];
+
+    return out;
+}
+
 
 Vec::Vec(): Tuple(0.0, 0.0, 0.0) {
     elems[3] = 0.0;
