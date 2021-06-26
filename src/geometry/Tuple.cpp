@@ -10,6 +10,14 @@ float Tuple::getElem(int n) {
     return elems[n];
 }
 
+bool Tuple::roughlyEqual(const Tuple& other) const {
+    if(::roughlyEqual(elems[0], other.elems[0]) && ::roughlyEqual(elems[1], other.elems[1]) && ::roughlyEqual(elems[2], other.elems[2]) && ::roughlyEqual(elems[3], other.elems[3])) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 Vec::Vec(): Tuple(0.0, 0.0, 0.0) {
     elems[3] = 0.0;

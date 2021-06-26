@@ -19,9 +19,11 @@ class TestTuples : public CppUnit::TestFixture {
     void testVec();
     void testVecCopy();
     void testVecAssignment();
+    void testVecRoughEqual();
     void testPoint();
     void testPointCopy();
     void testPointAssignment();
+    void testPointRoughEqual();
 
     void testVecVecAddition();
     void testPointVecAddition();

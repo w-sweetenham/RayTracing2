@@ -4,6 +4,8 @@
 #include <iostream>
 #include <math.h>
 
+#include "src/utils/Utils.h"
+
 class Point;
 class Vec;
 class Matrix;
@@ -19,6 +21,7 @@ class Tuple {
     public:
     Tuple(float elem1, float elem2, float elem3);
     float getElem(int n);
+    bool roughlyEqual(const Tuple& other) const;
 };
 
 class Vec : public Tuple {

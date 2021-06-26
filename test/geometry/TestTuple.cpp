@@ -43,6 +43,10 @@ void TestTuples::testVecAssignment()
     CPPUNIT_ASSERT(roughlyEqual(v3.getElem(3), 0.0));
 }
 
+void TestTuples::testVecRoughEqual() {
+    CPPUNIT_ASSERT(v1->roughlyEqual(Vec(1, 1, 1)));
+}
+
 void TestTuples::testPoint()
 {
     CPPUNIT_ASSERT(roughlyEqual(p1->getElem(0), 3.0));
@@ -70,67 +74,50 @@ void TestTuples::testPointAssignment()
     CPPUNIT_ASSERT(roughlyEqual(p3.getElem(3), 1.0));
 }
 
+void TestTuples::testPointRoughEqual() {
+    CPPUNIT_ASSERT(p1->roughlyEqual(Point(3, 3, 3)));
+}
+
 void TestTuples::testVecVecAddition()
 {
     Vec v3 = *v1 + *v2;
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(0), 3.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(1), 4.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(2), 5.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(3), 0.0));
+    CPPUNIT_ASSERT(v3.roughlyEqual(Vec(3, 4, 5)));
 }
 
 void TestTuples::testPointVecAddition()
 {
     Point p3 = *p2 + *v1;
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(0), 5.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(1), 6.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(2), 7.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(3), 1.0));
+    CPPUNIT_ASSERT(p3.roughlyEqual(Point(5, 6, 7)));
 }
 
 void TestTuples::testPointVecAdditionInPlace() {
     Point p3 = *p2;
     p3 += *v2;
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(0), 6.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(1), 8.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(2), 10.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(3), 1.0));
+    CPPUNIT_ASSERT(p3.roughlyEqual(Point(6, 8, 10)));
 }
 
 void TestTuples::testVecVecSubtraction()
 {
     Vec v3 = *v1 - *v2;
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(0), -1.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(1), -2.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(2), -3.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(3), 0.0));
+    CPPUNIT_ASSERT(v3.roughlyEqual(Vec(-1, -2, -3)));
 }
 
 void TestTuples::testPointVecSubtraction()
 {
     Point p3 = *p2 - *v1;
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(0), 3.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(1), 4.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(2), 5.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(3), 1.0));
+    CPPUNIT_ASSERT(p3.roughlyEqual(Point(3, 4, 5)));
 }
 
 void TestTuples::testPointVecSubtractionInPlace() {
     Point p3 = *p2;
     p3 -= *v2;
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(0), 2.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(1), 2.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(2), 2.0));
-    CPPUNIT_ASSERT(roughlyEqual(p3.getElem(3), 1.0));
+    CPPUNIT_ASSERT(p3.roughlyEqual(Point(2, 2, 2)));
 }
 
 void TestTuples::testPointPointSubtraction()
 {
     Vec v3 = *p1 - *p2;
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(0), -1.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(1), -2.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(2), -3.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(3), 0.0));
+    CPPUNIT_ASSERT(v3.roughlyEqual(Vec(-1, -2, -3)));
 }
 
 void TestTuples::testDot() {
@@ -140,19 +127,13 @@ void TestTuples::testDot() {
 
 void TestTuples::testCross() {
     Vec v3 = *v1 * *v2;
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(0), 1.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(1), -2.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(2), 1.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(3), 0.0));
+    CPPUNIT_ASSERT(v3.roughlyEqual(Vec(1, -2, 1)));
 }
 
 void TestTuples::testScalarMultiply()
 {
     Vec v3 = *v2 * -1.0;
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(0), -2.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(1), -3.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(2), -4.0));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(3), 0.0));
+    CPPUNIT_ASSERT(v3.roughlyEqual(Vec(-2, -3, -4)));
 }
 
 void TestTuples::testMagnitude()
@@ -165,10 +146,7 @@ void TestTuples::testNormalize()
 {
     Vec v3 = *v2;
     v3.normalize();
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(0), 0.3713907));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(1), 0.557086));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(2), 0.74278135));
-    CPPUNIT_ASSERT(roughlyEqual(v3.getElem(3), 0.0));
+    CPPUNIT_ASSERT(v3.roughlyEqual(Vec(0.3713907, 0.557086, 0.74278135)));
 }
 
 CppUnit::Test* TestTuples::suite()
@@ -177,9 +155,11 @@ CppUnit::Test* TestTuples::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test vector", &TestTuples::testVec));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test vector copy", &TestTuples::testVecCopy));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test vector assignment", &TestTuples::testVecAssignment));
+    testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test vector rough equal", &TestTuples::testVecRoughEqual));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test point", &TestTuples::testPoint));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test point copy", &TestTuples::testPointCopy));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test point assignment", &TestTuples::testPointAssignment));
+    testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test point rough equal", &TestTuples::testPointRoughEqual));
 
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test vector vector addition", &TestTuples::testVecVecAddition));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test point vec addition", &TestTuples::testPointVecAddition));
