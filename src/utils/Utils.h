@@ -1,0 +1,1 @@
+bool roughlyEqual(float a, float b);
