@@ -45,6 +45,9 @@ void TestTuples::testVecAssignment()
 
 void TestTuples::testVecRoughEqual() {
     CPPUNIT_ASSERT(v1->roughlyEqual(Vec(1, 1, 1)));
+    CPPUNIT_ASSERT(!(v1->roughlyEqual(Vec(1.1, 1, 1))));
+    CPPUNIT_ASSERT(!(v1->roughlyEqual(Vec(1, 1.1, 1))));
+    CPPUNIT_ASSERT(!(v1->roughlyEqual(Vec(1, 1, 1.1))));
 }
 
 void TestTuples::testPoint()
@@ -76,6 +79,9 @@ void TestTuples::testPointAssignment()
 
 void TestTuples::testPointRoughEqual() {
     CPPUNIT_ASSERT(p1->roughlyEqual(Point(3, 3, 3)));
+    CPPUNIT_ASSERT(!(p1->roughlyEqual(Point(3.1, 3, 3))));
+    CPPUNIT_ASSERT(!(p1->roughlyEqual(Point(3, 3.1, 3))));
+    CPPUNIT_ASSERT(!(p1->roughlyEqual(Point(3, 3, 3.1))));
 }
 
 void TestTuples::testVecVecAddition()
