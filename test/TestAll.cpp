@@ -5,6 +5,7 @@
 #include "test/geometry/TestTuple.h"
 #include "test/geometry/TestMatrix.h"
 #include "test/utils/TestColour.h"
+#include "test/geometry/TestRay.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
@@ -12,6 +13,7 @@ int main() {
     runner.addTest(TestTuples::suite());
     runner.addTest(TestMatrix::suite());
     runner.addTest(TestColour::suite());
+    runner.addTest(TestRay::suite());
     runner.run();
     return 0;
 }
