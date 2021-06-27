@@ -22,7 +22,6 @@ class Matrix {
     protected:
     float elems[16];
     public:
-    Matrix();
     Matrix(float initVal);
     Matrix(float* elems);
     Matrix(const Matrix& other);
