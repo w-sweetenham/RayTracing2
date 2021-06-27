@@ -2,6 +2,8 @@
 #define COLOUR_H_
 #include <iostream>
 
+#include "src/utils/Utils.h"
+
 class Colour {
     private:
     float rgb[3];
@@ -14,7 +16,7 @@ class Colour {
     float getGreen() const;
     float getBlue() const;
 
-    bool roughlyEqual(const Colour& other);
+    bool roughlyEqual(const Colour& other) const;
 
     Colour operator+(const Colour& other) const;
     Colour operator-(const Colour& other) const;
