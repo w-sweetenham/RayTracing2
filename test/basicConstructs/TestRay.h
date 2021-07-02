@@ -2,9 +2,9 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <iostream>
 
-#include "src/geometry/Tuple.h"
-#include "src/geometry/Matrix.h"
-#include "src/geometry/Ray.h"
+#include "src/basicConstructs/Tuple.h"
+#include "src/basicConstructs/Matrix.h"
+#include "src/basicConstructs/Ray.h"
 #include "src/utils/Utils.h"
 
 class TestRay : public CppUnit::TestFixture {

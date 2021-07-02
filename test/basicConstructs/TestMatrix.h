@@ -2,8 +2,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <iostream>
 
-#include "src/geometry/Tuple.h"
-#include "src/geometry/Matrix.h"
+#include "src/basicConstructs/Tuple.h"
+#include "src/basicConstructs/Matrix.h"
 #include "src/utils/Utils.h"
 
 class TestMatrix : public CppUnit::TestFixture {

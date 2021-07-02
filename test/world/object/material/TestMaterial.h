@@ -2,8 +2,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <iostream>
 
-#include "src/utils/Colour.h"
-#include "src/scene/world/object/material/Material.h"
+#include "src/basicConstructs/Colour.h"
+#include "src/world/object/material/Material.h"
 #include "src/utils/Utils.h"
 
 class TestMaterial : public CppUnit::TestFixture {

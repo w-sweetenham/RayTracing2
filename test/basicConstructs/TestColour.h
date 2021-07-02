@@ -2,7 +2,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <iostream>
 
-#include "src/utils/Colour.h"
+#include "src/basicConstructs/Colour.h"
 #include "src/utils/Utils.h"
 
 class TestColour : public CppUnit::TestFixture {
