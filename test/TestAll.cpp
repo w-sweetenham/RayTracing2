@@ -2,11 +2,11 @@
 #include <iostream>
 
 #include "test/utils/TestUtils.h"
-#include "test/geometry/TestTuple.h"
-#include "test/geometry/TestMatrix.h"
-#include "test/utils/TestColour.h"
-#include "test/geometry/TestRay.h"
-#include "test/scene/world/object/material/TestMaterial.h"
+#include "test/basicConstructs/TestTuple.h"
+#include "test/basicConstructs/TestMatrix.h"
+#include "test/basicConstructs/TestColour.h"
+#include "test/basicConstructs/TestRay.h"
+#include "test/world/object/material/TestMaterial.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
