@@ -1,8 +1,8 @@
 #ifndef RAY_H_
 #define RAY_H_
 
-#include "src/geometry/Tuple.h"
-#include "src/geometry/Matrix.h"
+#include "src/basicConstructs/Tuple.h"
+#include "src/basicConstructs/Matrix.h"
 
 class Matrix;
 class Vec;

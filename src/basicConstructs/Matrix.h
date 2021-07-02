@@ -2,7 +2,7 @@
 #define MATRIX_H_
 
 #include <iostream>
-#include "src/geometry/Tuple.h"
+#include "src/basicConstructs/Tuple.h"
 #include <exception>
 #include <math.h>
 
