@@ -1,4 +1,4 @@
-#include "test/geometry/TestTuple.h"
+#include "TestTuple.h"
 
 void TestTuples::setUp()
 {
