@@ -1,3 +1,6 @@
+#ifndef MATERIAL_H_
+#define MATERIAL_H_
+
 #include "src/basicConstructs/Colour.h"
 
 class Material {
@@ -13,3 +16,5 @@ class Material {
     float getSpecular();
     Colour getColour();
 };
+
+#endif
