@@ -7,6 +7,7 @@
 #include "test/basicConstructs/TestColour.h"
 #include "test/basicConstructs/TestRay.h"
 #include "test/world/object/material/TestMaterial.h"
+#include "test/world/object/shape/TestTSphere.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
@@ -16,6 +17,7 @@ int main() {
     runner.addTest(TestColour::suite());
     runner.addTest(TestRay::suite());
     runner.addTest(TestMaterial::suite());
+    runner.addTest(TestTSphere::suite());
     runner.run();
     return 0;
 }
