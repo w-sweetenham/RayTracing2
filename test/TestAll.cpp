@@ -8,6 +8,7 @@
 #include "test/basicConstructs/TestRay.h"
 #include "test/world/object/material/TestMaterial.h"
 #include "test/world/object/shape/TestTSphere.h"
+#include "test/world/object/TestIntersection.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
@@ -18,6 +19,7 @@ int main() {
     runner.addTest(TestRay::suite());
     runner.addTest(TestMaterial::suite());
     runner.addTest(TestTSphere::suite());
+    runner.addTest(TestIntersection::suite());
     runner.run();
     return 0;
 }
