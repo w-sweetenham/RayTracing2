@@ -9,6 +9,7 @@
 class TestIntersection : public CppUnit::TestFixture {
     Object* obj1;
     Object* obj2;
+    Object* defaultObj;
     public:
     void setUp();
     void tearDown();

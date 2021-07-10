@@ -19,6 +19,7 @@ class Intersection {
     Object* objPtr;
     public:
     Intersection(float t, Object* objPtr);
+    Intersection(const Intersection& other);
     float getT() const;
     Object* getObj() const;
     bool operator<(const Intersection& other) const;
@@ -34,7 +35,7 @@ class IntersectionSet {
     int getNumPosIntersections() const;
     Intersection getPosIntersection(int index) const;
     Intersection getNegIntersection(int index) const;
-    bool getHit(Intersection& intersection) const;
+    bool getHit(Intersection& intersection, Object*& prevObj, Object*& nextObj, Object* const defaultObj);
 };
 
 #endif

@@ -1,6 +1,8 @@
 #include "Intersection.h"
 
 Intersection::Intersection(float t, Object* objPtr): t(t), objPtr(objPtr) {}
+
+Intersection::Intersection(const Intersection& other): t(other.t), objPtr(other.objPtr) {}
     
 float Intersection::getT() const {
     return t;
@@ -10,7 +12,7 @@ Object* Intersection::getObj() const {
     return objPtr;
 }
 
-bool Intersection::operator<(const Intersection& other) const{
+bool Intersection::operator<(const Intersection& other) const {
     if(this->t < other.t) {
         return true;
     } else {
@@ -52,12 +54,45 @@ Intersection IntersectionSet::getNegIntersection(int index) const {
     }
 }
 
-bool IntersectionSet::getHit(Intersection& intersection) const {
+bool IntersectionSet::getHit(Intersection& intersection, Object*& prevObj, Object*& nextObj, Object* const defaultObj) {
     if(posIntersections.size() == 0) {
         return false;
     }
+    
+    std::sort(posIntersections.begin(), posIntersections.end());
+    std::sort(negIntersections.begin(), negIntersections.end());
+    intersection = posIntersections[0];
 
-    intersection = *std::min_element(posIntersections.begin(), posIntersections.end());
+    
+    std::vector<Object*> containers;
+    std::vector<Object*>::iterator objPtr;
 
+    for(int i=0; i<negIntersections.size(); i++) {
+        objPtr = std::find(containers.begin(), containers.end(), negIntersections[i].getObj());
+        if(objPtr == containers.end()) {//containers doesn't contain the object of the current intersection
+            containers.push_back(negIntersections[i].getObj());
+        } else {
+            containers.erase(objPtr);
+        }
+    }
+
+    if(containers.size() == 0) {
+        prevObj = defaultObj;
+    } else {
+        prevObj = containers[containers.size() - 1];
+    }
+
+    objPtr = std::find(containers.begin(), containers.end(), posIntersections[0].getObj());
+    if(objPtr == containers.end()) {//containers doesn't contain the object of the current intersection
+        containers.push_back(posIntersections[0].getObj());
+    } else {
+        containers.erase(objPtr);
+    }
+
+    if(containers.size() == 0) {
+        nextObj = defaultObj;
+    } else {
+        nextObj = containers[containers.size() - 1];
+    }
     return true;
 }

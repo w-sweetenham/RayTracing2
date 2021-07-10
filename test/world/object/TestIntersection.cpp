@@ -3,11 +3,13 @@
 void TestIntersection::setUp() {
     obj1 = new Object();
     obj2 = new Object();
+    defaultObj = new Object();
 }
 
 void TestIntersection::tearDown() {
     delete obj1;
     delete obj2;
+    delete defaultObj;
 }
 
 void TestIntersection::testIntersection() {
@@ -59,19 +61,35 @@ void TestIntersection::testIntersectionSet() {
 }
 
 void TestIntersection::testIntersectionHit() {
-    IntersectionSet iSet;
-    iSet.addIntersection(Intersection(2, obj1));
-    iSet.addIntersection(Intersection(-0.5, obj2));
-    iSet.addIntersection(Intersection(0.6, obj1));
+    IntersectionSet iSet1;
+    iSet1.addIntersection(Intersection(2, obj1));
+    iSet1.addIntersection(Intersection(-0.5, obj2));
+    iSet1.addIntersection(Intersection(0.6, obj1));
 
     Intersection intersection(0, NULL);
     bool hit = false;
+    Object* prevObj;
+    Object* nextObj;
 
-    hit = iSet.getHit(intersection);
+    hit = iSet1.getHit(intersection, prevObj, nextObj, defaultObj);
 
     CPPUNIT_ASSERT(hit == true);
     CPPUNIT_ASSERT(intersection.getObj() == obj1);
     CPPUNIT_ASSERT(roughlyEqual(intersection.getT(), 0.6));
+    CPPUNIT_ASSERT(prevObj == obj2);
+    CPPUNIT_ASSERT(nextObj == obj1);
+
+    IntersectionSet iSet2;
+    iSet2.addIntersection(Intersection(2, obj2));
+    iSet2.addIntersection(Intersection(0.6, obj2));
+
+    hit = iSet2.getHit(intersection, prevObj, nextObj, defaultObj);
+
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(intersection.getObj() == obj2);
+    CPPUNIT_ASSERT(roughlyEqual(intersection.getT(), 0.6));
+    CPPUNIT_ASSERT(prevObj == defaultObj);
+    CPPUNIT_ASSERT(nextObj == obj2);
 }
 
 CppUnit::Test* TestIntersection::suite()
