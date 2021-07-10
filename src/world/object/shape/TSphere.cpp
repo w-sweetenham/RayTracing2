@@ -27,5 +27,9 @@ bool TSphere::intersection(const Ray& ray, IntersectionSet& intSet, const Object
 }
 
 Vec TSphere::getNorm(const Point& point) const {
-    return Vec(1, 1 ,1);
+    Point objPoint = getLocalPoint(point);
+    Vec objNorm = objPoint - Point(0, 0, 0);
+    Vec worldNorm = getWorldVec(objNorm);
+    worldNorm.normalize();
+    return worldNorm;
 }

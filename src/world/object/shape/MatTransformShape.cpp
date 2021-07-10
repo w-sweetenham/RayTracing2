@@ -19,3 +19,11 @@ Matrix MatTransformShape::getTransInvMat() const {
 Ray MatTransformShape::getLocalRay(const Ray& ray) const {
     return ray.transform(invMat);
 }
+
+Point MatTransformShape::getLocalPoint(const Point& point) const {
+    return invMat * point;
+}
+
+Vec MatTransformShape::getWorldVec(const Vec& vec) const {
+    return transInvMat * vec;
+}

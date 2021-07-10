@@ -14,6 +14,8 @@ class MatTransformShape: public  Shape {
 
     protected:
     Ray getLocalRay(const Ray& ray) const;
+    Point getLocalPoint(const Point& point) const;
+    Vec getWorldVec(const Vec& vec) const;
 
     public:
     MatTransformShape();

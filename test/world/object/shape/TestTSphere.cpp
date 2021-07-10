@@ -103,14 +103,19 @@ void TestTSphere::testTSphereIntersection() {
     CPPUNIT_ASSERT(roughlyEqual(intSet.getPosIntersection(3).getT(), 0.5));
 }
 
+void TestTSphere::testNormal() {
+    TSphere s(TranslationMat(2, 0, 0));
+    Vec norm = s.getNorm(Point(2.7071068, 0.7071068, 0));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0.7071068, 0.7071068, 0)));
+}
+
 CppUnit::Test* TestTSphere::suite()
 {
     CppUnit::TestSuite *testSuite = new CppUnit::TestSuite("Sphere Tests");
     testSuite->addTest(new CppUnit::TestCaller<TestTSphere>("Test Sphere", &TestTSphere::testSphere));
     testSuite->addTest(new CppUnit::TestCaller<TestTSphere>("Test Sphere Copy", &TestTSphere::testSphereCopy));
     testSuite->addTest(new CppUnit::TestCaller<TestTSphere>("Test Sphere Intersection", &TestTSphere::testTSphereIntersection));
-    //testSuite->addTest(new CppUnit::TestCaller<TestSphere>("Test Sphere transform", &TestSphere::testSphereTransform));
-    //testSuite->addTest(new CppUnit::TestCaller<TestSphere>("Test Sphere normal", &TestSphere::testNormal));
+    testSuite->addTest(new CppUnit::TestCaller<TestTSphere>("Test Sphere normal", &TestTSphere::testNormal));
 
     return testSuite;
 }

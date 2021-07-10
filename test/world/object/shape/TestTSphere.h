@@ -17,9 +17,8 @@ class TestTSphere : public CppUnit::TestFixture {
     void testSphere();
     void testSphereCopy();
     void testTSphereIntersection();
-    //void testSphereTransform();
 
-    //void testNormal();
+    void testNormal();
 
     static CppUnit::Test *suite();
 };
