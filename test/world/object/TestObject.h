@@ -20,5 +20,7 @@ class TestObject : public CppUnit::TestFixture {
 
     void testIntersection();
 
+    void testNormal();
+
     static CppUnit::Test *suite();
 };

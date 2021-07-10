@@ -38,11 +38,20 @@ void TestObject::testIntersection() {
     CPPUNIT_ASSERT(roughlyEqual(intSet.getPosIntersection(3).getT(), 0.5));
 }
 
+void TestObject::testNormal() {
+    TSphere s(TranslationMat(2, 0, 0));
+    Object obj(&s, "material");
+    Vec norm = obj.getNorm(Point(2.7071068, 0.7071068, 0));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0.7071068, 0.7071068, 0)));
+}
+
 CppUnit::Test* TestObject::suite()
 {
     CppUnit::TestSuite *testSuite = new CppUnit::TestSuite("Object Tests");
     testSuite->addTest(new CppUnit::TestCaller<TestObject>("Test Object", &TestObject::testObject));
     testSuite->addTest(new CppUnit::TestCaller<TestObject>("Test Object Intersection", &TestObject::testIntersection));
+
+    testSuite->addTest(new CppUnit::TestCaller<TestObject>("Test Object normal", &TestObject::testNormal));
 
     return testSuite;
 }

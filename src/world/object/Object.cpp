@@ -6,6 +6,10 @@ bool Object::intersect(const Ray& ray, IntersectionSet& intSet) const {
     return shape->intersection(ray, intSet, this);
 }
 
+Vec Object::getNorm(const Point& point) const {
+    return shape->getNorm(point);
+}
+
 std::string Object::getMaterialName() const {
     return materialName;
 }
