@@ -10,7 +10,7 @@
 class TestIntersection : public CppUnit::TestFixture {
     Object* obj1;
     Object* obj2;
-    Object* defaultObj;
+    const Object* defaultObj;
     TSphere* s;
     public:
     void setUp();

@@ -7,6 +7,7 @@
 #include "src/basicConstructs/Ray.h"
 #include "src/world/object/shape/TSphere.h"
 #include "src/utils/Utils.h"
+#include "src/world/object/Object.h"
 
 class TestTSphere : public CppUnit::TestFixture {
     public:
@@ -15,7 +16,7 @@ class TestTSphere : public CppUnit::TestFixture {
 
     void testSphere();
     void testSphereCopy();
-    //void testSphereIntersection();
+    void testTSphereIntersection();
     //void testSphereTransform();
 
     //void testNormal();

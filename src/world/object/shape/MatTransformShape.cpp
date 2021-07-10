@@ -15,3 +15,7 @@ Matrix MatTransformShape::getInvMat() const {
 Matrix MatTransformShape::getTransInvMat() const {
     return transInvMat;
 }
+
+Ray MatTransformShape::getLocalRay(const Ray& ray) const {
+    return ray.transform(invMat);
+}

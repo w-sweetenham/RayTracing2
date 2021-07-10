@@ -16,12 +16,12 @@ class BadIndex: public std::exception {
 class Intersection {
     private:
     float t;
-    Object* objPtr;
+    const Object* objPtr;
     public:
-    Intersection(float t, Object* objPtr);
+    Intersection(float t, const Object* objPtr);
     Intersection(const Intersection& other);
     float getT() const;
-    Object* getObj() const;
+    const Object* getObj() const;
     bool operator<(const Intersection& other) const;
 };
 
@@ -35,7 +35,7 @@ class IntersectionSet {
     int getNumPosIntersections() const;
     Intersection getPosIntersection(int index) const;
     Intersection getNegIntersection(int index) const;
-    bool getHit(Intersection& intersection, Object*& prevObj, Object*& nextObj, Object* const defaultObj);
+    bool getHit(Intersection& intersection, const Object*& prevObj, const Object*& nextObj, const Object* const defaultObj);
 };
 
 #endif

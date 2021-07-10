@@ -68,8 +68,8 @@ void TestIntersection::testIntersectionHit() {
 
     Intersection intersection(0, NULL);
     bool hit = false;
-    Object* prevObj;
-    Object* nextObj;
+    const Object* prevObj;
+    const Object* nextObj;
 
     hit = iSet1.getHit(intersection, prevObj, nextObj, defaultObj);
 

@@ -4,6 +4,7 @@
 #include "src/basicConstructs/Matrix.h"
 #include "src/basicConstructs/Ray.h"
 #include "src/world/object/shape/Shape.h"
+#include "src/world/object/Intersection.h"
 
 class MatTransformShape: public  Shape {
     private:
@@ -12,7 +13,7 @@ class MatTransformShape: public  Shape {
     Matrix transInvMat;
 
     protected:
-    Ray getLocalRay(const Ray& ray);
+    Ray getLocalRay(const Ray& ray) const;
 
     public:
     MatTransformShape();
@@ -20,7 +21,7 @@ class MatTransformShape: public  Shape {
     Matrix getMat() const;
     Matrix getInvMat() const;
     Matrix getTransInvMat() const;
-    virtual bool intersection(const Ray& ray, float& t) const = 0;
+    virtual bool intersection(const Ray& ray, IntersectionSet& intSet, const Object* objPtr) const = 0;
     virtual Vec getNorm(const Point& point) const = 0;
 };
 

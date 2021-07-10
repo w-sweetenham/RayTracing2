@@ -1,6 +1,6 @@
 #include "Intersection.h"
 
-Intersection::Intersection(float t, Object* objPtr): t(t), objPtr(objPtr) {}
+Intersection::Intersection(float t, const Object* objPtr): t(t), objPtr(objPtr) {}
 
 Intersection::Intersection(const Intersection& other): t(other.t), objPtr(other.objPtr) {}
     
@@ -8,7 +8,7 @@ float Intersection::getT() const {
     return t;
 }
     
-Object* Intersection::getObj() const {
+const Object* Intersection::getObj() const {
     return objPtr;
 }
 
@@ -54,7 +54,7 @@ Intersection IntersectionSet::getNegIntersection(int index) const {
     }
 }
 
-bool IntersectionSet::getHit(Intersection& intersection, Object*& prevObj, Object*& nextObj, Object* const defaultObj) {
+bool IntersectionSet::getHit(Intersection& intersection, const Object*& prevObj, const Object*& nextObj, const Object* const defaultObj) {
     if(posIntersections.size() == 0) {
         return false;
     }
@@ -64,8 +64,8 @@ bool IntersectionSet::getHit(Intersection& intersection, Object*& prevObj, Objec
     intersection = posIntersections[0];
 
     
-    std::vector<Object*> containers;
-    std::vector<Object*>::iterator objPtr;
+    std::vector<const Object*> containers;
+    std::vector<const Object*>::iterator objPtr;
 
     for(int i=0; i<negIntersections.size(); i++) {
         objPtr = std::find(containers.begin(), containers.end(), negIntersections[i].getObj());
