@@ -8,11 +8,16 @@
 
 class TestIntersection : public CppUnit::TestFixture {
     Object* obj1;
+    Object* obj2;
     public:
     void setUp();
     void tearDown();
 
     void testIntersection();
+    void testIntersectionComparison();
+
+    void testIntersectionSet();
+    void testIntersectionHit();
 
     static CppUnit::Test *suite();
 };
