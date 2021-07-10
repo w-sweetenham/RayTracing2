@@ -3,24 +3,17 @@
 #include <iostream>
 
 #include "src/utils/Utils.h"
-#include "src/world/object/Intersection.h"
 #include "src/world/object/Object.h"
 #include "src/world/object/shape/TSphere.h"
 
-class TestIntersection : public CppUnit::TestFixture {
+class TestObject : public CppUnit::TestFixture {
     Object* obj1;
-    Object* obj2;
-    Object* defaultObj;
     TSphere* s;
     public:
     void setUp();
     void tearDown();
 
-    void testIntersection();
-    void testIntersectionComparison();
-
-    void testIntersectionSet();
-    void testIntersectionHit();
+    void testObject();
 
     static CppUnit::Test *suite();
 };

@@ -1,9 +1,10 @@
 #include "TestIntersection.h"
 
 void TestIntersection::setUp() {
-    obj1 = new Object();
-    obj2 = new Object();
-    defaultObj = new Object();
+    s = new TSphere();
+    obj1 = new Object(s, "a");
+    obj2 = new Object(s, "b");
+    defaultObj = new Object(s, "c");
 }
 
 void TestIntersection::tearDown() {
@@ -14,7 +15,6 @@ void TestIntersection::tearDown() {
 
 void TestIntersection::testIntersection() {
     Intersection i1(1.5, obj1);
-
     CPPUNIT_ASSERT(i1.getObj() == obj1);
     CPPUNIT_ASSERT(roughlyEqual(i1.getT(), 1.5));
 }
