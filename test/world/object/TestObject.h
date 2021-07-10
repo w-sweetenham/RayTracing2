@@ -3,8 +3,11 @@
 #include <iostream>
 
 #include "src/utils/Utils.h"
+#include "src/basicConstructs/Matrix.h"
 #include "src/world/object/Object.h"
 #include "src/world/object/shape/TSphere.h"
+#include "src/basicConstructs/Ray.h"
+#include "src/world/object/Intersection.h"
 
 class TestObject : public CppUnit::TestFixture {
     Object* obj1;
@@ -14,6 +17,8 @@ class TestObject : public CppUnit::TestFixture {
     void tearDown();
 
     void testObject();
+
+    void testIntersection();
 
     static CppUnit::Test *suite();
 };
