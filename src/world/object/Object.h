@@ -12,7 +12,7 @@ class Object {
     std::string materialName;
     public:
     Object(Shape* shape, std::string materialName);
-    bool intersect(const Ray& ray, IntersectionSet& intSet) const;
+    void intersect(const Ray& ray, IntersectionSet& intSet) const;
     Vec getNorm(const Point& point) const;
     std::string getMaterialName() const;
     Shape* getShape() const;

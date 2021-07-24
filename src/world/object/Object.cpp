@@ -2,8 +2,8 @@
 
 Object::Object(Shape* shape, std::string materialName): shape(shape), materialName(materialName) {}
 
-bool Object::intersect(const Ray& ray, IntersectionSet& intSet) const {
-    return shape->intersection(ray, intSet, this);
+void Object::intersect(const Ray& ray, IntersectionSet& intSet) const {
+    shape->intersection(ray, intSet, this);
 }
 
 Vec Object::getNorm(const Point& point) const {
