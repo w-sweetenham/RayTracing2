@@ -10,6 +10,7 @@
 #include "test/world/object/shape/TestTSphere.h"
 #include "test/world/object/TestIntersection.h"
 #include "test/world/object/TestObject.h"
+#include "test/world/light/TestPointLight.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
@@ -22,6 +23,7 @@ int main() {
     runner.addTest(TestTSphere::suite());
     runner.addTest(TestIntersection::suite());
     runner.addTest(TestObject::suite());
+    runner.addTest(TestPointLight::suite());
     runner.run();
     return 0;
 }
