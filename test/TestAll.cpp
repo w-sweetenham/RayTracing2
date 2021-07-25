@@ -11,6 +11,7 @@
 #include "test/world/object/TestIntersection.h"
 #include "test/world/object/TestObject.h"
 #include "test/world/light/TestPointLight.h"
+#include "test/world/TestWorld.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
@@ -24,6 +25,7 @@ int main() {
     runner.addTest(TestIntersection::suite());
     runner.addTest(TestObject::suite());
     runner.addTest(TestPointLight::suite());
+    runner.addTest(TestWorld::suite());
     runner.run();
     return 0;
 }
