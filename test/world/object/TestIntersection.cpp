@@ -92,6 +92,17 @@ void TestIntersection::testIntersectionHit() {
     CPPUNIT_ASSERT(nextObj == obj2);
 }
 
+void TestIntersection::testIntersectionSpec() {
+    Object* o1;
+    Object* o2;
+    IntersectionSpec intSpec(Vec(1, 2, 3), Point(1, 1, 1), o1, o2, Vec(3, 4, 5));
+    CPPUNIT_ASSERT(intSpec.norm.roughlyEqual(Vec(1, 2, 3)));
+    CPPUNIT_ASSERT(intSpec.point.roughlyEqual(Point(1, 1, 1)));
+    CPPUNIT_ASSERT(intSpec.obj1 == o1);
+    CPPUNIT_ASSERT(intSpec.obj2 == o2);
+    CPPUNIT_ASSERT(intSpec.lightVec.roughlyEqual(Vec(3, 4, 5)));
+}
+
 CppUnit::Test* TestIntersection::suite()
 {
     CppUnit::TestSuite *testSuite = new CppUnit::TestSuite("Intersection Tests");
@@ -99,6 +110,7 @@ CppUnit::Test* TestIntersection::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestIntersection>("Test Intersection Comparison", &TestIntersection::testIntersectionComparison));
     testSuite->addTest(new CppUnit::TestCaller<TestIntersection>("Test Intersection Set", &TestIntersection::testIntersectionSet));
     testSuite->addTest(new CppUnit::TestCaller<TestIntersection>("Test Intersection Set Hit", &TestIntersection::testIntersectionHit));
+    testSuite->addTest(new CppUnit::TestCaller<TestIntersection>("Test Intersection Spec", &TestIntersection::testIntersectionSpec));
 
     return testSuite;
 }

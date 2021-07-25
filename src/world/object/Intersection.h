@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include "src/basicConstructs/Tuple.h"
 
 class Object;
 
@@ -36,6 +37,15 @@ class IntersectionSet {
     Intersection getPosIntersection(int index) const;
     Intersection getNegIntersection(int index) const;
     bool getHit(Intersection& intersection, const Object*& prevObj, const Object*& nextObj, const Object* const defaultObj);
+};
+
+struct IntersectionSpec {
+    Vec norm;
+    Point point;
+    Object* obj1;
+    Object* obj2;
+    Vec lightVec;
+    IntersectionSpec(const Vec& norm, const Point& point, Object* obj1, Object* obj2, const Vec& lightVec);
 };
 
 #endif

@@ -22,5 +22,7 @@ class TestIntersection : public CppUnit::TestFixture {
     void testIntersectionSet();
     void testIntersectionHit();
 
+    void testIntersectionSpec();
+
     static CppUnit::Test *suite();
 };
