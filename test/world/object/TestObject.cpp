@@ -1,8 +1,9 @@
 #include "TestObject.h"
 
 void TestObject::setUp() {
+    m = new Material(0.1, 0.2, 0.3, Colour(0.2, 0.3, 0.4));
     s = new TSphere(TranslationMat(2, 1, 0));
-    obj1 = new Object(s, "a");
+    obj1 = new Object(s, m);
 }
 
 void TestObject::tearDown() {
@@ -12,7 +13,7 @@ void TestObject::tearDown() {
 
 void TestObject::testObject() {
     CPPUNIT_ASSERT(obj1->getShape() == s);
-    CPPUNIT_ASSERT(obj1->getMaterialName() == "a");
+    CPPUNIT_ASSERT(obj1->getMaterial() == m);
 }
 
 void TestObject::testIntersection() {
@@ -40,7 +41,7 @@ void TestObject::testIntersection() {
 
 void TestObject::testNormal() {
     TSphere s(TranslationMat(2, 0, 0));
-    Object obj(&s, "material");
+    Object obj(&s, m);
     Vec norm = obj.getNorm(Point(2.7071068, 0.7071068, 0));
     CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0.7071068, 0.7071068, 0)));
 }

@@ -9,12 +9,12 @@
 class Object {
     private:
     Shape* shape;
-    std::string materialName;
+    Material* material;
     public:
-    Object(Shape* shape, std::string materialName);
+    Object(Shape* shape, Material* matName);
     void intersect(const Ray& ray, IntersectionSet& intSet) const;
     Vec getNorm(const Point& point) const;
-    std::string getMaterialName() const;
+    Material* getMaterial() const;
     Shape* getShape() const;
 };
 

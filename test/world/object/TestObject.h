@@ -8,10 +8,12 @@
 #include "src/world/object/shape/TSphere.h"
 #include "src/basicConstructs/Ray.h"
 #include "src/world/object/Intersection.h"
+#include "src/world/object/material/Material.h"
 
 class TestObject : public CppUnit::TestFixture {
     Object* obj1;
     TSphere* s;
+    Material* m;
     public:
     void setUp();
     void tearDown();

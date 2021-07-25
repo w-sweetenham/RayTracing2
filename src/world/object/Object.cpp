@@ -1,6 +1,6 @@
 #include "Object.h"
 
-Object::Object(Shape* shape, std::string materialName): shape(shape), materialName(materialName) {}
+Object::Object(Shape* shape, Material* material): shape(shape), material(material) {}
 
 void Object::intersect(const Ray& ray, IntersectionSet& intSet) const {
     shape->intersection(ray, intSet, this);
@@ -10,8 +10,8 @@ Vec Object::getNorm(const Point& point) const {
     return shape->getNorm(point);
 }
 
-std::string Object::getMaterialName() const {
-    return materialName;
+Material* Object::getMaterial() const {
+    return material;
 }
 
 Shape* Object::getShape() const {
