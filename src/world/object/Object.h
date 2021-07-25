@@ -3,6 +3,7 @@
 
 #include "src/basicConstructs/Ray.h"
 #include "src/world/object/shape/Shape.h"
+#include "src/world/object/shape/TSphere.h"
 #include "src/world/object/material/Material.h"
 #include "src/world/object/Intersection.h"
 
@@ -11,7 +12,7 @@ class Object {
     Shape* shape;
     Material* material;
     public:
-    Object(Shape* shape, Material* matName);
+    Object(const TSphere& s, Material* matName);
     void intersect(const Ray& ray, IntersectionSet& intSet) const;
     Vec getNorm(const Point& point) const;
     Material* getMaterial() const;

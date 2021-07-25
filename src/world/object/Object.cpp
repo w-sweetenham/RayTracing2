@@ -1,6 +1,8 @@
 #include "Object.h"
 
-Object::Object(Shape* shape, Material* material): shape(shape), material(material) {}
+Object::Object(const TSphere& s, Material* material): material(material) {
+    shape = new TSphere(s);
+}
 
 void Object::intersect(const Ray& ray, IntersectionSet& intSet) const {
     shape->intersection(ray, intSet, this);
