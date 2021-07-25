@@ -42,10 +42,10 @@ class IntersectionSet {
 struct IntersectionSpec {
     Vec norm;
     Point point;
-    Object* obj1;
-    Object* obj2;
+    const Object* obj1;
+    const Object* obj2;
     Vec lightVec;
-    IntersectionSpec(const Vec& norm, const Point& point, Object* obj1, Object* obj2, const Vec& lightVec);
+    IntersectionSpec(const Vec& norm, const Point& point, const Object* obj1, const Object* obj2, const Vec& lightVec);
 };
 
 #endif
