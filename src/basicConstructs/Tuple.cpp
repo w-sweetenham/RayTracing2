@@ -6,7 +6,7 @@ Tuple::Tuple(float elem1, float elem2, float elem3) {
     elems[2] = elem3;
 }
 
-float Tuple::getElem(int n) {
+float Tuple::getElem(int n) const {
     return elems[n];
 }
 

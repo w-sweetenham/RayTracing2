@@ -20,7 +20,7 @@ class Tuple {
 
     public:
     Tuple(float elem1, float elem2, float elem3);
-    float getElem(int n);
+    float getElem(int n) const;
     bool roughlyEqual(const Tuple& other) const;
     friend std::ostream& operator<< (std::ostream &out, const Tuple& tuple);
 };
