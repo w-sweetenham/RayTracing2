@@ -38,7 +38,7 @@ class Vec : public Tuple {
     Vec operator-(const Vec& other) const;
     Vec operator*(const float scalar) const;
     Vec operator/(const float scalar) const;
-    Vec operator*(const Vec& other);
+    Vec operator*(const Vec& other) const;
     void operator*=(float scalar);
     float mag() const;
     void normalize();

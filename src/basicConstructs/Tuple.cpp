@@ -59,7 +59,7 @@ Vec Vec::operator/(const float scalar) const {
     return Vec(elems[0]/scalar, elems[1]/scalar, elems[2]/scalar);
 }
 
-Vec Vec::operator*(const Vec& other) {
+Vec Vec::operator*(const Vec& other) const{
     return Vec(elems[1]*other.elems[2] - elems[2]*other.elems[1],
     elems[2]*other.elems[0] - elems[0]*other.elems[2],
     elems[0]*other.elems[1] - elems[1]*other.elems[0]);
