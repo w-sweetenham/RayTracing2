@@ -9,3 +9,6 @@ CreateMakeScript.txt
 
 #vscode config
 .vscode/
+
+#images
+*.ppm
