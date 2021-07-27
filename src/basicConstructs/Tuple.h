@@ -43,6 +43,7 @@ class Vec : public Tuple {
     float mag() const;
     void normalize();
     float dot(const Vec& other) const;
+    Vec reflect(const Vec& normal) const;
 };
 
 class Point : public Tuple {

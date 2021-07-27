@@ -136,6 +136,11 @@ void TestTuples::testCross() {
     CPPUNIT_ASSERT(v3.roughlyEqual(Vec(1, -2, 1)));
 }
 
+void TestTuples::testReflect() {
+    Vec v3 = Vec(-2, 1, 0).reflect(Vec(-1, 0, 0));
+    CPPUNIT_ASSERT(v3.roughlyEqual(Vec(-0.894427, -0.4472136, 0)));
+}
+
 void TestTuples::testScalarMultiply()
 {
     Vec v3 = *v2 * -1.0;
@@ -173,6 +178,7 @@ CppUnit::Test* TestTuples::suite()
 
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test dot product", &TestTuples::testDot));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test cross product", &TestTuples::testCross));
+    testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test reflection", &TestTuples::testReflect));
     
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test vec vec subtraction", &TestTuples::testVecVecSubtraction));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test point vec subtraction", &TestTuples::testPointVecSubtraction));

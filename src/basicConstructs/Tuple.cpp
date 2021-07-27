@@ -86,6 +86,15 @@ float Vec::dot(const Vec& other) const {
     return elems[0]*other.elems[0] + elems[1]*other.elems[1] + elems[2]*other.elems[2];
 }
 
+Vec Vec::reflect(const Vec& norm) const {
+    Vec unitNorm = norm;
+    unitNorm.normalize();
+    Vec c = unitNorm*(this->dot(unitNorm));
+    Vec reflectVec = (c*2) - *this;
+    reflectVec.normalize();
+    return reflectVec;
+}
+
 Point::Point(): Tuple(0.0, 0.0, 0.0) {
     elems[3] = 1.0;
 }
