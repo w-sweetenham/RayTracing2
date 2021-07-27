@@ -13,6 +13,7 @@
 #include "test/world/light/TestPointLight.h"
 #include "test/world/TestWorld.h"
 #include "test/camera/TestCanvas.h"
+#include "test/camera/TestCamera.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
@@ -28,6 +29,7 @@ int main() {
     runner.addTest(TestPointLight::suite());
     runner.addTest(TestWorld::suite());
     runner.addTest(TestCanvas::suite());
+    runner.addTest(TestCamera::suite());
     runner.run();
     return 0;
 }
