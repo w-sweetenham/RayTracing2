@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include "src/basicConstructs/Tuple.h"
+#include "src/basicConstructs/Colour.h"
 
 class Object;
 
@@ -45,7 +46,8 @@ struct IntersectionSpec {
     const Object* obj1;
     const Object* obj2;
     Vec lightVec;
-    IntersectionSpec(const Vec& norm, const Point& point, const Object* obj1, const Object* obj2, const Vec& lightVec);
+    Colour lightIntensity;
+    IntersectionSpec(const Vec& norm, const Point& point, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity);
 };
 
 #endif

@@ -51,6 +51,6 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
     if(norm.dot(eyeVec) < 0) {
         norm *= -1.0;
     }
-    return IntersectionSpec(norm, p, obj1, obj2, lightVec);
+    return IntersectionSpec(norm, p, obj1, obj2, lightVec, light.getIntensity());
 }
 
