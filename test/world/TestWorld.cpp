@@ -46,8 +46,8 @@ void TestWorld::testIntersection() {
     w.addMaterial(Material(0.15, 0.25, 0.35, 100, Colour(0.55, 0.65, 0.75)));
     w.addObject(TSphere(ScalingMat(2, 2, 2)), 1);
     w.addObject(TSphere(), 0);
-    IntersectionSpec intSpec1 = w.getIntersection(Ray(Point(0.5, 0, 0), Vec(1, 0, 0)));
-    IntersectionSpec intSpec2 = w.getIntersection(Ray(Point(0, 3, 0), Vec(0, -1, 0)));
+    IntersectionSpec intSpec1 = w.getIntersection(Ray(Point(0.5, 0, 0), Vec(3, 0, 0)));
+    IntersectionSpec intSpec2 = w.getIntersection(Ray(Point(0, 3, 0), Vec(0, -2, 0)));
 
     CPPUNIT_ASSERT(intSpec1.norm.roughlyEqual(Vec(-1, 0, 0)));
     CPPUNIT_ASSERT(intSpec1.point.roughlyEqual(Point(1, 0, 0)));
