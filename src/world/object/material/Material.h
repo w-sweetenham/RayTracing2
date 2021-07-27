@@ -8,13 +8,15 @@ class Material {
     float ambient;
     float diffuse;
     float specular;
+    float shininess;
     Colour colour;
     public:
-    Material(float ambient, float diffuse, float specular, const Colour& colour);
-    float getAmbient();
-    float getDiffuse();
-    float getSpecular();
-    Colour getColour();
+    Material(float ambient, float diffuse, float specular, float shininess, const Colour& colour);
+    float getAmbient() const;
+    float getDiffuse() const;
+    float getSpecular() const;
+    float getShininess() const;
+    Colour getColour() const;
 };
 
 #endif

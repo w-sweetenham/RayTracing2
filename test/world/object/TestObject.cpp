@@ -1,7 +1,7 @@
 #include "TestObject.h"
 
 void TestObject::setUp() {
-    m = new Material(0.1, 0.2, 0.3, Colour(0.2, 0.3, 0.4));
+    m = new Material(0.1, 0.2, 0.3, 100, Colour(0.2, 0.3, 0.4));
     s = new TSphere(TranslationMat(2, 1, 0));
     obj1 = new Object(*s, m);
 }

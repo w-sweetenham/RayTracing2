@@ -12,8 +12,8 @@ void TestWorld::testWorld() {
 
 void TestWorld::testAddObject() {
     World w(PointLight(Point(0, 0, 0), Colour(1, 1, 1)));
-    w.addMaterial(Material(0.1, 0.2, 0.3, Colour(0.5, 0.6, 0.7)));
-    w.addMaterial(Material(0.15, 0.25, 0.35, Colour(0.55, 0.65, 0.75)));
+    w.addMaterial(Material(0.1, 0.2, 0.3, 100, Colour(0.5, 0.6, 0.7)));
+    w.addMaterial(Material(0.15, 0.25, 0.35, 100, Colour(0.55, 0.65, 0.75)));
     CPPUNIT_ASSERT(w.getNumMaterials() == 2);
 
     w.addObject(TSphere(), 1);
@@ -35,15 +35,15 @@ void TestWorld::testAddObject() {
 
 void TestWorld::testAddMaterial() {
     World w(PointLight(Point(0, 0, 0), Colour(1, 1, 1)));
-    w.addMaterial(Material(0.1, 0.2, 0.3, Colour(0.5, 0.6, 0.7)));
-    w.addMaterial(Material(0.15, 0.25, 0.35, Colour(0.55, 0.65, 0.75)));
+    w.addMaterial(Material(0.1, 0.2, 0.3, 100, Colour(0.5, 0.6, 0.7)));
+    w.addMaterial(Material(0.15, 0.25, 0.35, 100, Colour(0.55, 0.65, 0.75)));
     CPPUNIT_ASSERT(w.getNumMaterials() == 2);
 }
 
 void TestWorld::testIntersection() {
     World w(PointLight(Point(0, 0, 0), Colour(1, 1, 1)));
-    w.addMaterial(Material(0.1, 0.2, 0.3, Colour(0.5, 0.6, 0.7)));
-    w.addMaterial(Material(0.15, 0.25, 0.35, Colour(0.55, 0.65, 0.75)));
+    w.addMaterial(Material(0.1, 0.2, 0.3, 100, Colour(0.5, 0.6, 0.7)));
+    w.addMaterial(Material(0.15, 0.25, 0.35, 100, Colour(0.55, 0.65, 0.75)));
     w.addObject(TSphere(ScalingMat(2, 2, 2)), 1);
     w.addObject(TSphere(), 0);
     IntersectionSpec intSpec1 = w.getIntersection(Ray(Point(0.5, 0, 0), Vec(1, 0, 0)));
