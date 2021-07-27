@@ -14,6 +14,7 @@
 #include "test/world/TestWorld.h"
 #include "test/camera/TestCanvas.h"
 #include "test/camera/TestCamera.h"
+#include "test/shader/TestShader.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
@@ -30,6 +31,7 @@ int main() {
     runner.addTest(TestWorld::suite());
     runner.addTest(TestCanvas::suite());
     runner.addTest(TestCamera::suite());
+    runner.addTest(TestShader::suite());
     runner.run();
     return 0;
 }
