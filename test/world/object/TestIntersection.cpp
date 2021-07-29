@@ -95,9 +95,11 @@ void TestIntersection::testIntersectionHit() {
 void TestIntersection::testIntersectionSpec() {
     Object* o1;
     Object* o2;
-    IntersectionSpec intSpec(Vec(1, 2, 3), Point(1, 1, 1), o1, o2, Vec(3, 4, 5), Colour(1, 1, 1));
+    IntersectionSpec intSpec(true, Vec(1, 2, 3), Point(1, 1, 1), o2, o1, o2, Vec(3, 4, 5), Colour(1, 1, 1));
+    CPPUNIT_ASSERT(intSpec.hit == true);
     CPPUNIT_ASSERT(intSpec.norm.roughlyEqual(Vec(1, 2, 3)));
     CPPUNIT_ASSERT(intSpec.point.roughlyEqual(Point(1, 1, 1)));
+    CPPUNIT_ASSERT(intSpec.hitObj == o2);
     CPPUNIT_ASSERT(intSpec.obj1 == o1);
     CPPUNIT_ASSERT(intSpec.obj2 == o2);
     CPPUNIT_ASSERT(intSpec.lightVec.roughlyEqual(Vec(3, 4, 5)));

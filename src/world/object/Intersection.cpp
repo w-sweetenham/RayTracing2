@@ -97,4 +97,4 @@ bool IntersectionSet::getHit(Intersection& intersection, const Object*& prevObj,
     return true;
 }
 
-IntersectionSpec::IntersectionSpec(const Vec& norm, const Point& point, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity): norm(norm), point(point), obj1(obj1), obj2(obj2), lightVec(lightVec), lightIntensity(intensity) {}
+IntersectionSpec::IntersectionSpec(bool hit, const Vec& norm, const Point& point, const Object* hitObj, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity): hit(hit), norm(norm), point(point), hitObj(hitObj), obj1(obj1), obj2(obj2), lightVec(lightVec), lightIntensity(intensity) {}

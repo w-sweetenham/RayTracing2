@@ -5,6 +5,7 @@
 #include "src/camera/Canvas.h"
 #include "src/basicConstructs/Ray.h"
 #include "src/world/World.h"
+#include "src/shader/Shader.h"
 
 class Camera {
     private:
@@ -24,7 +25,7 @@ class Camera {
     Vec getX() const;
     Vec getY() const;
     Vec getZ() const;
-    void render(World& world, int recursion);
+    void render(const World& world, const Shader& shader);
     void save(std::string path) const;
 };
 

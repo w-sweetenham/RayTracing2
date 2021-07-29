@@ -45,7 +45,16 @@ Vec Camera::getZ() const {
     return zDirection;
 }
 
-void Camera::render(World& world, int recursion) {}
+void Camera::render(const World& world, const Shader& shader) {
+    for(int row=0; row<numRows; row++) {
+        for(int col=0; col<numCols; col++) {
+            Colour c = shader.getColour(getRay(row, col), world);
+            image.setPixel(row, col, c);
+        }
+    }
+}
     
-void Camera::save(std::string path) const {}
+void Camera::save(std::string path) const {
+    image.saveImage(path);
+}
 

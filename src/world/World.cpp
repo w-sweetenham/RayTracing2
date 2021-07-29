@@ -42,7 +42,10 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
     Intersection i(0, NULL);
     const Object* obj1;
     const Object* obj2;
-    intersections.getHit(i, obj1, obj2, NULL);
+    bool hit = intersections.getHit(i, obj1, obj2, NULL);
+    if(hit == false) {
+        return IntersectionSpec(false, Vec(0, 0, 0), Point(0, 0, 0), NULL, obj1, obj2, Vec(0, 0, 0), light.getIntensity());
+    }
     Point p = ray.getPosition(i.getT());
     Vec norm = i.getObj()->getNorm(p);
     Vec lightVec = light.getOrigin() - p;
@@ -51,6 +54,6 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
     if(norm.dot(eyeVec) < 0) {
         norm *= -1.0;
     }
-    return IntersectionSpec(norm, p, obj1, obj2, lightVec, light.getIntensity());
+    return IntersectionSpec(true, norm, p, i.getObj(), obj1, obj2, lightVec, light.getIntensity());
 }
 

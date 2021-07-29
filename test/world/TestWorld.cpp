@@ -48,18 +48,25 @@ void TestWorld::testIntersection() {
     w.addObject(TSphere(), 0);
     IntersectionSpec intSpec1 = w.getIntersection(Ray(Point(0.5, 0, 0), Vec(3, 0, 0)));
     IntersectionSpec intSpec2 = w.getIntersection(Ray(Point(0, 3, 0), Vec(0, -2, 0)));
+    IntersectionSpec intSpec3 = w.getIntersection(Ray(Point(0, 5, 0), Vec(1, 0, 0)));
 
+    CPPUNIT_ASSERT(intSpec1.hit == true);
     CPPUNIT_ASSERT(intSpec1.norm.roughlyEqual(Vec(-1, 0, 0)));
     CPPUNIT_ASSERT(intSpec1.point.roughlyEqual(Point(1, 0, 0)));
+    CPPUNIT_ASSERT(intSpec1.hitObj == w.getObject(1));
     CPPUNIT_ASSERT(intSpec1.obj1 == w.getObject(1));
     CPPUNIT_ASSERT(intSpec1.obj2 == w.getObject(0));
     CPPUNIT_ASSERT(intSpec1.lightVec.roughlyEqual(Vec(-1, 0, 0)));
     
+    CPPUNIT_ASSERT(intSpec1.hit == true);
     CPPUNIT_ASSERT(intSpec2.norm.roughlyEqual(Vec(0, 1, 0)));
     CPPUNIT_ASSERT(intSpec2.point.roughlyEqual(Point(0, 2, 0)));
+    CPPUNIT_ASSERT(intSpec2.hitObj == w.getObject(0));
     CPPUNIT_ASSERT(intSpec2.obj1 == NULL);
     CPPUNIT_ASSERT(intSpec2.obj2 == w.getObject(0));
     CPPUNIT_ASSERT(intSpec2.lightVec.roughlyEqual(Vec(0, -1, 0)));
+    
+    CPPUNIT_ASSERT(intSpec3.hit == false);
 }
 
 CppUnit::Test* TestWorld::suite()

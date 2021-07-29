@@ -1,3 +1,6 @@
+#ifndef SHADER_H_
+#define SHADER_H_
+
 #include <math.h>
 
 #include "src/basicConstructs/Colour.h"
@@ -16,3 +19,5 @@ class PhongShader : public Shader {
     public:
     Colour illumination(const IntersectionSpec& intSpec, const Ray& ray) const;
 };
+
+#endif

@@ -41,13 +41,15 @@ class IntersectionSet {
 };
 
 struct IntersectionSpec {
+    bool hit;
     Vec norm;
     Point point;
+    const Object* hitObj;
     const Object* obj1;
     const Object* obj2;
     Vec lightVec;
     Colour lightIntensity;
-    IntersectionSpec(const Vec& norm, const Point& point, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity);
+    IntersectionSpec(bool hit, const Vec& norm, const Point& point, const Object* hitObj, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity);
 };
 
 #endif
