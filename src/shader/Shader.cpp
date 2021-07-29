@@ -13,11 +13,22 @@ Colour PhongShader::illumination(const IntersectionSpec& intSpec, const Ray& ray
     Vec reflectedVec = intSpec.lightVec.reflect(intSpec.norm);
     Vec eyeVec = ray.getDirection() * -1.0;
     eyeVec.normalize();
-    float ambientFactor = intSpec.obj2->getMaterial()->getAmbient();
-    float diffuseFactor = intSpec.obj2->getMaterial()->getDiffuse() * intSpec.lightVec.dot(intSpec.norm);
-    float specularfactor = pow(reflectedVec.dot(eyeVec), intSpec.obj2->getMaterial()->getShininess());
-    specularfactor *= intSpec.obj2->getMaterial()->getSpecular();
-    Colour c = (intSpec.obj2->getMaterial()->getColour() * intSpec.lightIntensity) * (ambientFactor + diffuseFactor);
-    c += intSpec.lightIntensity * specularfactor;
+    float ambientFactor = intSpec.hitObj->getMaterial()->getAmbient();
+    float diffuseFactor;
+    if(intSpec.lightVec.dot(intSpec.norm) >= 0) {
+        diffuseFactor = intSpec.hitObj->getMaterial()->getDiffuse() * intSpec.lightVec.dot(intSpec.norm);
+    } else {
+        diffuseFactor = 0.0;
+    }
+    float specularFactor;
+    if(reflectedVec.dot(eyeVec) >= 0.0) {
+        specularFactor = pow(reflectedVec.dot(eyeVec), intSpec.hitObj->getMaterial()->getShininess());
+    } else {
+        specularFactor = 0.0;
+    }
+    specularFactor *= intSpec.hitObj->getMaterial()->getSpecular();
+    Colour c = (intSpec.hitObj->getMaterial()->getColour() * intSpec.lightIntensity) * (ambientFactor + diffuseFactor);
+    c += intSpec.lightIntensity * specularFactor;
+    
     return c;
 }
