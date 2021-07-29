@@ -2,7 +2,11 @@
 
 Colour Shader::getColour(const Ray& ray, const World& world) const {
     IntersectionSpec intSpec = world.getIntersection(ray);
-    return illumination(intSpec, ray);
+    if(intSpec.hit) {
+        return illumination(intSpec, ray);
+    } else {
+        return Colour(0, 0, 0);
+    }
 }
 
 Colour PhongShader::illumination(const IntersectionSpec& intSpec, const Ray& ray) const {
