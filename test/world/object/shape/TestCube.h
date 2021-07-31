@@ -5,19 +5,19 @@
 #include "src/basicConstructs/Tuple.h"
 #include "src/basicConstructs/Matrix.h"
 #include "src/basicConstructs/Ray.h"
-#include "src/world/object/shape/TSphere.h"
+#include "src/world/object/shape/Cube.h"
 #include "src/utils/Utils.h"
 #include "src/world/object/Object.h"
 #include "src/world/object/Intersection.h"
 
-class TestTSphere : public CppUnit::TestFixture {
+class TestCube : public CppUnit::TestFixture {
     public:
     void setUp();
     void tearDown();
 
-    void testSphere();
-    void testSphereCopy();
-    void testTSphereIntersection();
+    void testCube();
+    void testCubeCopy();
+    void testCubeIntersection();
 
     void testNormal();
 
