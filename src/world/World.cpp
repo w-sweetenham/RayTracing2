@@ -22,6 +22,14 @@ void World::addObject(const TSphere& s, int matIndex) {
     }
 }
 
+void World::addObject(const Cube& c, int matIndex) {
+    if(matIndex >= materials.size()) {
+        throw IndexOutOfBounds();
+    } else {
+        objects.push_back(Object(c, &materials[matIndex]));
+    }
+}
+
 const Object* World::getObject(int index) const {
     if(index >= objects.size()) {
         throw IndexOutOfBounds();

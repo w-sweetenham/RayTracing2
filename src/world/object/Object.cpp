@@ -4,6 +4,10 @@ Object::Object(const TSphere& s, Material* material): material(material) {
     shape = new TSphere(s);
 }
 
+Object::Object(const Cube& c, Material* material): material(material) {
+    shape = new Cube(c);
+}
+
 void Object::intersect(const Ray& ray, IntersectionSet& intSet) const {
     shape->intersection(ray, intSet, this);
 }

@@ -17,6 +17,7 @@ void TestWorld::testAddObject() {
     CPPUNIT_ASSERT(w.getNumMaterials() == 2);
 
     w.addObject(TSphere(), 1);
+    w.addObject(Cube(TranslationMat(3, 0, 0)), 0);
 
     bool exception = false;
 
@@ -31,6 +32,12 @@ void TestWorld::testAddObject() {
     CPPUNIT_ASSERT(roughlyEqual(obj1Ptr->getMaterial()->getDiffuse(), 0.25));
     CPPUNIT_ASSERT(roughlyEqual(obj1Ptr->getMaterial()->getSpecular(), 0.35));
     CPPUNIT_ASSERT(obj1Ptr->getMaterial()->getColour().roughlyEqual(Colour(0.55, 0.65, 0.75)));
+
+    const Object* obj2Ptr = w.getObject(1);
+    CPPUNIT_ASSERT(roughlyEqual(obj2Ptr->getMaterial()->getAmbient(), 0.1));
+    CPPUNIT_ASSERT(roughlyEqual(obj2Ptr->getMaterial()->getDiffuse(), 0.2));
+    CPPUNIT_ASSERT(roughlyEqual(obj2Ptr->getMaterial()->getSpecular(), 0.3));
+    CPPUNIT_ASSERT(obj2Ptr->getMaterial()->getColour().roughlyEqual(Colour(0.5, 0.6, 0.7)));
 }
 
 void TestWorld::testAddMaterial() {
