@@ -14,6 +14,9 @@ Colour PhongShader::illumination(const IntersectionSpec& intSpec, const Ray& ray
     Vec eyeVec = ray.getDirection() * -1.0;
     eyeVec.normalize();
     float ambientFactor = intSpec.hitObj->getMaterial()->getAmbient();
+    if(intSpec.isShadowed) {
+        return intSpec.lightIntensity * intSpec.hitObj->getMaterial()->getColour() * ambientFactor;
+    }
     float diffuseFactor;
     if(intSpec.lightVec.dot(intSpec.norm) >= 0) {
         diffuseFactor = intSpec.hitObj->getMaterial()->getDiffuse() * intSpec.lightVec.dot(intSpec.norm);

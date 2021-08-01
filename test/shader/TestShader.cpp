@@ -13,10 +13,16 @@ void TestShader::tearDown()
 }
 
 void TestShader::testPhongShader() {
-    Ray r(Point(-2, -1, 0), Vec(1, 1, 0));
+    Ray r1(Point(-2, -1, 0), Vec(1, 1, 0));
+    Ray r2(Point(2, -1, 0), Vec(-1, 1, 0));
+    Ray r3(Point(2, -2, 0), Vec(-1, 0, 0));
     PhongShader shader;
-    Colour c = shader.getColour(r, *world);
+    Colour c = shader.getColour(r1, *world);
     CPPUNIT_ASSERT(c.roughlyEqual(Colour(0.7907106, 0.8814212, 0.9721318)));
+    c = shader.getColour(r2, *world);
+    CPPUNIT_ASSERT(c.roughlyEqual(Colour(0.02, 0.04, 0.06)));
+    c = shader.getColour(r3, *world);
+    CPPUNIT_ASSERT(c.roughlyEqual(Colour(0, 0, 0)));
 }
 
 CppUnit::Test* TestShader::suite()
