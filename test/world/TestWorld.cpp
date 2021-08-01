@@ -86,6 +86,17 @@ void TestWorld::testShadow() {
     CPPUNIT_ASSERT(isShadowed == true);
     isShadowed = w.isShadowed(Point(2, 2, 0));
     CPPUNIT_ASSERT(isShadowed == false);
+
+    Ray r1(Point(0, 0, 0), Vec(0, 2, 0));
+    Ray r2(Point(0, -2, 0), Vec(0, 2, 0));
+    Ray r3(Point(0, 1.5, 0), Vec(0, -1, 0));
+
+    IntersectionSpec i1 = w.getIntersection(r1);
+    CPPUNIT_ASSERT(i1.isShadowed == true);
+    IntersectionSpec i2 = w.getIntersection(r2);
+    CPPUNIT_ASSERT(i2.isShadowed == true);
+    IntersectionSpec i3 = w.getIntersection(r3);
+    CPPUNIT_ASSERT(i3.isShadowed == false);
 }
 
 CppUnit::Test* TestWorld::suite()

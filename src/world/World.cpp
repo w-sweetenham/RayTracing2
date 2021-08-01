@@ -75,6 +75,7 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
     if(norm.dot(eyeVec) < 0) {
         norm *= -1.0;
     }
-    return IntersectionSpec(true, norm, p, i.getObj(), obj1, obj2, lightVec, light.getIntensity(), false);
+    Point underPoint = p + norm*0.00001;
+    return IntersectionSpec(true, norm, p, i.getObj(), obj1, obj2, lightVec, light.getIntensity(), isShadowed(underPoint));
 }
 
