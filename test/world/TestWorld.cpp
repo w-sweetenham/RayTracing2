@@ -76,6 +76,18 @@ void TestWorld::testIntersection() {
     CPPUNIT_ASSERT(intSpec3.hit == false);
 }
 
+void TestWorld::testShadow() {
+    World w(PointLight(Point(0, 2, 0), Colour(1, 1, 1)));
+    w.addMaterial(Material(0.1, 0.8, 0.8, 100, Colour(1, 1, 1)));
+    w.addObject(TSphere(), 0);
+    bool isShadowed = w.isShadowed(Point(0, 0, 0));
+    CPPUNIT_ASSERT(isShadowed == true);
+    isShadowed = w.isShadowed(Point(0, -2, 0));
+    CPPUNIT_ASSERT(isShadowed == true);
+    isShadowed = w.isShadowed(Point(2, 2, 0));
+    CPPUNIT_ASSERT(isShadowed == false);
+}
+
 CppUnit::Test* TestWorld::suite()
 {
     CppUnit::TestSuite *testSuite = new CppUnit::TestSuite("World Tests");
@@ -83,6 +95,7 @@ CppUnit::Test* TestWorld::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test adding objects", &TestWorld::testAddObject));
     testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test adding materials", &TestWorld::testAddMaterial));
     testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test intersection", &TestWorld::testIntersection));
+    testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test shadow", &TestWorld::testShadow));
 
     return testSuite;
 }

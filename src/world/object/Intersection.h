@@ -49,7 +49,8 @@ struct IntersectionSpec {
     const Object* obj2;
     Vec lightVec;
     Colour lightIntensity;
-    IntersectionSpec(bool hit, const Vec& norm, const Point& point, const Object* hitObj, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity);
+    bool isShadowed;
+    IntersectionSpec(bool hit, const Vec& norm, const Point& point, const Object* hitObj, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity, bool isShadowed);
 };
 
 #endif

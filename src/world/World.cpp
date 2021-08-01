@@ -2,6 +2,19 @@
 
 World::World(const PointLight& light): light(light) {}
 
+bool World::isShadowed(const Point& point) const {
+    Vec lightVec = light.getOrigin() - point;
+    Ray lightRay(point, lightVec);
+    IntersectionSet intersections;
+    for(int i=0; i<objects.size(); i++) {
+        objects[i].intersect(lightRay, intersections);
+        if(intersections.getNumPosIntersections() > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 PointLight World::getPointLight() const {
     return light;
 }
@@ -52,7 +65,7 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
     const Object* obj2;
     bool hit = intersections.getHit(i, obj1, obj2, NULL);
     if(hit == false) {
-        return IntersectionSpec(false, Vec(0, 0, 0), Point(0, 0, 0), NULL, obj1, obj2, Vec(0, 0, 0), light.getIntensity());
+        return IntersectionSpec(false, Vec(0, 0, 0), Point(0, 0, 0), NULL, obj1, obj2, Vec(0, 0, 0), light.getIntensity(), false);
     }
     Point p = ray.getPosition(i.getT());
     Vec norm = i.getObj()->getNorm(p);
@@ -62,6 +75,6 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
     if(norm.dot(eyeVec) < 0) {
         norm *= -1.0;
     }
-    return IntersectionSpec(true, norm, p, i.getObj(), obj1, obj2, lightVec, light.getIntensity());
+    return IntersectionSpec(true, norm, p, i.getObj(), obj1, obj2, lightVec, light.getIntensity(), false);
 }
 

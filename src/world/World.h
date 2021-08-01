@@ -22,6 +22,7 @@ class World {
     std::vector<Material> materials;
     PointLight light;
     public:
+    bool isShadowed(const Point& point) const;
     World(const PointLight& light);
     PointLight getPointLight() const;
     void addObject(const TSphere& obj, int matIndex);
