@@ -6,10 +6,14 @@ bool World::isShadowed(const Point& point) const {
     Vec lightVec = light.getOrigin() - point;
     Ray lightRay(point, lightVec);
     IntersectionSet intersections;
+    int prevCount = 0;
     for(int i=0; i<objects.size(); i++) {
         objects[i].intersect(lightRay, intersections);
-        if(intersections.getNumPosIntersections() > 0) {
-            return true;
+        if(intersections.getNumPosIntersections() > prevCount) {
+            prevCount = intersections.getNumPosIntersections();
+            if(intersections.getPosIntersection(prevCount-1).getT() < 1) {
+                return true;
+            }
         }
     }
     return false;
