@@ -11,9 +11,11 @@ class Material {
     float shininess;
     Colour colour;
     float refractiveIndex;
+    float reflectivity;
+    float transparency;
     public:
     Material(float ambient, float diffuse, float specular, float shininess, const Colour& colour);
-    Material(float ambient, float diffuse, float specular, float shininess, const Colour& colour, float refractiveIndex);
+    Material(float ambient, float diffuse, float specular, float shininess, const Colour& colour, float refractiveIndex, float reflectivity, float transparency);
     float getAmbient() const;
     float getDiffuse() const;
     float getSpecular() const;
