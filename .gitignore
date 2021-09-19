@@ -12,3 +12,7 @@ CreateMakeScript.txt
 
 #images
 *.ppm
+
+#uml docs
+UMLDir/*
+UML
