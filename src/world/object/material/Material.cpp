@@ -23,3 +23,15 @@ float Material::getShininess() const {
 Colour Material::getColour() const {
     return colour;
 }
+
+float Material::getRefractiveIndex() const {
+    return refractiveIndex;
+}
+    
+float Material::getReflectivity() const {
+    return reflectivity;
+}
+
+float Material::getTransparency() const {
+    return transparency;
+}

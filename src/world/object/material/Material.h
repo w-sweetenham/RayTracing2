@@ -21,6 +21,9 @@ class Material {
     float getSpecular() const;
     float getShininess() const;
     Colour getColour() const;
+    float getRefractiveIndex() const;
+    float getReflectivity() const;
+    float getTransparency() const;
 };
 
 #endif
