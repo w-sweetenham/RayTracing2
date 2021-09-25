@@ -18,5 +18,7 @@ class TestShader : public CppUnit::TestFixture {
 
     void testPhongShader();
 
+    void testSchlick();
+
     static CppUnit::Test *suite();
 };

@@ -20,4 +20,6 @@ class PhongShader : public Shader {
     Colour illumination(const IntersectionSpec& intSpec, const Ray& ray) const;
 };
 
+float schlick(float theta, float n1, float n2);
+
 #endif

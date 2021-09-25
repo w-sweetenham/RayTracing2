@@ -35,3 +35,11 @@ Colour PhongShader::illumination(const IntersectionSpec& intSpec, const Ray& ray
     
     return c;
 }
+
+float schlick(float theta, float n1, float n2) {
+    if(n1 > n2 && (n1/n2) * sin(theta) > 1.0) {
+        return 1.0;
+    }
+    float r0 = pow((n1 - n2)/(n1 + n2), 2);
+    return r0 + (1-r0)*pow(1-cos(theta), 5);
+}

@@ -25,10 +25,22 @@ void TestShader::testPhongShader() {
     CPPUNIT_ASSERT(c.roughlyEqual(Colour(0, 0, 0)));
 }
 
+void TestShader::testSchlick() {
+    float testVal = schlick(1, 1, 1.5);
+    CPPUNIT_ASSERT(roughlyEqual(testVal, 0.0597076));
+
+    testVal = schlick(0.6, 1.5, 1);
+    CPPUNIT_ASSERT(roughlyEqual(testVal, 0.04015606));
+
+    testVal = schlick(1, 1.5, 1);
+    CPPUNIT_ASSERT(roughlyEqual(testVal, 1.0));
+}
+
 CppUnit::Test* TestShader::suite()
 {
     CppUnit::TestSuite *testSuite = new CppUnit::TestSuite("Shader Tests");
-    testSuite->addTest(new CppUnit::TestCaller<TestShader>("Test canvas", &TestShader::testPhongShader));
+    testSuite->addTest(new CppUnit::TestCaller<TestShader>("Test Phong Shader", &TestShader::testPhongShader));
+    testSuite->addTest(new CppUnit::TestCaller<TestShader>("Test Schlick", &TestShader::testSchlick));
 
     return testSuite;
 }
