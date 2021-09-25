@@ -95,6 +95,31 @@ Vec Vec::reflect(const Vec& norm) const {
     return reflectVec;
 }
 
+Vec Vec::refract(const Vec& normal, float n1, float n2, bool& TIR) const {
+    float ratio = n1/n2;
+    Vec vI = (*this)*(-1.0);
+    vI.normalize();
+    Vec norm = normal;
+    norm.normalize();
+    float cos_i = vI.dot(norm);
+    if(cos_i < 0) {
+        cos_i *= -1.0;
+        norm = norm*(-1.0);
+    }
+    float sin2_t = (ratio*ratio)*(1-(cos_i*cos_i));
+
+    if(sin2_t >= 1.0) {
+        TIR = true;
+        return Vec(0, 0, 0);
+    } else {
+        TIR = false;
+        float cos_t = sqrt(1.0 - sin2_t);
+        Vec vT = (norm*((ratio*cos_i)-cos_t)) - (vI*ratio);
+        vT.normalize();
+        return vT;
+    }
+}
+
 Point::Point(): Tuple(0.0, 0.0, 0.0) {
     elems[3] = 1.0;
 }

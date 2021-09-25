@@ -37,6 +37,7 @@ class TestTuples : public CppUnit::TestFixture {
     void testDot();
     void testCross();
     void testReflect();
+    void testRefract();
 
     void testScalarMultiply();
     void testMagnitude();

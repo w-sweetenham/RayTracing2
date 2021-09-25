@@ -141,6 +141,23 @@ void TestTuples::testReflect() {
     CPPUNIT_ASSERT(v3.roughlyEqual(Vec(-0.894427, -0.4472136, 0)));
 }
 
+void TestTuples::testRefract() {
+    Vec v3(-1, -2, 0);
+    bool TIR = true;
+    Vec refractedV3 = v3.refract(Vec(0, 2, 0), 1.5, 1, TIR);
+    CPPUNIT_ASSERT(refractedV3.roughlyEqual(Vec(-0.670820, -0.741620, 0)));
+    CPPUNIT_ASSERT(TIR == false);
+
+    Vec v4(0.670820, 0.741620, 0);
+    Vec refractedV4 = v4.refract(Vec(0, 2, 0), 1, 1.5, TIR);
+    CPPUNIT_ASSERT(refractedV4.roughlyEqual(Vec(0.447214, 0.894427, 0)));
+    CPPUNIT_ASSERT(TIR == false);
+
+    Vec v5(-1, -1, 0);
+    Vec refractedV5 = v5.refract(Vec(0, 2, 0), 1.5, 1, TIR);
+    CPPUNIT_ASSERT(TIR == true);
+}
+
 void TestTuples::testScalarMultiply()
 {
     Vec v3 = *v2 * -1.0;
@@ -179,6 +196,7 @@ CppUnit::Test* TestTuples::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test dot product", &TestTuples::testDot));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test cross product", &TestTuples::testCross));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test reflection", &TestTuples::testReflect));
+    testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test refraction", &TestTuples::testRefract));
     
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test vec vec subtraction", &TestTuples::testVecVecSubtraction));
     testSuite->addTest(new CppUnit::TestCaller<TestTuples>("Test point vec subtraction", &TestTuples::testPointVecSubtraction));

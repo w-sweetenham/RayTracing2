@@ -44,6 +44,7 @@ class Vec : public Tuple {
     void normalize();
     float dot(const Vec& other) const;
     Vec reflect(const Vec& normal) const;
+    Vec refract(const Vec& normal, float n1, float n2, bool& TIR) const;
 };
 
 class Point : public Tuple {
