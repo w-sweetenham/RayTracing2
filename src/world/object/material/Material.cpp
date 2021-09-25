@@ -1,6 +1,6 @@
 #include "Material.h"
 
-Material::Material(float ambient, float diffuse, float specular, float shininess, const Colour& colour): ambient(ambient), diffuse(diffuse), specular(specular), shininess(shininess), colour(colour) {}
+Material::Material(float ambient, float diffuse, float specular, float shininess, const Colour& colour): ambient(ambient), diffuse(diffuse), specular(specular), shininess(shininess), colour(colour), refractiveIndex(1), reflectivity(0), transparency(0) {}
 
 Material::Material(float ambient, float diffuse, float specular, float shininess, const Colour& colour, float refractiveIndex, float reflectivity, float transparency): ambient(ambient), diffuse(diffuse), specular(specular), shininess(shininess), colour(colour), refractiveIndex(refractiveIndex), reflectivity(reflectivity), transparency(transparency) {}
 
