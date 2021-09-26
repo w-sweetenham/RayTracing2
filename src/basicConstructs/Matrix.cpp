@@ -143,7 +143,7 @@ float det4D(const float* elems) {
 
 Matrix Matrix::getInverse() const {
     float det = det4D(elems);
-    if(det > -0.00001 && det < 0.00001) {
+    if(det > -0.000001 && det < 0.000001) {
         throw UnInvertible();
     } else {
         float cofactors[16];
