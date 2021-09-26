@@ -139,6 +139,9 @@ void TestTuples::testCross() {
 void TestTuples::testReflect() {
     Vec v3 = Vec(-2, 1, 0).reflect(Vec(-1, 0, 0));
     CPPUNIT_ASSERT(v3.roughlyEqual(Vec(-0.894427, -0.4472136, 0)));
+
+    Vec v4 = Vec(-2, 1, 0).reflect(Vec(2, 0, 0));
+    CPPUNIT_ASSERT(v4.roughlyEqual(Vec(-0.894427, -0.4472136, 0)));
 }
 
 void TestTuples::testRefract() {
