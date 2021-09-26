@@ -64,6 +64,8 @@ void TestWorld::testIntersection() {
     CPPUNIT_ASSERT(intSpec1.obj1 == w.getObject(1));
     CPPUNIT_ASSERT(intSpec1.obj2 == w.getObject(0));
     CPPUNIT_ASSERT(intSpec1.lightVec.roughlyEqual(Vec(-1, 0, 0)));
+    CPPUNIT_ASSERT(intSpec1.overPoint.roughlyEqual(Point(1.00001, 0, 0)));
+    CPPUNIT_ASSERT(intSpec1.underPoint.roughlyEqual(Point(0.99999, 0, 0)));
     
     CPPUNIT_ASSERT(intSpec1.hit == true);
     CPPUNIT_ASSERT(intSpec2.norm.roughlyEqual(Vec(0, 1, 0)));
@@ -72,6 +74,8 @@ void TestWorld::testIntersection() {
     CPPUNIT_ASSERT(intSpec2.obj1 == NULL);
     CPPUNIT_ASSERT(intSpec2.obj2 == w.getObject(0));
     CPPUNIT_ASSERT(intSpec2.lightVec.roughlyEqual(Vec(0, -1, 0)));
+    CPPUNIT_ASSERT(intSpec2.overPoint.roughlyEqual(Point(0, 1.99999, 0)));
+    CPPUNIT_ASSERT(intSpec2.underPoint.roughlyEqual(Point(0, 2.00001, 0)));
     
     CPPUNIT_ASSERT(intSpec3.hit == false);
 }

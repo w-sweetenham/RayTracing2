@@ -98,3 +98,4 @@ bool IntersectionSet::getHit(Intersection& intersection, const Object*& prevObj,
 }
 
 IntersectionSpec::IntersectionSpec(bool hit, const Vec& norm, const Point& point, const Object* hitObj, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity, bool isShadowed): hit(hit), norm(norm), point(point), hitObj(hitObj), obj1(obj1), obj2(obj2), lightVec(lightVec), lightIntensity(intensity), isShadowed(isShadowed) {}
+IntersectionSpec::IntersectionSpec(bool hit, const Vec& norm, const Point& point, const Object* hitObj, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity, bool isShadowed, Point overPoint, Point underPoint): hit(hit), norm(norm), point(point), hitObj(hitObj), obj1(obj1), obj2(obj2), lightVec(lightVec), lightIntensity(intensity), isShadowed(isShadowed), overPoint(overPoint), underPoint(underPoint) {}

@@ -80,6 +80,7 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
         norm *= -1.0;
     }
     Point underPoint = p + norm*0.00001;
-    return IntersectionSpec(true, norm, p, i.getObj(), obj1, obj2, lightVec, light.getIntensity(), isShadowed(underPoint));
+    Point overPoint = p - norm*0.00001;
+    return IntersectionSpec(true, norm, p, i.getObj(), obj1, obj2, lightVec, light.getIntensity(), isShadowed(underPoint), overPoint, underPoint);
 }
 

@@ -95,7 +95,7 @@ void TestIntersection::testIntersectionHit() {
 void TestIntersection::testIntersectionSpec() {
     Object* o1;
     Object* o2;
-    IntersectionSpec intSpec(true, Vec(1, 2, 3), Point(1, 1, 1), o2, o1, o2, Vec(3, 4, 5), Colour(1, 1, 1), false);
+    IntersectionSpec intSpec(true, Vec(1, 2, 3), Point(1, 1, 1), o2, o1, o2, Vec(3, 4, 5), Colour(1, 1, 1), false, Point(0.99, 0, 0), Point(1.01, 0, 0));
     CPPUNIT_ASSERT(intSpec.hit == true);
     CPPUNIT_ASSERT(intSpec.norm.roughlyEqual(Vec(1, 2, 3)));
     CPPUNIT_ASSERT(intSpec.point.roughlyEqual(Point(1, 1, 1)));
@@ -105,6 +105,8 @@ void TestIntersection::testIntersectionSpec() {
     CPPUNIT_ASSERT(intSpec.lightVec.roughlyEqual(Vec(3, 4, 5)));
     CPPUNIT_ASSERT(intSpec.lightIntensity.roughlyEqual(Colour(1, 1, 1)));
     CPPUNIT_ASSERT(intSpec.isShadowed == false);
+    CPPUNIT_ASSERT(intSpec.overPoint.roughlyEqual(Point(0.99, 0, 0)));
+    CPPUNIT_ASSERT(intSpec.underPoint.roughlyEqual(Point(1.01, 0, 0)));
 }
 
 CppUnit::Test* TestIntersection::suite()
