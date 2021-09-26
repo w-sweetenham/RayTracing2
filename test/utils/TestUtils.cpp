@@ -2,7 +2,7 @@
 
 void TestUtils::setUp()
 {
-    a1 = new float(1.0001);
+    a1 = new float(1.000001);
     b1 = new float(1.0);
 
     a2 = new float(1.1);
