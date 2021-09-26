@@ -45,10 +45,10 @@ Vec Camera::getZ() const {
     return zDirection;
 }
 
-void Camera::render(const World& world, const Shader& shader) {
+void Camera::render(const World& world, const Shader& shader, int recursion) {
     for(int row=0; row<numRows; row++) {
         for(int col=0; col<numCols; col++) {
-            Colour c = shader.getColour(getRay(row, col), world);
+            Colour c = shader.getColour(getRay(row, col), world, recursion);
             image.setPixel(row, col, c);
         }
     }
