@@ -11,12 +11,17 @@
 class TestShader : public CppUnit::TestFixture {
     private:
     World* world;
+    World* world2;
 
     public:
     void setUp();
     void tearDown();
 
     void testPhongShader();
+
+    void testReflection();
+
+    void testRefraction();
 
     void testSchlick();
 

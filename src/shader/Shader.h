@@ -12,8 +12,12 @@
 class Shader {
     public:
     virtual Colour illumination(const IntersectionSpec& intSpec, const Ray& ray) const = 0;
-    Colour getColour(const Ray& ray, const World& world) const;
+    Colour getColour(const Ray& ray, const World& world, int recursion = 0) const;
+    Colour getReflectedColour(const Ray& ray, const IntersectionSpec& intSpec, const World& world, int recursion = 0) const;
+    Colour getRefractedColour(const Ray& ray, const IntersectionSpec& intSpec, const World& world, int recursion = 0) const;
 };
+
+
 
 class PhongShader : public Shader {
     public:
