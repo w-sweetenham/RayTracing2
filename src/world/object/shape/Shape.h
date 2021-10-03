@@ -11,6 +11,7 @@ class Shape {
     public:
     virtual bool intersection(const Ray& ray, IntersectionSet& intSet, const Object* objPtr) const = 0;
     virtual Vec getNorm(const Point& point) const = 0;
+    virtual Shape* clone() const = 0;
 };
 
 #endif

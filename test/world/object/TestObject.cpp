@@ -1,18 +1,20 @@
 #include "TestObject.h"
 
 void TestObject::setUp() {
-    m = new Material(0.1, 0.2, 0.3, 100, Colour(0.2, 0.3, 0.4));
-    s = new TSphere(TranslationMat(2, 1, 0));
-    obj1 = new Object(*s, m);
+    obj1 = new Object(TSphere(TranslationMat(2, 1, 0)), basicMaterial(0.1, 0.2, 0.3, 100, Colour(0.2, 0.3, 0.4)));
 }
 
 void TestObject::tearDown() {
     delete obj1;
-    delete s;
 }
 
 void TestObject::testObject() {
-    CPPUNIT_ASSERT(obj1->getMaterial() == m);
+    float ambient, diffuse, specular, shininess;
+    obj1->material->getSurfaceOpticParams(ambient, diffuse, specular, shininess, Point(1, 1, 1));
+    CPPUNIT_ASSERT(roughlyEqual(ambient, 0.1));
+    CPPUNIT_ASSERT(roughlyEqual(diffuse, 0.2));
+    CPPUNIT_ASSERT(roughlyEqual(specular, 0.3));
+    CPPUNIT_ASSERT(roughlyEqual(shininess, 100));
 }
 
 void TestObject::testIntersection() {
@@ -39,8 +41,7 @@ void TestObject::testIntersection() {
 }
 
 void TestObject::testNormal() {
-    TSphere s(TranslationMat(2, 0, 0));
-    Object obj(s, m);
+    Object obj(TSphere(TranslationMat(2, 0, 0)), basicMaterial(0.1, 0.2, 0.3, 100, Colour(0.2, 0.3, 0.4)));
     Vec norm = obj.getNorm(Point(2.7071068, 0.7071068, 0));
     CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0.7071068, 0.7071068, 0)));
 }

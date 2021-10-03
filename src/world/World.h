@@ -8,6 +8,7 @@
 #include "src/world/object/Intersection.h"
 #include "src/world/object/shape/TSphere.h"
 #include "src/world/object/shape/Cube.h"
+#include "src/world/object/material/Material.h"
 
 class IndexOutOfBounds: public std::exception {
     public:
@@ -25,12 +26,10 @@ class World {
     bool isShadowed(const Point& point) const;
     World(const PointLight& light);
     PointLight getPointLight() const;
-    void addObject(const TSphere& obj, int matIndex);
-    void addObject(const Cube& obj, int matIndex);
+    void addObject(const TSphere& obj, const basicMaterial& material);
+    void addObject(const Cube& obj, const basicMaterial& material);
     const Object* getObject(int index) const;
     int getNumObjects() const;
-    void addMaterial(const Material& material);
-    int getNumMaterials() const;
     IntersectionSpec getIntersection(const Ray& ray) const;
 };
 

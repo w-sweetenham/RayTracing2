@@ -23,6 +23,7 @@ class Cube : public MatTransformShape {
     Cube(const Cube& other);
     bool intersection(const Ray& ray, IntersectionSet& intSet, const Object* objPtr) const;
     Vec getNorm(const Point& point) const;
+    virtual Shape* clone() const;
 };
 
 #endif

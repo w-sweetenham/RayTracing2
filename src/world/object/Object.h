@@ -11,13 +11,14 @@
 class Object {
     private:
     Shape* shape;
-    Material* material;
     public:
-    Object(const TSphere& s, Material* matName);
-    Object(const Cube& s, Material* matName);
+    const Material* material;
+    Object(const TSphere& s, const basicMaterial& material);
+    Object(const Cube& s, const basicMaterial& material);
+    Object(const Object& other);
+    ~Object();
     void intersect(const Ray& ray, IntersectionSet& intSet) const;
     Vec getNorm(const Point& point) const;
-    Material* getMaterial() const;
     Shape* getShape() const;
 };
 

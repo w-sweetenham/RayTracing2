@@ -80,3 +80,7 @@ Vec Cube::getNorm(const Point& point) const {
     worldNorm.normalize();
     return worldNorm;
 }
+
+Shape* Cube::clone() const {
+    return new Cube(*this);
+}

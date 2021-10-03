@@ -19,7 +19,6 @@ class TestWorld : public CppUnit::TestFixture {
     void testWorld();
 
     void testAddObject();
-    void testAddMaterial();
     void testIntersection();
     void testShadow();
 

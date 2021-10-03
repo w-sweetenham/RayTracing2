@@ -12,7 +12,6 @@
 
 class TestObject : public CppUnit::TestFixture {
     Object* obj1;
-    TSphere* s;
     Material* m;
     public:
     void setUp();

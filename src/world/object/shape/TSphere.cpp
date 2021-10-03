@@ -33,3 +33,7 @@ Vec TSphere::getNorm(const Point& point) const {
     worldNorm.normalize();
     return worldNorm;
 }
+
+Shape* TSphere::clone() const {
+    return new TSphere(*this);
+}

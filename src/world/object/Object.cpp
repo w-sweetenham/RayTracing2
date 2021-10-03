@@ -1,11 +1,21 @@
 #include "Object.h"
 
-Object::Object(const TSphere& s, Material* material): material(material) {
+Object::Object(const TSphere& s, const basicMaterial& material): material(new basicMaterial(material)) {
     shape = new TSphere(s);
 }
 
-Object::Object(const Cube& c, Material* material): material(material) {
+Object::Object(const Cube& c, const basicMaterial& material): material(new basicMaterial(material)) {
     shape = new Cube(c);
+}
+
+Object::Object(const Object& other) {
+    material = other.material->clone();
+    shape = other.shape->clone();
+}
+
+Object::~Object() {
+    delete material;
+    delete shape;
 }
 
 void Object::intersect(const Ray& ray, IntersectionSet& intSet) const {
@@ -14,10 +24,6 @@ void Object::intersect(const Ray& ray, IntersectionSet& intSet) const {
 
 Vec Object::getNorm(const Point& point) const {
     return shape->getNorm(point);
-}
-
-Material* Object::getMaterial() const {
-    return material;
 }
 
 Shape* Object::getShape() const {

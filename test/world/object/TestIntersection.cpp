@@ -2,9 +2,9 @@
 
 void TestIntersection::setUp() {
     s = new TSphere();
-    obj1 = new Object(*s, NULL);//a
-    obj2 = new Object(*s, NULL);//b
-    defaultObj = new Object(*s, NULL);//c
+    obj1 = new Object(*s, basicMaterial(0.1, 0.2, 0.3, 100, Colour(1, 1, 1)));//a
+    obj2 = new Object(*s, basicMaterial(0.1, 0.2, 0.3, 100, Colour(1, 1, 1)));//b
+    defaultObj = new Object(*s, basicMaterial(0.1, 0.2, 0.3, 100, Colour(1, 1, 1)));//c
 }
 
 void TestIntersection::tearDown() {

@@ -23,28 +23,12 @@ PointLight World::getPointLight() const {
     return light;
 }
 
-void World::addMaterial(const Material& material) {
-    materials.push_back(material);
+void World::addObject(const TSphere& s, const basicMaterial& material) {
+    objects.push_back(Object(s, material));
 }
 
-int World::getNumMaterials() const {
-    return materials.size();
-}
-
-void World::addObject(const TSphere& s, int matIndex) {
-    if(matIndex >= materials.size()) {
-        throw IndexOutOfBounds();
-    } else {
-        objects.push_back(Object(s, &materials[matIndex]));
-    }
-}
-
-void World::addObject(const Cube& c, int matIndex) {
-    if(matIndex >= materials.size()) {
-        throw IndexOutOfBounds();
-    } else {
-        objects.push_back(Object(c, &materials[matIndex]));
-    }
+void World::addObject(const Cube& c, const basicMaterial& material) {
+    objects.push_back(Object(c, material));
 }
 
 const Object* World::getObject(int index) const {

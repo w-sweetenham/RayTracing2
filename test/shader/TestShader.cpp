@@ -3,16 +3,12 @@
 void TestShader::setUp()
 {
     world = new World(PointLight(Point(-2, 1, 0), Colour(1, 1, 1)));
-    world->addMaterial(Material(0.1, 0.5, 0.7, 100, Colour(0.2, 0.4, 0.6)));
-    world->addObject(TSphere(), 0);
+    world->addObject(TSphere(), basicMaterial(0.1, 0.5, 0.7, 100, Colour(0.2, 0.4, 0.6)));
 
     world2 = new World(PointLight(Point(0, 0, 0), Colour(1, 1, 1)));
-    world2->addMaterial(Material(0.2, 0, 0, 0, Colour(0.1, 0.2, 0.3), 1.5, 0.8, 0.6));
-    world2->addMaterial(Material(0.1, 0, 0, 0, Colour(0.3, 0.1, 0.2), 1.2, 0.5, 0.4));
-    world2->addMaterial(Material(0.5, 0, 0, 0, Colour(0.2, 0.3, 0.1), 1.2, 0.5, 0.4));
-    world2->addObject(Cube(TranslationMat(0, -2, 0)), 0);
-    world2->addObject(TSphere(TranslationMat(0.31235, -2, 0)*ScalingMat(0.1, 0.1, 0.1)), 2);
-    world2->addObject(TSphere(TranslationMat(1, 1, 0)*ScalingMat(0.1, 0.1, 0.1)), 1);
+    world2->addObject(Cube(TranslationMat(0, -2, 0)), basicMaterial(0.2, 0, 0, 0, Colour(0.1, 0.2, 0.3), 1.5, 0.8, 0.6));
+    world2->addObject(TSphere(TranslationMat(0.31235, -2, 0)*ScalingMat(0.1, 0.1, 0.1)), basicMaterial(0.5, 0, 0, 0, Colour(0.2, 0.3, 0.1), 1.2, 0.5, 0.4));
+    world2->addObject(TSphere(TranslationMat(1, 1, 0)*ScalingMat(0.1, 0.1, 0.1)), basicMaterial(0.1, 0, 0, 0, Colour(0.3, 0.1, 0.2), 1.2, 0.5, 0.4));
 }
 
 void TestShader::tearDown()

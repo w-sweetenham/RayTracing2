@@ -9,8 +9,8 @@ Colour Shader::getColour(const Ray& ray, const World& world, int recursion) cons
         Colour surfaceColour = illumination(intSpec, ray);
         Colour reflectedColour(0, 0, 0);
         Colour refractedColour(0, 0, 0);
-        bool isTransparent = intSpec.hitObj->getMaterial()->getTransparency() > 0.0001;
-        bool isReflective = intSpec.hitObj->getMaterial()->getReflectivity() > 0.0001;
+        bool isTransparent = intSpec.hitObj->material->getTransparency() > 0.0001;
+        bool isReflective = intSpec.hitObj->material->getReflectivity() > 0.0001;
         if(isTransparent) {
             refractedColour = getRefractedColour(ray, intSpec, world, recursion);
         }
@@ -32,12 +32,12 @@ Colour Shader::getColour(const Ray& ray, const World& world, int recursion) cons
             if(intSpec.obj1 == NULL) {
                 n1 = 1.0;
             } else {
-                n1 = intSpec.obj1->getMaterial()->getRefractiveIndex();
+                n1 = intSpec.obj1->material->getRefractiveIndex();
             }
             if(intSpec.obj2 == NULL) {
                 n2 = 1.0;
             } else {
-                n2 = intSpec.obj2->getMaterial()->getRefractiveIndex();
+                n2 = intSpec.obj2->material->getRefractiveIndex();
             }
             float reflectivity = schlick(theta, n1, n2);
 
@@ -52,7 +52,7 @@ Colour Shader::getColour(const Ray& ray, const World& world, int recursion) cons
 Colour Shader::getReflectedColour(const Ray& ray, const IntersectionSpec& intSpec, const World& world, int recursion) const {
     Vec reflectedVec = (ray.getDirection()*(-1.0)).reflect(intSpec.norm);
     Ray reflectedRay(intSpec.underPoint, reflectedVec);
-    return getColour(reflectedRay, world, recursion-1)*intSpec.hitObj->getMaterial()->getReflectivity();
+    return getColour(reflectedRay, world, recursion-1)*intSpec.hitObj->material->getReflectivity();
 }
 
 Colour Shader::getRefractedColour(const Ray& ray, const IntersectionSpec& intSpec, const World& world, int recursion) const {
@@ -61,12 +61,12 @@ Colour Shader::getRefractedColour(const Ray& ray, const IntersectionSpec& intSpe
     if(intSpec.obj1 == NULL) {
         n1 = 1;
     } else {
-        n1 = intSpec.obj1->getMaterial()->getRefractiveIndex();
+        n1 = intSpec.obj1->material->getRefractiveIndex();
     }
     if(intSpec.obj2 == NULL) {
         n2 = 1.0;
     } else {
-        n2 = intSpec.obj2->getMaterial()->getRefractiveIndex();
+        n2 = intSpec.obj2->material->getRefractiveIndex();
     }
     Vec refractedVec = ray.getDirection().refract(intSpec.norm, n1, n2, isTIR);
     Ray refractedRay(intSpec.overPoint, refractedVec);
@@ -75,31 +75,32 @@ Colour Shader::getRefractedColour(const Ray& ray, const IntersectionSpec& intSpe
         return Colour(0, 0, 0);
     }
 
-    return getColour(refractedRay, world, recursion-1)*intSpec.hitObj->getMaterial()->getTransparency();
+    return getColour(refractedRay, world, recursion-1)*intSpec.hitObj->material->getTransparency();
 }
 
 Colour PhongShader::illumination(const IntersectionSpec& intSpec, const Ray& ray) const {
     Vec reflectedVec = intSpec.lightVec.reflect(intSpec.norm);
     Vec eyeVec = ray.getDirection() * -1.0;
     eyeVec.normalize();
-    float ambientFactor = intSpec.hitObj->getMaterial()->getAmbient();
+    float ambient, diffuse, specular, shininess;
+    intSpec.hitObj->material->getSurfaceOpticParams(ambient, diffuse, specular, shininess, intSpec.point);
     if(intSpec.isShadowed) {
-        return intSpec.lightIntensity * intSpec.hitObj->getMaterial()->getColour() * ambientFactor;
+        return intSpec.lightIntensity * intSpec.hitObj->material->getColour(intSpec.point) * ambient;
     }
     float diffuseFactor;
     if(intSpec.lightVec.dot(intSpec.norm) >= 0) {
-        diffuseFactor = intSpec.hitObj->getMaterial()->getDiffuse() * intSpec.lightVec.dot(intSpec.norm);
+        diffuseFactor = diffuse * intSpec.lightVec.dot(intSpec.norm);
     } else {
         diffuseFactor = 0.0;
     }
     float specularFactor;
     if(reflectedVec.dot(eyeVec) >= 0.0) {
-        specularFactor = pow(reflectedVec.dot(eyeVec), intSpec.hitObj->getMaterial()->getShininess());
+        specularFactor = pow(reflectedVec.dot(eyeVec), shininess);
     } else {
         specularFactor = 0.0;
     }
-    specularFactor *= intSpec.hitObj->getMaterial()->getSpecular();
-    Colour c = (intSpec.hitObj->getMaterial()->getColour() * intSpec.lightIntensity) * (ambientFactor + diffuseFactor);
+    specularFactor *= specular;
+    Colour c = (intSpec.hitObj->material->getColour(intSpec.point) * intSpec.lightIntensity) * (ambient + diffuseFactor);
     c += intSpec.lightIntensity * specularFactor;
     
     return c;
