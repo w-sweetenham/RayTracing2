@@ -11,7 +11,8 @@ bool World::isShadowed(const Point& point) const {
         objects[i].intersect(lightRay, intersections);
         if(intersections.getNumPosIntersections() > prevCount) {
             prevCount = intersections.getNumPosIntersections();
-            if(intersections.getPosIntersection(prevCount-1).getT() < 1) {
+            Intersection lastIntersection = intersections.getPosIntersection(prevCount-1);
+            if(lastIntersection.getT() < 1 && lastIntersection.getObj()->material->getTransparency() < 0.001) {
                 return true;
             }
         }

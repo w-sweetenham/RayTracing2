@@ -72,12 +72,14 @@ void TestWorld::testIntersection() {
 void TestWorld::testShadow() {
     World w(PointLight(Point(0, 2, 0), Colour(1, 1, 1)));
     w.addObject(TSphere(), basicMaterial(0.1, 0.8, 0.8, 100, Colour(1, 1, 1)));
+    w.addObject(TSphere(TranslationMat(2, 2, 0)), basicMaterial(0.1, 0.8, 0.8, 100, Colour(1, 1, 1), 1.5, 0, 0.8));
     bool isShadowed = w.isShadowed(Point(0, 0, 0));
     CPPUNIT_ASSERT(isShadowed == true);
     isShadowed = w.isShadowed(Point(0, -2, 0));
     CPPUNIT_ASSERT(isShadowed == true);
-    isShadowed = w.isShadowed(Point(2, 2, 0));
+    isShadowed = w.isShadowed(Point(2, 2, 0));//inside transparent sphere
     CPPUNIT_ASSERT(isShadowed == false);
+
 
     Ray r1(Point(0, 0, 0), Vec(0, 2, 0));
     Ray r2(Point(0, -2, 0), Vec(0, 2, 0));
@@ -94,7 +96,7 @@ void TestWorld::testShadow() {
 CppUnit::Test* TestWorld::suite()
 {
     CppUnit::TestSuite *testSuite = new CppUnit::TestSuite("World Tests");
-    //testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test world", &TestWorld::testWorld));
+    testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test world", &TestWorld::testWorld));
     testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test adding objects", &TestWorld::testAddObject));
     testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test intersection", &TestWorld::testIntersection));
     testSuite->addTest(new CppUnit::TestCaller<TestWorld>("Test shadow", &TestWorld::testShadow));
