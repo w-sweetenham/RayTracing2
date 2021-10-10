@@ -161,3 +161,9 @@ void Point::operator-=(const Vec& vec) {
     elems[2] -= vec.elems[2];
 }
 
+Point2D::Point2D(float x, float y): x(x), y(y) {}
+
+bool Point2D::roughlyEqual(const Point2D& other) const {
+    return ::roughlyEqual(x, other.x) && ::roughlyEqual(y, other.y);//:: operator accesses global scope
+}
+

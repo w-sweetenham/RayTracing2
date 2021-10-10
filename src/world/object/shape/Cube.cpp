@@ -1,10 +1,10 @@
 #include "Cube.h"
 
-Cube::Cube(): MatTransformShape() {}
+Cube::Cube(): MatTransformShape(), transform(1) {}
 
-Cube::Cube(const Matrix& transformMat): MatTransformShape(transformMat) {}
+Cube::Cube(const Matrix& transformMat, float patternScaling): MatTransformShape(transformMat), transform(patternScaling) {}
 
-Cube::Cube(const Cube& other): MatTransformShape(other.getMat()) {}
+Cube::Cube(const Cube& other): MatTransformShape(other.getMat()), transform(other.transform) {}
 
 void checkAxis(float& tMin, float& tMax, float origin, float direction) {
     float tMinNumerator = (-1.0 - origin);
@@ -83,4 +83,8 @@ Vec Cube::getNorm(const Point& point) const {
 
 Shape* Cube::clone() const {
     return new Cube(*this);
+}
+
+Point2D Cube::getTexelFromLocal(const Point& localPoint) const {
+    return transform.getTexel(localPoint);
 }

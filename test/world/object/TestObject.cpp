@@ -46,6 +46,14 @@ void TestObject::testNormal() {
     CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0.7071068, 0.7071068, 0)));
 }
 
+void TestObject::testGetTexel() {
+    Object obj(Cube(TranslationMat(2, 0, 0), 2), PatternMaterial(0.1, 0.2, 0.3, 100, CheckerPattern(Colour(0.1, 0.1, 0.1), Colour(0.9, 0.9, 0.9)), 1.5, 0, 0));
+    CPPUNIT_ASSERT(obj.getColour(Point(1.5, -0.5, -1)).roughlyEqual(Colour(0.1, 0.1, 0.1)));
+    CPPUNIT_ASSERT(obj.getColour(Point(2.5, -0.5, -1)).roughlyEqual(Colour(0.9, 0.9, 0.9)));
+    CPPUNIT_ASSERT(obj.getColour(Point(1.5, 0.5, -1)).roughlyEqual(Colour(0.9, 0.9, 0.9)));
+    CPPUNIT_ASSERT(obj.getColour(Point(2.5, 0.5, -1)).roughlyEqual(Colour(0.1, 0.1, 0.1)));
+}
+
 CppUnit::Test* TestObject::suite()
 {
     CppUnit::TestSuite *testSuite = new CppUnit::TestSuite("Object Tests");
@@ -53,6 +61,8 @@ CppUnit::Test* TestObject::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestObject>("Test Object Intersection", &TestObject::testIntersection));
 
     testSuite->addTest(new CppUnit::TestCaller<TestObject>("Test Object normal", &TestObject::testNormal));
+
+    testSuite->addTest(new CppUnit::TestCaller<TestObject>("Test get texel", &TestObject::testGetTexel));
 
     return testSuite;
 }

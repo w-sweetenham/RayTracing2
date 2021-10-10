@@ -85,7 +85,7 @@ Colour PhongShader::illumination(const IntersectionSpec& intSpec, const Ray& ray
     float ambient, diffuse, specular, shininess;
     intSpec.hitObj->material->getSurfaceOpticParams(ambient, diffuse, specular, shininess, intSpec.point);
     if(intSpec.isShadowed) {
-        return intSpec.lightIntensity * intSpec.hitObj->material->getColour(intSpec.point) * ambient;
+        return intSpec.lightIntensity * intSpec.hitObj->getColour(intSpec.point) * ambient;
     }
     float diffuseFactor;
     if(intSpec.lightVec.dot(intSpec.norm) >= 0) {
@@ -100,7 +100,7 @@ Colour PhongShader::illumination(const IntersectionSpec& intSpec, const Ray& ray
         specularFactor = 0.0;
     }
     specularFactor *= specular;
-    Colour c = (intSpec.hitObj->material->getColour(intSpec.point) * intSpec.lightIntensity) * (ambient + diffuseFactor);
+    Colour c = (intSpec.hitObj->getColour(intSpec.point) * intSpec.lightIntensity) * (ambient + diffuseFactor);
     c += intSpec.lightIntensity * specularFactor;
     
     return c;

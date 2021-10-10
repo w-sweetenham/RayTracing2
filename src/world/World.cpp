@@ -23,11 +23,11 @@ PointLight World::getPointLight() const {
     return light;
 }
 
-void World::addObject(const TSphere& s, const basicMaterial& material) {
+void World::addObject(const TSphere& s, const Material& material) {
     objects.push_back(Object(s, material));
 }
 
-void World::addObject(const Cube& c, const basicMaterial& material) {
+void World::addObject(const Cube& c, const Material& material) {
     objects.push_back(Object(c, material));
 }
 

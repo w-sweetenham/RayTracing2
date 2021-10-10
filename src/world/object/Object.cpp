@@ -1,10 +1,10 @@
 #include "Object.h"
 
-Object::Object(const TSphere& s, const basicMaterial& material): material(new basicMaterial(material)) {
+Object::Object(const TSphere& s, const Material& material): material(material.clone()) {
     shape = new TSphere(s);
 }
 
-Object::Object(const Cube& c, const basicMaterial& material): material(new basicMaterial(material)) {
+Object::Object(const Cube& c, const Material& material): material(material.clone()) {
     shape = new Cube(c);
 }
 
@@ -28,4 +28,8 @@ Vec Object::getNorm(const Point& point) const {
 
 Shape* Object::getShape() const {
     return shape;
+}
+
+Colour Object::getColour(const Point& point) const {
+    return material->getColour(shape->getTexelPoint(point));
 }

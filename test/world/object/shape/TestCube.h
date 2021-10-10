@@ -20,6 +20,7 @@ class TestCube : public CppUnit::TestFixture {
     void testCubeIntersection();
 
     void testNormal();
+    void testTexel();
 
     static CppUnit::Test *suite();
 };

@@ -21,7 +21,7 @@ void TestCube::testCube() {
         }
     }
 
-    Cube c2(TranslationMat(2, 1, 1));
+    Cube c2(TranslationMat(2, 1, 1), 2);
     float matElems2[16] = {1, 0, 0, 2,
                            0, 1, 0, 1, 
                            0, 0, 1, 1, 
@@ -47,7 +47,7 @@ void TestCube::testCube() {
 }
 
 void TestCube::testCubeCopy() {
-    Cube c1(TranslationMat(2, 1, 1));
+    Cube c1(TranslationMat(2, 1, 1), 1);
 
     Cube c2 = c1;
     float matElems2[16] = {1, 0, 0, 2, 
@@ -130,7 +130,7 @@ void TestCube::testCubeIntersection() {
 }
 
 void TestCube::testNormal() {
-    Cube c(TranslationMat(2, 1, 0));
+    Cube c(TranslationMat(2, 1, 0), 2);
     Vec norm1 = c.getNorm(Point(2, 2, -0.5));
     Vec norm2 = c.getNorm(Point(3, 1, 0.5));
     Vec norm3 = c.getNorm(Point(2, 1, -1));
@@ -143,6 +143,12 @@ void TestCube::testNormal() {
     CPPUNIT_ASSERT(norm5.roughlyEqual(Vec(-1, 0, 0)));
 }
 
+void TestCube::testTexel() {
+    Cube c(TranslationMat(2, 0, 0), 2);
+    CPPUNIT_ASSERT(c.getTexelPoint(Point(1.1, 0.7, -1)).roughlyEqual(Point2D(0.1, 1.7)));
+    CPPUNIT_ASSERT(c.getTexelPoint(Point(2.15, -0.95, -1)).roughlyEqual(Point2D(1.15, 0.05)));
+}
+
 
 CppUnit::Test* TestCube::suite()
 {
@@ -151,6 +157,7 @@ CppUnit::Test* TestCube::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestCube>("Test Cube Copy", &TestCube::testCubeCopy));
     testSuite->addTest(new CppUnit::TestCaller<TestCube>("Test Cube Intersection", &TestCube::testCubeIntersection));
     testSuite->addTest(new CppUnit::TestCaller<TestCube>("Test Cube normal", &TestCube::testNormal));
+    testSuite->addTest(new CppUnit::TestCaller<TestCube>("Test Texels", &TestCube::testTexel));
 
     return testSuite;
 }

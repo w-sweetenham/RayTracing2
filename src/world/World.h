@@ -26,8 +26,8 @@ class World {
     bool isShadowed(const Point& point) const;
     World(const PointLight& light);
     PointLight getPointLight() const;
-    void addObject(const TSphere& obj, const basicMaterial& material);
-    void addObject(const Cube& obj, const basicMaterial& material);
+    void addObject(const TSphere& obj, const Material& material);
+    void addObject(const Cube& obj, const Material& material);
     const Object* getObject(int index) const;
     int getNumObjects() const;
     IntersectionSpec getIntersection(const Ray& ray) const;

@@ -22,6 +22,7 @@ class TSphere : public MatTransformShape {
     bool intersection(const Ray& ray, IntersectionSet& intSet, const Object* objPtr) const;
     Vec getNorm(const Point& point) const;
     virtual Shape* clone() const;
+    Point2D getTexelFromLocal(const Point& point) const;
 };
 
 #endif

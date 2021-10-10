@@ -14,7 +14,7 @@ void TestWorld::testAddObject() {
     World w(PointLight(Point(0, 0, 0), Colour(1, 1, 1)));
 
     w.addObject(TSphere(), basicMaterial(0.15, 0.25, 0.35, 100, Colour(0.55, 0.65, 0.75)));
-    w.addObject(Cube(TranslationMat(3, 0, 0)), basicMaterial(0.1, 0.2, 0.3, 100, Colour(0.5, 0.6, 0.7)));
+    w.addObject(Cube(TranslationMat(3, 0, 0), 2), basicMaterial(0.1, 0.2, 0.3, 100, Colour(0.5, 0.6, 0.7)));
 
     bool exception = false;
 
@@ -27,7 +27,7 @@ void TestWorld::testAddObject() {
     CPPUNIT_ASSERT(roughlyEqual(diffuse, 0.25));
     CPPUNIT_ASSERT(roughlyEqual(specular, 0.35));
     CPPUNIT_ASSERT(roughlyEqual(shininess, 100));
-    CPPUNIT_ASSERT(obj1Ptr->material->getColour(Point(0, 1, 0)).roughlyEqual(Colour(0.55, 0.65, 0.75)));
+    CPPUNIT_ASSERT(obj1Ptr->getColour(Point(0, 1, 0)).roughlyEqual(Colour(0.55, 0.65, 0.75)));
 
     const Object* obj2Ptr = w.getObject(1);
     obj2Ptr->material->getSurfaceOpticParams(ambient, diffuse, specular, shininess, Point(0, 1, 0));
@@ -35,7 +35,7 @@ void TestWorld::testAddObject() {
     CPPUNIT_ASSERT(roughlyEqual(diffuse, 0.2));
     CPPUNIT_ASSERT(roughlyEqual(specular, 0.3));
     CPPUNIT_ASSERT(roughlyEqual(shininess, 100));
-    CPPUNIT_ASSERT(obj2Ptr->material->getColour(Point(1, 0, 0)).roughlyEqual(Colour(0.5, 0.6, 0.7)));
+    CPPUNIT_ASSERT(obj2Ptr->getColour(Point(1, 0, 0)).roughlyEqual(Colour(0.5, 0.6, 0.7)));
 }
 
 void TestWorld::testIntersection() {

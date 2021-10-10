@@ -14,10 +14,10 @@ class MatTransformShape: public  Shape {
 
     protected:
     Ray getLocalRay(const Ray& ray) const;
-    Point getLocalPoint(const Point& point) const;
     Vec getWorldVec(const Vec& vec) const;
 
     public:
+    Point getLocalPoint(const Point& point) const;
     MatTransformShape();
     MatTransformShape(const Matrix& transformMat);
     Matrix getMat() const;

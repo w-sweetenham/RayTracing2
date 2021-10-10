@@ -37,3 +37,10 @@ Vec TSphere::getNorm(const Point& point) const {
 Shape* TSphere::clone() const {
     return new TSphere(*this);
 }
+
+Point2D TSphere::getTexelFromLocal(const Point& point) const {
+    /*
+    TODO
+    */    
+   return Point2D(0, 0);
+}

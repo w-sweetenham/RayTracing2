@@ -23,5 +23,7 @@ class TestObject : public CppUnit::TestFixture {
 
     void testNormal();
 
+    void testGetTexel();
+
     static CppUnit::Test *suite();
 };

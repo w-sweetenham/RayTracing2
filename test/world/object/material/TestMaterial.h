@@ -15,5 +15,7 @@ class TestMaterial : public CppUnit::TestFixture {
 
     void testMaterial();
 
+    void testPatternMaterial();
+
     static CppUnit::Test *suite();
 };

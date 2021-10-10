@@ -63,4 +63,11 @@ class Point : public Tuple {
     void operator-=(const Vec& vec);
 };
 
+struct Point2D {
+    Point2D(float x, float y);
+    float x;
+    float y;
+    bool roughlyEqual(const Point2D& other) const;
+};
+
 #endif
