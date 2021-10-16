@@ -1,10 +1,12 @@
 #include "TSphere.h"
 
-TSphere::TSphere(): MatTransformShape() {}
+TSphere::TSphere(): MatTransformShape(), transform(1) {}
 
-TSphere::TSphere(const Matrix& transformMat): MatTransformShape(transformMat) {}
+TSphere::TSphere(const Matrix& transformMat, float scalingFactor): MatTransformShape(transformMat), transform(scalingFactor) {}
 
-TSphere::TSphere(const TSphere& other): MatTransformShape(other.getMat()) {}
+TSphere::TSphere(const Matrix& transformMat): MatTransformShape(transformMat), transform(1) {}
+
+TSphere::TSphere(const TSphere& other): MatTransformShape(other.getMat()), transform(other.transform) {}
 
 bool TSphere::intersection(const Ray& ray, IntersectionSet& intSet, const Object* objPtr) const {
     Ray localRay = getLocalRay(ray);
@@ -39,8 +41,5 @@ Shape* TSphere::clone() const {
 }
 
 Point2D TSphere::getTexelFromLocal(const Point& point) const {
-    /*
-    TODO
-    */    
-   return Point2D(0, 0);
+   return transform.getTexel(point);
 }

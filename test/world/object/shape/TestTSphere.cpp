@@ -21,7 +21,7 @@ void TestTSphere::testSphere() {
         }
     }
 
-    TSphere s2(TranslationMat(2, 1, 1));
+    TSphere s2(TranslationMat(2, 1, 1), 1);
     float matElems2[16] = {1, 0, 0, 2,
                            0, 1, 0, 1, 
                            0, 0, 1, 1, 
@@ -47,7 +47,7 @@ void TestTSphere::testSphere() {
 }
 
 void TestTSphere::testSphereCopy() {
-    TSphere s1(TranslationMat(2, 1, 1));
+    TSphere s1(TranslationMat(2, 1, 1), 1);
 
     TSphere s2 = s1;
     float matElems2[16] = {1, 0, 0, 2, 
@@ -77,7 +77,7 @@ void TestTSphere::testSphereCopy() {
 }
 
 void TestTSphere::testTSphereIntersection() {
-    TSphere s(TranslationMat(2, 1, 0));
+    TSphere s(TranslationMat(2, 1, 0), 1);
     const Object* obj1;
     const Object* obj2;
 
@@ -104,9 +104,18 @@ void TestTSphere::testTSphereIntersection() {
 }
 
 void TestTSphere::testNormal() {
-    TSphere s(TranslationMat(2, 0, 0));
+    TSphere s(TranslationMat(2, 0, 0), 1);
     Vec norm = s.getNorm(Point(2.7071068, 0.7071068, 0));
     CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0.7071068, 0.7071068, 0)));
+}
+
+void TestTSphere::testTexel() {
+    TSphere s(TranslationMat(2, 0, 0), 3);
+    Point2D point = s.getTexelPoint(Point(2.57735027, 0.57735027, -0.57735027));
+    CPPUNIT_ASSERT(s.getTexelPoint(Point(2.57735027, 0.57735027, -0.57735027)).roughlyEqual(Point2D(0.75, 1.7320508)));
+    CPPUNIT_ASSERT(s.getTexelPoint(Point(2.57735027, -0.57735027, 0.57735027)).roughlyEqual(Point2D(2.25, -1.7320508)));
+    CPPUNIT_ASSERT(s.getTexelPoint(Point(1.42264973, 0.57735027, 0.57735027)).roughlyEqual(Point2D(-2.25, 1.7320508)));
+    CPPUNIT_ASSERT(s.getTexelPoint(Point(1.42264973, -0.57735027, -0.57735027)).roughlyEqual(Point2D(-0.75, -1.7320508)));
 }
 
 CppUnit::Test* TestTSphere::suite()
@@ -116,6 +125,7 @@ CppUnit::Test* TestTSphere::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestTSphere>("Test Sphere Copy", &TestTSphere::testSphereCopy));
     testSuite->addTest(new CppUnit::TestCaller<TestTSphere>("Test Sphere Intersection", &TestTSphere::testTSphereIntersection));
     testSuite->addTest(new CppUnit::TestCaller<TestTSphere>("Test Sphere normal", &TestTSphere::testNormal));
+    testSuite->addTest(new CppUnit::TestCaller<TestTSphere>("Test texel", &TestTSphere::testTexel));
 
     return testSuite;
 }

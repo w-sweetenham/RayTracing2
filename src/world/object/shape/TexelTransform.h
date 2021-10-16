@@ -1,4 +1,8 @@
+#ifndef TEXELTRANSFORM_H_
+#define TEXELTRANSFORM_H_
+
 #include "src/basicConstructs/Tuple.h"
+#include <math.h>
 
 class TexelTransform {
     public:
@@ -15,3 +19,14 @@ class CubeTransform : public TexelTransform {
     Point2D get2DPoint(const Point& localPoint) const;
     Point2D transform2DPoint(const Point2D& point) const;
 };
+
+class SphereTransform : public TexelTransform {
+    private:
+    float scalingFactor;
+    public:
+    SphereTransform(float scalingFactor);
+    Point2D get2DPoint(const Point& localPoint) const;
+    Point2D transform2DPoint(const Point2D& point) const;
+};
+
+#endif

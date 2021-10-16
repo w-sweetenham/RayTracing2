@@ -21,5 +21,7 @@ class TestTSphere : public CppUnit::TestFixture {
 
     void testNormal();
 
+    void testTexel();
+
     static CppUnit::Test *suite();
 };

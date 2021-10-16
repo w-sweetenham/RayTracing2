@@ -34,3 +34,23 @@ Point2D CubeTransform::get2DPoint(const Point& localPoint) const {
 Point2D CubeTransform::transform2DPoint(const Point2D& point) const {
     return Point2D(point.x*scalingFactor, point.y*scalingFactor);
 }
+
+SphereTransform::SphereTransform(float scalingFactor): scalingFactor(scalingFactor) {}
+    
+Point2D SphereTransform::get2DPoint(const Point& localPoint) const {
+    float x2D, x3D, z3D;
+    x3D = localPoint.getElem(0);
+    z3D = localPoint.getElem(2);
+    float ratio = (z3D/x3D);
+    float theta;
+    if(x3D >= 0) {
+        theta = atan(ratio) + M_PI/2;
+    } else {
+        theta = atan(ratio) - M_PI/2;
+    }
+    return Point2D(theta, localPoint.getElem(1));
+}
+    
+Point2D SphereTransform::transform2DPoint(const Point2D& point) const {
+    return Point2D(scalingFactor*point.x, scalingFactor*point.y);
+}
