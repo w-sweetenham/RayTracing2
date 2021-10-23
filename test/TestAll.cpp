@@ -16,6 +16,7 @@
 #include "test/camera/TestCamera.h"
 #include "test/shader/TestShader.h"
 #include "test/world/object/shape/TestCube.h"
+#include "test/voxelWorld/TestVoxelWorld.h"
 
 int main() {
     CppUnit::TextUi::TestRunner runner;
@@ -34,6 +35,7 @@ int main() {
     runner.addTest(TestCamera::suite());
     runner.addTest(TestShader::suite());
     runner.addTest(TestCube::suite());
+    runner.addTest(TestVoxelWorld::suite());
     runner.run();
     return 0;
 }
