@@ -30,6 +30,11 @@ void TestVoxelWorld::testVoxelWorldInitialization() {
 
     CPPUNIT_ASSERT(vWorld.getSideLengthPower() == 3);
 
+    CPPUNIT_ASSERT(vWorld.getnPowers(0) == 1);
+    CPPUNIT_ASSERT(vWorld.getnPowers(1) == 2);
+    CPPUNIT_ASSERT(vWorld.getnPowers(2) == 4);
+    CPPUNIT_ASSERT(vWorld.getnPowers(3) == 8);
+
     /*
      * scale 1 checks
      */

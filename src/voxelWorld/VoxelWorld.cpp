@@ -9,6 +9,10 @@ VoxelWorld::VoxelWorld(unsigned char* voxels, int size) {
     if(sizePower - (int)sizePower < 0.001 || sizePower - (int)sizePower > 0.999) {//check size is a power of 2
         int sideLength = std::cbrt(size);//N
         int sideLengthPower = round(std::log2(sideLength));//n
+        nPowers = new int[sideLength + 1];
+        for(int i=0; i<(sideLength + 1); i++) {
+            nPowers[i] = pow(2, i);
+        }
         this->sideLengthPower = sideLengthPower;
         int treeSize = size;
         for(int i=sideLengthPower-2; i>=0; i--) {
@@ -108,4 +112,12 @@ unsigned char VoxelWorld::getVoxel(int index) {
 
 int VoxelWorld::getSideLengthPower() const {
     return sideLengthPower;
+}
+
+int VoxelWorld::getnPowers(int index) const {
+    return nPowers[index];
+}
+
+bool VoxelWorld::intersectTopLevel(unsigned char* stack, const Ray& ray) const {
+
 }
