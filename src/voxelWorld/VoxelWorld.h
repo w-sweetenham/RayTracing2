@@ -8,11 +8,14 @@ int getCubeIndex(int sideLength, int x, int y, int z);//get index of 3d coord in
 
 class VoxelWorld {
     private:
+    int sideLengthPower;
     unsigned char* voxelTree;
     public:
     VoxelWorld(unsigned char* voxels, int size);
     ~VoxelWorld();
+    int getSideLengthPower() const;
     unsigned char getVoxel(int index);
+    bool intersectTopLevel();
 };
 
 #endif

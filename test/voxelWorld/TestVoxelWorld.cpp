@@ -28,6 +28,8 @@ void TestVoxelWorld::testVoxelWorldInitialization() {
     }
     VoxelWorld vWorld(voxelVals, 512);
 
+    CPPUNIT_ASSERT(vWorld.getSideLengthPower() == 3);
+
     /*
      * scale 1 checks
      */

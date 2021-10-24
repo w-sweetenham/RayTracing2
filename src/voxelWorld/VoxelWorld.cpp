@@ -9,6 +9,7 @@ VoxelWorld::VoxelWorld(unsigned char* voxels, int size) {
     if(sizePower - (int)sizePower < 0.001 || sizePower - (int)sizePower > 0.999) {//check size is a power of 2
         int sideLength = std::cbrt(size);//N
         int sideLengthPower = round(std::log2(sideLength));//n
+        this->sideLengthPower = sideLengthPower;
         int treeSize = size;
         for(int i=sideLengthPower-2; i>=0; i--) {
             treeSize += pow(2, 3*i);
@@ -103,4 +104,8 @@ VoxelWorld::~VoxelWorld() {
 
 unsigned char VoxelWorld::getVoxel(int index) {
     return *(voxelTree + index);
+}
+
+int VoxelWorld::getSideLengthPower() const {
+    return sideLengthPower;
 }
