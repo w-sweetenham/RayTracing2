@@ -75,7 +75,7 @@ void TestVoxelWorld::testVoxelWorldInitialization() {
 }
 
 void TestVoxelWorld::testTopLevelIntersection() {
-    unsigned char stack1[4];
+    unsigned char stack1[3];
     float stack2[3];
     Ray rayMiss1(Point(-4, 4, 4), Vec(1, -2, 0));
     Ray rayMiss2(Point(4, 4, -4), Vec(0, -2, 1));
@@ -95,7 +95,6 @@ void TestVoxelWorld::testTopLevelIntersection() {
     CPPUNIT_ASSERT(stack1[0] == 3);
     CPPUNIT_ASSERT(stack1[1] == 0);
     CPPUNIT_ASSERT(stack1[2] == 1);
-    CPPUNIT_ASSERT(stack1[3] == 1);
     CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
     CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
     CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
@@ -108,7 +107,6 @@ void TestVoxelWorld::testTopLevelIntersection() {
     CPPUNIT_ASSERT(stack1[0] == 3);
     CPPUNIT_ASSERT(stack1[1] == 5);
     CPPUNIT_ASSERT(stack1[2] == 2);
-    CPPUNIT_ASSERT(stack1[3] == 2);
     CPPUNIT_ASSERT(roughlyEqual(stack2[0], 4));
     CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
     CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
@@ -121,7 +119,6 @@ void TestVoxelWorld::testTopLevelIntersection() {
     CPPUNIT_ASSERT(stack1[0] == 3);
     CPPUNIT_ASSERT(stack1[1] == 6);
     CPPUNIT_ASSERT(stack1[2] == 1);
-    CPPUNIT_ASSERT(stack1[3] == 1);
     CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
     CPPUNIT_ASSERT(roughlyEqual(stack2[1], 4));
     CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
@@ -134,7 +131,6 @@ void TestVoxelWorld::testTopLevelIntersection() {
     CPPUNIT_ASSERT(stack1[0] == 3);
     CPPUNIT_ASSERT(stack1[1] == 7);
     CPPUNIT_ASSERT(stack1[2] == 10);
-    CPPUNIT_ASSERT(stack1[3] == 9);
     CPPUNIT_ASSERT(roughlyEqual(stack2[0], 4));
     CPPUNIT_ASSERT(roughlyEqual(stack2[1], 4));
     CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
@@ -143,7 +139,81 @@ void TestVoxelWorld::testTopLevelIntersection() {
 }
 
 void TestVoxelWorld::testGetNextCube() {
+    unsigned char stack1_1[6] = {3, 0, 2, 2, 3, 2};
+    float stack2_1[6] = {0, 0, 0, 2, 2, 0};
+    float v0x, v0y, v0z;
+    v0x = 3;
+    v0y = 2;
+    v0z = 0.5;
+    int scale = 2;
+    bool isNeighbour = vWorld->getNextNeighbour(stack1_1, stack2_1, Ray(Point(3, -1, 0.5), Vec(0, 1, 0)), v0x, v0y, v0z, scale);
+    CPPUNIT_ASSERT(isNeighbour);
+    unsigned char stack1Correct_1[6] = {3, 2, 2, 2, 3, 2};
+    for(int i=0; i<6; i++) {
+        CPPUNIT_ASSERT(stack1Correct_1[i] = stack1_1[i]);
+    }
+    float stack2Correct_1[6] = {0, 4, 0, 2, 2, 0};
+    for(int i=0; i<6; i++) {
+        CPPUNIT_ASSERT(roughlyEqual(stack2Correct_1[i], stack2_1[i]));
+    }
+    CPPUNIT_ASSERT(roughlyEqual(v0x, 3));
+    CPPUNIT_ASSERT(roughlyEqual(v0y, 4));
+    CPPUNIT_ASSERT(roughlyEqual(v0z, 0.5));
+    CPPUNIT_ASSERT(scale == 3);
 
+
+    unsigned char stack1_2[9] = {3, 3, 9, 2, 0, 9, 1, 2, 9};
+    float stack2_2[9] = {4, 4, 0, 4, 4, 0, 4, 5, 0};
+    v0x = 5;
+    v0y = 5.5;
+    v0z = 0.5;
+    scale = 1;
+    isNeighbour = vWorld->getNextNeighbour(stack1_2, stack2_2, Ray(Point(9, 5.5, 0.5), Vec(-1, 0, 0)), v0x, v0y, v0z, scale);
+    CPPUNIT_ASSERT(isNeighbour);
+    unsigned char stack1Correct_2[3] = {3, 2, 9};
+    for(int i=0; i<3; i++) {
+        CPPUNIT_ASSERT(stack1Correct_2[i] = stack1_2[i]);
+    }
+    float stack2Correct_2[3] = {0, 4, 0};
+    for(int i=0; i<3; i++) {
+        CPPUNIT_ASSERT(roughlyEqual(stack2Correct_2[i], stack2_2[i]));
+    }
+    CPPUNIT_ASSERT(roughlyEqual(v0x, 4));
+    CPPUNIT_ASSERT(roughlyEqual(v0y, 5.5));
+    CPPUNIT_ASSERT(roughlyEqual(v0z, 0.5));
+    CPPUNIT_ASSERT(scale == 3);
+
+
+    unsigned char stack1_3[3] = {3, 6, 1};
+    float stack2_3[3] = {0, 4, 4};
+    v0x = 0;
+    v0y = 7;
+    v0z = 6;
+    scale = 3;
+    isNeighbour = vWorld->getNextNeighbour(stack1_3, stack2_3, Ray(Point(-1, 7, 6), Vec(1, 0, 0)), v0x, v0y, v0z, scale);
+    CPPUNIT_ASSERT(isNeighbour);
+    unsigned char stack1Correct_3[3] = {3, 7, 1};
+    for(int i=0; i<3; i++) {
+        CPPUNIT_ASSERT(stack1Correct_3[i] = stack1_3[i]);
+    }
+    float stack2Correct_3[3] = {4, 4, 4};
+    for(int i=0; i<3; i++) {
+        CPPUNIT_ASSERT(roughlyEqual(stack2Correct_3[i], stack2_3[i]));
+    }
+    CPPUNIT_ASSERT(roughlyEqual(v0x, 4));
+    CPPUNIT_ASSERT(roughlyEqual(v0y, 7));
+    CPPUNIT_ASSERT(roughlyEqual(v0z, 6));
+    CPPUNIT_ASSERT(scale == 3);
+
+
+    unsigned char stack1_4[6] = {3, 0, 12, 2, 2, 12};
+    float stack2_4[6] = {0, 0, 0, 0, 2, 0};
+    v0x = 0.5;
+    v0y = 3;
+    v0z = 2;
+    scale = 2;
+    isNeighbour = vWorld->getNextNeighbour(stack1_4, stack2_4, Ray(Point(1, 3, 9), Vec(0, 0, -1)), v0x, v0y, v0z, scale);
+    CPPUNIT_ASSERT(!isNeighbour);
 }
 
 CppUnit::Test* TestVoxelWorld::suite()
@@ -152,6 +222,7 @@ CppUnit::Test* TestVoxelWorld::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test voxel world", &TestVoxelWorld::testVoxelWorldInitialization));
 
     testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test top-level intersection", &TestVoxelWorld::testTopLevelIntersection));
+    testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test get next cube", &TestVoxelWorld::testGetNextCube));
 
     return testSuite;
 }

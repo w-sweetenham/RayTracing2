@@ -194,25 +194,10 @@ bool VoxelWorld::intersectTopLevel(unsigned char* stack1, float* stack2, const R
 
     if(tx1 <= ty1 && tx1 <= tz1) {
         tMax = tx1;
-        if(xFlipped) {
-            stack1[3] = 9;
-        } else {
-            stack1[3] = 1;
-        }
     } else if(ty1 <= tx1 && ty1 <= tz1) {
         tMax = ty1;
-        if(yFlipped) {
-            stack1[3] = 10;
-        } else {
-            stack1[3] = 2;
-        }
     } else if(tz1 <= tx1 && tz1 <= ty1) {
         tMax = tz1;
-        if(zFlipped) {
-            stack1[3] = 12;
-        } else {
-            stack1[3] = 4;
-        }
     }
 
     unsigned char entryPlane;
@@ -301,6 +286,119 @@ bool VoxelWorld::intersectTopLevel(unsigned char* stack1, float* stack2, const R
     }
 }
 
-bool VoxelWorld::getNextNeighbour(unsigned char* stack, float* stack2, const Ray& ray, float& v0x, float& v0y, float& v0z, int scale) const {
+bool VoxelWorld::getNextNeighbour(unsigned char* stack1, float* stack2, const Ray& ray, float& v0x, float& v0y, float& v0z, int& parentScale) const {
+    int scaleIndex = (sideLengthPower - parentScale)*3;
+    int scaleMinus1 = parentScale - 1;
+    float px, py, pz;
+    float dx, dy, dz;
+    float X0, X1;
+    float Y0, Y1;
+    float Z0, Z1;
+    px = ray.getOrigin().getElem(0);
+    py = ray.getOrigin().getElem(1);
+    pz = ray.getOrigin().getElem(2);
+    dx = ray.getDirection().getElem(0);
+    dy = ray.getDirection().getElem(1);
+    dz = ray.getDirection().getElem(2);
 
+    bool xFlipped, yFlipped, zFlipped;//bools to store if ray is going in neg direction for each axis
+    xFlipped = false;
+    yFlipped = false;
+    zFlipped = false;
+
+    if(dx >= 0) {
+        X0 = stack2[scaleIndex];
+        X1 = stack2[scaleIndex] + nPowers_float[scaleMinus1];
+    } else {
+        X1 = stack2[scaleIndex];
+        X0 = stack2[scaleIndex] + nPowers_float[scaleMinus1];
+        xFlipped = true;
+    }
+
+    if(dy >= 0) {
+        Y0 = stack2[scaleIndex+1];
+        Y1 = stack2[scaleIndex+1] + nPowers_float[scaleMinus1];
+    } else {
+        Y1 = stack2[scaleIndex+1];
+        Y0 = stack2[scaleIndex+1] + nPowers_float[scaleMinus1];
+        yFlipped = true;
+    }
+
+    if(dz >= 0) {
+        Z0 = stack2[scaleIndex+2];
+        Z1 = stack2[scaleIndex+2] + nPowers_float[scaleMinus1];
+    } else {
+        Z1 = stack2[scaleIndex+2];
+        Z0 = stack2[scaleIndex+2] + nPowers_float[scaleMinus1];
+        zFlipped = true;
+    }
+
+    float tx1, ty1, tz1;
+    
+    tx1 = (X1 - px)/dx;
+    ty1 = (Y1 - py)/dy;
+    tz1 = (Z1 - pz)/dz;
+
+    float tMax;
+
+    unsigned char exitPlane;
+
+    if(tx1 <= ty1 && tx1 <= tz1) {
+        tMax = tx1;
+        exitPlane = 1;
+        if(xFlipped) {
+            exitPlane += 8;
+        }
+    } else if(ty1 <= tx1 && ty1 <= tz1) {
+        tMax = ty1;
+        exitPlane = 2;
+        if(yFlipped) {
+            exitPlane += 8;
+        }
+    } else {
+        tMax = tz1;
+        exitPlane = 4;
+        if(zFlipped) {
+            exitPlane += 8;
+        }
+    }
+
+    v0x = (tMax * dx) + px;
+    v0y = (tMax * dy) + py;
+    v0z = (tMax * dz) + pz;
+
+    bool foundCube = false;
+    for(scaleIndex; scaleIndex >= 0; scaleIndex -=3) {
+        if((exitPlane & 8) == 0) {//Pos exit plane
+            if((exitPlane & stack1[scaleIndex+1]) == 0) {//still in same parent cube
+                foundCube = true;
+                stack1[scaleIndex+1] += exitPlane;//Set index, don't need to set 4th bit to 0 as it we know it is if at this point
+                stack1[scaleIndex+2] = exitPlane;//set entry plane
+                if((exitPlane & 1) != 0) {//moving in x direction
+                    stack2[scaleIndex] += nPowers_float[stack1[scaleIndex]-1];
+                } else if((exitPlane & 2) != 0) {//moving in y direction
+                    stack2[scaleIndex+1] += nPowers_float[stack1[scaleIndex]-1];
+                } else {//moving in z direction
+                    stack2[scaleIndex+2] += nPowers_float[stack1[scaleIndex]-1];
+                }
+                break;
+            }
+        } else {//neg exit plane
+            if((exitPlane & stack1[scaleIndex+1]) != 0) {//staying in parent cube
+                foundCube = true;
+                stack1[scaleIndex+1] -= (exitPlane & 247);//set index, & operation sets 4th bit to 0
+                stack1[scaleIndex+2] = exitPlane;//set entry plane
+                if((exitPlane & 1) != 0) {//moving in x direction
+                    stack2[scaleIndex] -= nPowers_float[stack1[scaleIndex]-1];
+                } else if((exitPlane & 2) != 0) {//moving in y direction
+                    stack2[scaleIndex+1] -= nPowers_float[stack1[scaleIndex]-1];
+                } else {//moving in z direction
+                    stack2[scaleIndex+2] -= nPowers_float[stack1[scaleIndex]-1];
+                }
+                break;
+            }
+        }
+    }
+    parentScale = stack1[scaleIndex];
+    return foundCube;
 }
