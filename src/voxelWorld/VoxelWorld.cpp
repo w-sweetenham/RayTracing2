@@ -133,8 +133,8 @@ float VoxelWorld::getnPowersFloat(int index) const {
     return nPowers_float[index];
 }
 
-bool VoxelWorld::intersectTopLevel(unsigned char* stack, const Ray& ray, float& v0x, float& v0y, float& v0z) const {
-    stack[0] = sideLengthPower;
+bool VoxelWorld::intersectTopLevel(unsigned char* stack1, float* stack2, const Ray& ray, float& v0x, float& v0y, float& v0z) const {
+    stack1[0] = sideLengthPower;
     float px, py, pz;
     float dx, dy, dz;
     float X0, X1;
@@ -195,23 +195,23 @@ bool VoxelWorld::intersectTopLevel(unsigned char* stack, const Ray& ray, float& 
     if(tx1 <= ty1 && tx1 <= tz1) {
         tMax = tx1;
         if(xFlipped) {
-            stack[3] = 9;
+            stack1[3] = 9;
         } else {
-            stack[3] = 1;
+            stack1[3] = 1;
         }
     } else if(ty1 <= tx1 && ty1 <= tz1) {
         tMax = ty1;
         if(yFlipped) {
-            stack[3] = 10;
+            stack1[3] = 10;
         } else {
-            stack[3] = 2;
+            stack1[3] = 2;
         }
     } else if(tz1 <= tx1 && tz1 <= ty1) {
         tMax = tz1;
         if(zFlipped) {
-            stack[3] = 12;
+            stack1[3] = 12;
         } else {
-            stack[3] = 4;
+            stack1[3] = 4;
         }
     }
 
@@ -234,59 +234,73 @@ bool VoxelWorld::intersectTopLevel(unsigned char* stack, const Ray& ray, float& 
     }
 
     if(entryPlane == 1 && xFlipped) {
-        stack[2] = 9;//4th bit determines whether plane is X0 or X1
+        stack1[2] = 9;//4th bit determines whether plane is X0 or X1
     } else if(entryPlane == 2 && yFlipped) {
-        stack[2] = 10;
+        stack1[2] = 10;
     } else if(entryPlane == 4 && zFlipped) {
-        stack[2] = 12;
+        stack1[2] = 12;
     } else {
-        stack[2] = entryPlane;
+        stack1[2] = entryPlane;
     }
 
-    stack[1] = 0;//ensure index position starts as 0
+    stack1[1] = 0;//ensure index position starts as 0
+
+    stack2[0] = 0;
+    stack2[1] = 0;
+    stack2[2] = 0;
 
     if(entryPlane == 1) {//Storing which is the entry plane means we can avoid calculating one of v0x, v0y, v0z and the issue of rounding the v0 value of the intersection plane
         if(xFlipped) {
-            stack[1] = 1;
+            stack1[1] = 1;
+            stack2[0] = nPowers_float[sideLengthPower-1];
         }
         v0y = py + (tx0 * dy);
         if(v0y >= nPowers_float[sideLengthPower-1]) {
-            stack[1] += 2;
+            stack1[1] += 2;
+            stack2[1] = nPowers_float[sideLengthPower-1];
         }
         v0z = pz + (tx0 * dz);
         if(v0z >= nPowers_float[sideLengthPower-1]) {
-            stack[1] += 4;
+            stack1[1] += 4;
+            stack2[2] = nPowers_float[sideLengthPower-1];
         }
+
         return true;
     } else if(entryPlane == 2) {
         if(yFlipped) {
-            stack[1] = 2;
+            stack1[1] = 2;
+            stack2[1] = nPowers_float[sideLengthPower-1];
         }
         v0x = px + (ty0 * dx);
         if(v0x >= nPowers_float[sideLengthPower-1]) {
-            stack[1] += 1;
+            stack1[1] += 1;
+            stack2[0] = nPowers_float[sideLengthPower-1];
         }
         v0z = pz + (ty0 * dz);
         if(v0z >= nPowers_float[sideLengthPower-1]) {
-            stack[1] += 4;
+            stack1[1] += 4;
+            stack2[2] = nPowers_float[sideLengthPower-1];
         }
         return true;
     } else {
         if(zFlipped) {
-            stack[1] = 4;
+            stack1[1] = 4;
+            stack2[2] = nPowers_float[sideLengthPower-1];
         }
         v0x = px + (tz0 * dx);
         if(v0x >= nPowers_float[sideLengthPower-1]) {
-            stack[1] += 1;
+            stack1[1] += 1;
+            stack2[0] = nPowers_float[sideLengthPower-1];
         }
         v0y = py + (tz0 * dy);
         if(v0y >= nPowers_float[sideLengthPower-1]) {
-            stack[1] += 2;
+            stack1[1] += 2;
+            stack2[1] = nPowers_float[sideLengthPower-1];
         }
         return true;
     }
 }
 
-bool VoxelWorld::getNextNeighbour(unsigned char* stack, const Ray& ray, float& v0x, float& v0y, float& v0z, int scale) const {
+bool VoxelWorld::getNextNeighbour(unsigned char* stack, float* stack2, const Ray& ray, float& v0x, float& v0y, float& v0z, int scale) const {
 
 }

@@ -75,58 +75,75 @@ void TestVoxelWorld::testVoxelWorldInitialization() {
 }
 
 void TestVoxelWorld::testTopLevelIntersection() {
-    unsigned char stack[6];
+    unsigned char stack1[4];
+    float stack2[3];
     Ray rayMiss1(Point(-4, 4, 4), Vec(1, -2, 0));
     Ray rayMiss2(Point(4, 4, -4), Vec(0, -2, 1));
     Ray rayMiss3(Point(12, 4, 4), Vec(-1, 2, 0));
 
     float v0x, v0y, v0z;
 
-    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack, rayMiss1, v0x, v0y, v0z) == false);
-    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack, rayMiss2, v0x, v0y, v0z) == false);
-    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack, rayMiss2, v0x, v0y, v0z) == false);
+    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss1, v0x, v0y, v0z) == false);
+    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss2, v0x, v0y, v0z) == false);
+    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss2, v0x, v0y, v0z) == false);
 
     bool hit;
 
     Ray rayIndex0(Point(-1, 3.1, 1.1), Vec(1.0, 0.1, 0.1));
-    hit = vWorld->intersectTopLevel(stack, rayIndex0, v0x, v0y, v0z);
+    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex0, v0x, v0y, v0z);
     CPPUNIT_ASSERT(hit == true);
-    CPPUNIT_ASSERT(stack[0] == 3);
-    CPPUNIT_ASSERT(stack[1] == 0);
-    CPPUNIT_ASSERT(stack[2] == 1);
-    CPPUNIT_ASSERT(stack[3] == 1);
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 0);
+    CPPUNIT_ASSERT(stack1[2] == 1);
+    CPPUNIT_ASSERT(stack1[3] == 1);
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
     CPPUNIT_ASSERT(roughlyEqual(v0y, 3.2));
     CPPUNIT_ASSERT(roughlyEqual(v0z, 1.2));
 
     Ray rayIndex5(Point(6, -1, 7), Vec(0, 1, 0));
-    hit = vWorld->intersectTopLevel(stack, rayIndex5, v0x, v0y, v0z);
+    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex5, v0x, v0y, v0z);
     CPPUNIT_ASSERT(hit == true);
-    CPPUNIT_ASSERT(stack[0] == 3);
-    CPPUNIT_ASSERT(stack[1] == 5);
-    CPPUNIT_ASSERT(stack[2] == 2);
-    CPPUNIT_ASSERT(stack[3] == 2);
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 5);
+    CPPUNIT_ASSERT(stack1[2] == 2);
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 4));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
     CPPUNIT_ASSERT(roughlyEqual(v0x, 6));
     CPPUNIT_ASSERT(roughlyEqual(v0z, 7));
 
     Ray rayIndex6(Point(-1, 6, 7), Vec(1, 0, 0));
-    hit = vWorld->intersectTopLevel(stack, rayIndex6, v0x, v0y, v0z);
+    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex6, v0x, v0y, v0z);
     CPPUNIT_ASSERT(hit == true);
-    CPPUNIT_ASSERT(stack[0] == 3);
-    CPPUNIT_ASSERT(stack[1] == 6);
-    CPPUNIT_ASSERT(stack[2] == 1);
-    CPPUNIT_ASSERT(stack[3] == 1);
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 6);
+    CPPUNIT_ASSERT(stack1[2] == 1);
+    CPPUNIT_ASSERT(stack1[3] == 1);
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 4));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
     CPPUNIT_ASSERT(roughlyEqual(v0y, 6));
     CPPUNIT_ASSERT(roughlyEqual(v0z, 7));
 
     Ray rayIndex7(Point(6, 9, 7), Vec(-1, -1, 0));
-    hit = vWorld->intersectTopLevel(stack, rayIndex7, v0x, v0y, v0z);
+    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex7, v0x, v0y, v0z);
     CPPUNIT_ASSERT(hit == true);
-    CPPUNIT_ASSERT(stack[0] == 3);
-    CPPUNIT_ASSERT(stack[1] == 7);
-    CPPUNIT_ASSERT(stack[2] == 10);
-    CPPUNIT_ASSERT(stack[3] == 9);
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 7);
+    CPPUNIT_ASSERT(stack1[2] == 10);
+    CPPUNIT_ASSERT(stack1[3] == 9);
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 4));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 4));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
     CPPUNIT_ASSERT(roughlyEqual(v0x, 5));
     CPPUNIT_ASSERT(roughlyEqual(v0z, 7));
+}
+
+void TestVoxelWorld::testGetNextCube() {
+
 }
 
 CppUnit::Test* TestVoxelWorld::suite()
