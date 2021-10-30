@@ -3,15 +3,18 @@
 #include <iostream>
 
 #include "src/voxelWorld/VoxelWorld.h"
+#include "src/utils/Utils.h"
 
 class TestVoxelWorld : public CppUnit::TestFixture {
     private:
-
+    VoxelWorld* vWorld;
     public:
     void setUp();
     void tearDown();
 
     void testVoxelWorldInitialization();
+
+    void testTopLevelIntersection();
 
     static CppUnit::Test *suite();
 };
