@@ -18,5 +18,9 @@ class TestVoxelWorld : public CppUnit::TestFixture {
 
     void testGetNextCube();
 
+    void testGetChildCube();
+
+    void testIntersect();
+
     static CppUnit::Test *suite();
 };

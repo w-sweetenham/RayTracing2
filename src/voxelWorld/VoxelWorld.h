@@ -24,6 +24,8 @@ class VoxelWorld {
     unsigned char getVoxel(int index);
     bool intersectTopLevel(unsigned char* stack, float* stack2, const Ray& ray, float& v0x, float& v0y, float& v0z) const;
     bool getNextNeighbour(unsigned char* stack1, float* stack2, const Ray& ray, float& v0x, float& v0y, float& v0z, int& scale) const;
+    void getChild(unsigned char* stack1, float* stack2, const Ray& ray, float& v0x, float& v0y, float& v0z, int& parentScale) const;
+    bool intersect(const Ray& ray, unsigned char& voxelType, Point& point, Vec& norm) const;
     int getnPowersInt(int index) const;
     float getnPowersFloat(int index) const;
     int getVoxelTreeIndex(int index) const;//returns value of voxelTreeIndices at index

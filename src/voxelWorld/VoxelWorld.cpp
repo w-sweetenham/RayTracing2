@@ -335,9 +335,27 @@ bool VoxelWorld::getNextNeighbour(unsigned char* stack1, float* stack2, const Ra
 
     float tx1, ty1, tz1;
     
-    tx1 = (X1 - px)/dx;
-    ty1 = (Y1 - py)/dy;
-    tz1 = (Z1 - pz)/dz;
+    tx1 = X1 - px;
+    if(tx1 == 0) {//sorts out 0/0 errors
+        tx1 = (tx1-0.0001)/dx;
+    } else {
+        tx1 = tx1/dx;
+    }
+    ty1 = Y1 - py;
+    if(ty1 == 0) {
+        ty1 = (ty1-0.0001)/dy;
+    } else {
+        ty1 = ty1/dy;
+    }
+    tz1 = Z1 - pz;
+    if(tz1 == 0) {
+        tz1 = (tz1-0.0001)/dz;
+    } else {
+        tz1 = tz1/dz;
+    }
+    std::cout << "tx1: " << tx1 << std::endl;
+    std::cout << "ty1: " << ty1 << std::endl;
+    std::cout << "tz1: " << tz1 << std::endl;
 
     float tMax;
 
@@ -366,6 +384,8 @@ bool VoxelWorld::getNextNeighbour(unsigned char* stack1, float* stack2, const Ra
     v0x = (tMax * dx) + px;
     v0y = (tMax * dy) + py;
     v0z = (tMax * dz) + pz;
+
+    std::cout << "Exit plane:: " << (int)exitPlane << std::endl;
 
     bool foundCube = false;
     for(scaleIndex; scaleIndex >= 0; scaleIndex -=3) {
@@ -401,4 +421,200 @@ bool VoxelWorld::getNextNeighbour(unsigned char* stack1, float* stack2, const Ra
     }
     parentScale = stack1[scaleIndex];
     return foundCube;
+}
+
+void VoxelWorld::getChild(unsigned char* stack1, float* stack2, const Ray& ray, float& v0x, float& v0y, float& v0z, int& parentScale) const {
+    int scaleIndex = (sideLengthPower - parentScale)*3;
+    unsigned char entryPlane = stack1[scaleIndex+2];
+    unsigned char index = 0;
+    float X0, Y0, Z0;
+    float halfSideLen = nPowers_float[parentScale-2];
+    X0 = stack2[scaleIndex];
+    Y0 = stack2[scaleIndex+1];
+    Z0 = stack2[scaleIndex+2];
+    stack2[scaleIndex+3] = X0;
+    stack2[scaleIndex+4] = Y0;
+    stack2[scaleIndex+5] = Z0;
+    if((entryPlane & 8) == 0) {//direction not reversed
+        if(entryPlane == 1) {//entering through first x-plane so x index is 0
+            if(v0y > (Y0 + halfSideLen)) {
+                index = 2;
+                stack2[scaleIndex+4] = Y0 + halfSideLen;
+            }
+            if(v0z > (Z0 + halfSideLen)) {
+                index = (index | 4);//bitwise or here adds 4 (we know the 3rd bit is 0)
+                stack2[scaleIndex+5] = Z0 + halfSideLen;
+            }
+        } else if (entryPlane == 2) {//entering through first y-plane so y index is 0
+            if(v0x > (X0 + halfSideLen)) {
+                index = 1;
+                stack2[scaleIndex+3] = X0 + halfSideLen;
+            }
+            if(v0z > (Z0 + halfSideLen)) {
+                index = (index | 4);//bitwise or here adds 4 (we know the 3rd bit is 0)
+                stack2[scaleIndex+5] = Z0 + halfSideLen;
+            }
+        } else {
+            if(v0x > (X0 + halfSideLen)) {
+                index = 1;
+                stack2[scaleIndex+3] = X0 + halfSideLen;
+            }
+            if(v0y > (Y0 + halfSideLen)) {
+                index = (index | 2);
+                stack2[scaleIndex+4] = Y0 + halfSideLen;
+            }
+        }
+    } else {//direction reversed
+        if(entryPlane == 9) {//entering through second x-plane so x index is 1
+            stack2[scaleIndex+3] = X0 + halfSideLen;
+            index = 1;
+            if(v0y > (Y0 + halfSideLen)) {
+                index = (index | 2);
+                stack2[scaleIndex+4] = Y0 + halfSideLen;
+            }
+            if(v0z > (Z0 + halfSideLen)) {
+                index = (index | 4);//bitwise or here adds 4 (we know the 3rd bit is 0)
+                stack2[scaleIndex+5] = Z0 + halfSideLen;
+            }
+        } else if (entryPlane == 10) {//entering through second y-plane so y index is 2
+            stack2[scaleIndex+4] = Y0 + halfSideLen;
+            index = 2;
+            if(v0x > (X0 + halfSideLen)) {
+                index = (index | 1);
+                stack2[scaleIndex+3] = X0 + halfSideLen;
+            }
+            if(v0z > (Z0 + halfSideLen)) {
+                index = (index | 4);//bitwise or here adds 4 (we know the 3rd bit is 0)
+                stack2[scaleIndex+5] = Z0 + halfSideLen;
+            }
+        } else {//entering through second z axis
+            stack2[scaleIndex+5] = Z0 + halfSideLen;
+            index = 4;
+            if(v0x > (X0 + halfSideLen)) {
+                index = (index | 1);
+                stack2[scaleIndex+3] = X0 + halfSideLen;
+            }
+            if(v0y > (Y0 + halfSideLen)) {
+                index = (index | 2);
+                stack2[scaleIndex+4] = Y0 + halfSideLen;
+            }
+        }
+    }
+    stack1[scaleIndex+3] = parentScale-1;
+    stack1[scaleIndex+4] = index;
+    stack1[scaleIndex+5] = entryPlane;//this doesn't change
+    parentScale--;
+}
+
+bool VoxelWorld::intersect(const Ray& ray, unsigned char& voxelType, Point& point, Vec& norm) const {
+    unsigned char stack1[sideLengthPower*3];
+    float stack2[sideLengthPower*3];
+    float v0x, v0y, v0z;
+    int currentParentScale = sideLengthPower;
+    int currentScaleIndex = 0;
+    int currentScaleIndexNorm = 0;
+    bool isNext;
+    bool isEmpty;
+    bool foundValidCube = false;
+    int byteCubeIndex;
+    int relativeIndex;
+    unsigned int x, y, z;
+    int count = 0;
+    if(intersectTopLevel(stack1, stack2, ray, v0x, v0y, v0z)) {
+        std::cout << "Intersected at top level" << std::endl;
+        while(!foundValidCube) {
+            if(count < 10) {
+                std::cout << "Parent scale: " << currentParentScale << std::endl;
+            }
+            if(currentParentScale == 1) {
+                x = std::round(stack2[currentScaleIndex]);
+                y = std::round(stack2[currentScaleIndex+1]);
+                z = std::round(stack2[currentScaleIndex+2]);
+                byteCubeIndex = nPowers_int[2*(sideLengthPower-currentParentScale)]*z;
+                byteCubeIndex += nPowers_int[sideLengthPower - currentParentScale]*y;
+                byteCubeIndex += x;
+                std::cout << "Byte cube index: " << byteCubeIndex << std::endl;
+                std::cout << "Byte cube value: " << (int)voxelTree[byteCubeIndex] << std::endl;
+                isEmpty = voxelTree[byteCubeIndex] == 0;
+                if(isEmpty) {
+                    std::cout << "Empty" << std::endl;
+                    getNextNeighbour(stack1, stack2, ray, v0x, v0y, v0z, currentParentScale);
+                } else {
+                    std::cout << "Not Empty" << std::endl;
+                    voxelType = voxelTree[byteCubeIndex];
+                    foundValidCube = true;
+                }
+            } else {
+                if(count < 10) {
+                    std::cout << "Parent scale > 1" << std::endl;
+                }
+                byteCubeIndex = voxelTreeIndices[currentParentScale-2];
+                if(count < 10) {
+                    std::cout << "Initial index: " << byteCubeIndex << std::endl;
+                }
+                int divFactor = nPowers_int[currentParentScale];
+                x = std::round(stack2[currentScaleIndex]);
+                x = x >> currentParentScale;
+                y = std::round(stack2[currentScaleIndex+1]);
+                y = y  >> currentParentScale;
+                z = std::round(stack2[currentScaleIndex+2]);
+                z = z >> currentParentScale;//these are byte cube coords
+                byteCubeIndex += nPowers_int[2*(sideLengthPower-currentParentScale)]*z;
+                byteCubeIndex += nPowers_int[sideLengthPower - currentParentScale]*y;
+                byteCubeIndex += x;
+                if(count < 10) {
+                    std::cout << "Byte cube index: " << byteCubeIndex << std::endl;
+                }
+                std::cout << "Byte cube value: " << (int)voxelTree[byteCubeIndex] << std::endl;
+                std::cout << "scale index: " << (int)currentScaleIndex << std::endl;
+                std::cout << "index: " << (int)stack1[currentScaleIndex+1] << std::endl;
+                isEmpty = ((voxelTree[byteCubeIndex] & (1 << stack1[currentScaleIndex+1])) == 0);
+                if(isEmpty) {
+                    std::cout << "Empty" << std::endl;
+                    isNext = getNextNeighbour(stack1, stack2, ray, v0x, v0y, v0z, currentParentScale);
+                    if(!isNext) {
+                        return false;//got to end of top-level cube
+                    }
+                    currentScaleIndex = (sideLengthPower - currentParentScale)*3;
+                } else {
+                    std::cout << "Not empty" << std::endl;
+                    getChild(stack1, stack2, ray, v0x, v0y, v0z, currentParentScale);
+                    currentScaleIndex += 3;
+                }
+            }
+            count++;
+        }
+        switch(stack1[currentScaleIndex+2]) {//entry plane
+            case 1:
+                norm = Vec(-1, 0, 0);
+                break;
+            
+            case 2:
+                norm = Vec(0, -1, 0);
+                break;
+
+            case 4:
+                norm = Vec(0, 0, -1);
+                break;
+
+            case 9:
+                norm = Vec(1, 0, 0);
+                break;
+
+            case 10:
+                norm = Vec(0, 1, 0);
+                break;
+
+            case 12:
+                norm = Vec(0, 0, 1);
+                break;
+            
+            default:
+                break;
+        }
+
+        point = Point(v0x, v0y, v0z);
+        return true;
+    }
+    return false;
 }

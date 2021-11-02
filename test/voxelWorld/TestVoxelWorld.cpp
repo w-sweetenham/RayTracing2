@@ -150,7 +150,7 @@ void TestVoxelWorld::testGetNextCube() {
     CPPUNIT_ASSERT(isNeighbour);
     unsigned char stack1Correct_1[6] = {3, 2, 2, 2, 3, 2};
     for(int i=0; i<6; i++) {
-        CPPUNIT_ASSERT(stack1Correct_1[i] = stack1_1[i]);
+        CPPUNIT_ASSERT(stack1Correct_1[i] == stack1_1[i]);
     }
     float stack2Correct_1[6] = {0, 4, 0, 2, 2, 0};
     for(int i=0; i<6; i++) {
@@ -172,7 +172,7 @@ void TestVoxelWorld::testGetNextCube() {
     CPPUNIT_ASSERT(isNeighbour);
     unsigned char stack1Correct_2[3] = {3, 2, 9};
     for(int i=0; i<3; i++) {
-        CPPUNIT_ASSERT(stack1Correct_2[i] = stack1_2[i]);
+        CPPUNIT_ASSERT(stack1Correct_2[i] == stack1_2[i]);
     }
     float stack2Correct_2[3] = {0, 4, 0};
     for(int i=0; i<3; i++) {
@@ -194,7 +194,7 @@ void TestVoxelWorld::testGetNextCube() {
     CPPUNIT_ASSERT(isNeighbour);
     unsigned char stack1Correct_3[3] = {3, 7, 1};
     for(int i=0; i<3; i++) {
-        CPPUNIT_ASSERT(stack1Correct_3[i] = stack1_3[i]);
+        CPPUNIT_ASSERT(stack1Correct_3[i] == stack1_3[i]);
     }
     float stack2Correct_3[3] = {4, 4, 4};
     for(int i=0; i<3; i++) {
@@ -216,6 +216,118 @@ void TestVoxelWorld::testGetNextCube() {
     CPPUNIT_ASSERT(!isNeighbour);
 }
 
+void TestVoxelWorld::testGetChildCube() {
+    unsigned char stack1_1[6] = {3, 3, 9, 2, 3, 2};
+    float stack2_1[6] = {4, 4, 0, 1, 1, 3};//initializing second parts of stacks randomly as can't guarantee it will be 0
+    float v0x, v0y, v0z;
+    v0x = 8;
+    v0y = 5;
+    v0z = 1;
+    int scale = 3;
+    vWorld->getChild(stack1_1, stack2_1, Ray(Point(9, 5, 1), Vec(-1, 0, 0)), v0x, v0y, v0z, scale);
+    unsigned char stack1Correct_1[6] = {3, 3, 9, 2, 1, 9};
+    for(int i=0; i<6; i++) {
+        CPPUNIT_ASSERT(stack1Correct_1[i] == stack1_1[i]);
+    }
+    float stack2Correct_1[6] = {4, 4, 0, 6, 4, 0};
+    for(int i=0; i<6; i++) {
+        CPPUNIT_ASSERT(roughlyEqual(stack2Correct_1[i], stack2_1[i]));
+    }
+    CPPUNIT_ASSERT(roughlyEqual(v0x, 8));
+    CPPUNIT_ASSERT(roughlyEqual(v0y, 5));
+    CPPUNIT_ASSERT(roughlyEqual(v0z, 1));
+    CPPUNIT_ASSERT(scale == 2);
+
+    unsigned char stack1_2[9] = {3, 0, 2, 1, 7, 1, 4, 2, 2};
+    float stack2_2[9] = {0, 0, 0, 1, 1, 3, 1, 1, 3};//initializing second parts of stacks randomly as can't guarantee it will be 0
+    v0x = 3.5;
+    v0y = 0;
+    v0z = 0.5;
+    scale = 3;
+    vWorld->getChild(stack1_2, stack2_2, Ray(Point(3.5, -1, 0.5), Vec(0, 1, 0)), v0x, v0y, v0z, scale);
+    vWorld->getChild(stack1_2, stack2_2, Ray(Point(3.5, -1, 0.5), Vec(0, 1, 0)), v0x, v0y, v0z, scale);
+    unsigned char stack1Correct_2[9] = {3, 0, 2, 2, 1, 2, 1, 1, 2};
+    for(int i=0; i<9; i++) {
+        CPPUNIT_ASSERT(stack1Correct_2[i] == stack1_2[i]);
+    }
+    float stack2Correct_2[9] = {0, 0, 0, 2, 0, 0, 3, 0, 0};
+    for(int i=0; i<9; i++) {
+        CPPUNIT_ASSERT(roughlyEqual(stack2Correct_2[i], stack2_2[i]));
+    }
+    CPPUNIT_ASSERT(roughlyEqual(v0x, 3.5));
+    CPPUNIT_ASSERT(roughlyEqual(v0y, 0));
+    CPPUNIT_ASSERT(roughlyEqual(v0z, 0.5));
+    CPPUNIT_ASSERT(scale == 1);
+
+    unsigned char stack1_3[9] = {3, 3, 4, 1, 7, 1, 4, 2, 2};
+    float stack2_3[9] = {4, 4, 0, 1, 1, 3, 1, 1, 3};//initializing second parts of stacks randomly as can't guarantee it will be 0
+    v0x = 5.5;
+    v0y = 5.5;
+    v0z = 0;
+    scale = 3;
+    vWorld->getChild(stack1_3, stack2_3, Ray(Point(5.5, 5.5, -1), Vec(0, 0, 1)), v0x, v0y, v0z, scale);
+    vWorld->getChild(stack1_3, stack2_3, Ray(Point(5.5, 5.5, -1), Vec(0, 0, 1)), v0x, v0y, v0z, scale);
+    unsigned char stack1Correct_3[9] = {3, 3, 4, 2, 0, 4, 1, 3, 4};
+    for(int i=0; i<9; i++) {
+        CPPUNIT_ASSERT(stack1Correct_3[i] == stack1_3[i]);
+    }
+    float stack2Correct_3[9] = {4, 4, 0, 4, 4, 0, 5, 5, 0};
+    for(int i=0; i<9; i++) {
+        CPPUNIT_ASSERT(roughlyEqual(stack2Correct_3[i], stack2_3[i]));
+    }
+    CPPUNIT_ASSERT(roughlyEqual(v0x, 5.5));
+    CPPUNIT_ASSERT(roughlyEqual(v0y, 5.5));
+    CPPUNIT_ASSERT(roughlyEqual(v0z, 0));
+    CPPUNIT_ASSERT(scale == 1);
+}
+
+void TestVoxelWorld::testIntersect() {
+    Point p;
+    Vec norm;
+    bool hit;
+    unsigned char voxelType;
+
+
+    std::cout << "Test one: " << std::endl;
+    Ray r1(Point(1, 1, -1), Vec(0, 0, 1));
+    hit = vWorld->intersect(r1, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == false);
+    std::cout << std::endl;
+
+    std::cout << "Test two: " << std::endl;
+    Ray r2(Point(1, -1, 0.5), Vec(1, 1.5, 0));
+    hit = vWorld->intersect(r2, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(p.roughlyEqual(Point(2, 0.5, 0.5)));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(-1, 0, 0)));
+    std::cout << std::endl;
+
+    std::cout << "Test three: " << std::endl;
+    Ray r3(Point(6, 5, 9), Vec(0, 0, -1));
+    hit = vWorld->intersect(r3, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(p.roughlyEqual(Point(6, 5, 2)));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 0, 1)));
+    std::cout << std::endl;
+
+    std::cout << "Test four: " << std::endl;
+    Ray r4(Point(10, 6, 6), Vec(-2, 0, -1));
+    hit = vWorld->intersect(r4, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(p.roughlyEqual(Point(2, 6, 2)));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 0, 1)));
+    std::cout << std::endl;
+
+    std::cout << "Test five: " << std::endl;
+    Ray r5(Point(9, 2, 3), Vec(-1, 0, 0));
+    hit = vWorld->intersect(r5, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == false);
+    std::cout << std::endl;
+}
+
 CppUnit::Test* TestVoxelWorld::suite()
 {
     CppUnit::TestSuite *testSuite = new CppUnit::TestSuite("Voxel World Tests");
@@ -223,6 +335,8 @@ CppUnit::Test* TestVoxelWorld::suite()
 
     testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test top-level intersection", &TestVoxelWorld::testTopLevelIntersection));
     testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test get next cube", &TestVoxelWorld::testGetNextCube));
+    testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test get child cube", &TestVoxelWorld::testGetChildCube));
+    testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test intersection", &TestVoxelWorld::testIntersect));
 
     return testSuite;
 }
