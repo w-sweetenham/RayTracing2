@@ -44,16 +44,30 @@ struct IntersectionSpec {
     bool hit;
     Vec norm;
     Point point;
-    const Object* hitObj;
-    const Object* obj1;
-    const Object* obj2;
+    float ambient, diffuse, specular, shininess;
+    float n1;
+    float n2;
+    float reflectivity;
+    float transparency;
+    Colour colour;
     Vec lightVec;
     Colour lightIntensity;
     bool isShadowed;
-    Point underPoint;
-    Point overPoint;
-    IntersectionSpec(bool hit, const Vec& norm, const Point& point, const Object* hitObj, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity, bool isShadowed);
-    IntersectionSpec(bool hit, const Vec& norm, const Point& point, const Object* hitObj, const Object* obj1, const Object* obj2, const Vec& lightVec, const Colour& intensity, bool isShadowed, Point overPoint, Point underPoint);
+    IntersectionSpec(bool hit, 
+                    const Vec& norm, 
+                    const Point& point, 
+                    float ambient, 
+                    float diffuse, 
+                    float specular, 
+                    float shininess,
+                    float n1,
+                    float n2,
+                    float reflectivity,
+                    float transparency,
+                    const Colour& colour, 
+                    const Vec& lightVec, 
+                    const Colour& intensity, 
+                    bool isShadowed);
 };
 
 #endif
