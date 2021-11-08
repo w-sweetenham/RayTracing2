@@ -26,6 +26,7 @@ class Camera {
     Vec getY() const;
     Vec getZ() const;
     void render(const World& world, const Shader& shader, int recursion = 0);
+    void render(const VoxelWorld& world, const Shader& shader, int recursion = 0);
     void save(std::string path) const;
 };
 

@@ -18,7 +18,7 @@ void TestVoxelWorld::setUp() {
             }
         }
     }
-    vWorld = new VoxelWorld(voxelVals, 512);
+    vWorld = new VoxelWorld(voxelVals, 512, PointLight(Point(6, 9, 7.5), Colour(0.9, 0.9, 0.9)));
 }
 
 void TestVoxelWorld::tearDown() {}
@@ -75,22 +75,27 @@ void TestVoxelWorld::testVoxelWorldInitialization() {
 }
 
 void TestVoxelWorld::testTopLevelIntersection() {
-    unsigned char stack1[3];
-    float stack2[3];
+    unsigned char stack1[9];
+    float stack2[9];
     Ray rayMiss1(Point(-4, 4, 4), Vec(1, -2, 0));
     Ray rayMiss2(Point(4, 4, -4), Vec(0, -2, 1));
     Ray rayMiss3(Point(12, 4, 4), Vec(-1, 2, 0));
 
     float v0x, v0y, v0z;
 
-    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss1, v0x, v0y, v0z) == false);
-    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss2, v0x, v0y, v0z) == false);
-    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss2, v0x, v0y, v0z) == false);
+    bool foundValidCube;
+    unsigned char voxelType;
+    Vec norm;
+    bool isInside;
+
+    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss1, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType) == false);
+    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss2, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType) == false);
+    CPPUNIT_ASSERT(vWorld->intersectTopLevel(stack1, stack2, rayMiss2, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType) == false);
 
     bool hit;
 
     Ray rayIndex0(Point(-1, 3.1, 1.1), Vec(1.0, 0.1, 0.1));
-    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex0, v0x, v0y, v0z);
+    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex0, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
     CPPUNIT_ASSERT(hit == true);
     CPPUNIT_ASSERT(stack1[0] == 3);
     CPPUNIT_ASSERT(stack1[1] == 0);
@@ -100,9 +105,10 @@ void TestVoxelWorld::testTopLevelIntersection() {
     CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
     CPPUNIT_ASSERT(roughlyEqual(v0y, 3.2));
     CPPUNIT_ASSERT(roughlyEqual(v0z, 1.2));
+    CPPUNIT_ASSERT(isInside == false);
 
     Ray rayIndex5(Point(6, -1, 7), Vec(0, 1, 0));
-    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex5, v0x, v0y, v0z);
+    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex5, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
     CPPUNIT_ASSERT(hit == true);
     CPPUNIT_ASSERT(stack1[0] == 3);
     CPPUNIT_ASSERT(stack1[1] == 5);
@@ -112,9 +118,10 @@ void TestVoxelWorld::testTopLevelIntersection() {
     CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
     CPPUNIT_ASSERT(roughlyEqual(v0x, 6));
     CPPUNIT_ASSERT(roughlyEqual(v0z, 7));
+    CPPUNIT_ASSERT(isInside == false);
 
     Ray rayIndex6(Point(-1, 6, 7), Vec(1, 0, 0));
-    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex6, v0x, v0y, v0z);
+    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex6, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
     CPPUNIT_ASSERT(hit == true);
     CPPUNIT_ASSERT(stack1[0] == 3);
     CPPUNIT_ASSERT(stack1[1] == 6);
@@ -124,9 +131,10 @@ void TestVoxelWorld::testTopLevelIntersection() {
     CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
     CPPUNIT_ASSERT(roughlyEqual(v0y, 6));
     CPPUNIT_ASSERT(roughlyEqual(v0z, 7));
+    CPPUNIT_ASSERT(isInside == false);
 
     Ray rayIndex7(Point(6, 9, 7), Vec(-1, -1, 0));
-    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex7, v0x, v0y, v0z);
+    hit = vWorld->intersectTopLevel(stack1, stack2, rayIndex7, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
     CPPUNIT_ASSERT(hit == true);
     CPPUNIT_ASSERT(stack1[0] == 3);
     CPPUNIT_ASSERT(stack1[1] == 7);
@@ -136,6 +144,240 @@ void TestVoxelWorld::testTopLevelIntersection() {
     CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
     CPPUNIT_ASSERT(roughlyEqual(v0x, 5));
     CPPUNIT_ASSERT(roughlyEqual(v0z, 7));
+    CPPUNIT_ASSERT(isInside == false);
+
+    Ray r8(Point(0.5, 0.5, 3.1), Vec(0, 0, -1));
+    hit = vWorld->intersectTopLevel(stack1, stack2, r8, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 0);
+    //don't care about entry plane at each scale here
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(stack1[4] == 4);
+    
+    CPPUNIT_ASSERT(stack1[6] == 1);
+    CPPUNIT_ASSERT(stack1[7] == 4);
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[3], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[4], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[5], 2));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[6], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[7], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[8], 3));
+    
+    CPPUNIT_ASSERT(isInside == true);
+    CPPUNIT_ASSERT(foundValidCube == false);
+    
+
+    Ray r9(Point(1.5, 1.5, 0.9), Vec(-1, 0, 0));
+    hit = vWorld->intersectTopLevel(stack1, stack2, r9, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
+    CPPUNIT_ASSERT(hit == true);
+
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 0);
+    //don't care about entry plane at each scale here
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(stack1[4] == 0);
+    
+    CPPUNIT_ASSERT(stack1[6] == 1);
+    CPPUNIT_ASSERT(stack1[7] == 3);
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[3], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[4], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[5], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[6], 1));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[7], 1));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[8], 0));
+
+    CPPUNIT_ASSERT(isInside == true);
+    CPPUNIT_ASSERT(foundValidCube == false);
+
+    Ray r10(Point(1.5, 3.1, 3.1), Vec(1, 0, 0));
+    hit = vWorld->intersectTopLevel(stack1, stack2, r10, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 0);
+    //don't care about entry plane at each scale here
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(stack1[4] == 6);
+    
+    CPPUNIT_ASSERT(stack1[6] == 1);
+    CPPUNIT_ASSERT(stack1[7] == 7);
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[3], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[4], 2));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[5], 2));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[6], 1));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[7], 3));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[8], 3));
+
+    CPPUNIT_ASSERT(isInside == true);
+    CPPUNIT_ASSERT(foundValidCube == false);
+
+    Ray r11(Point(3.5, 3.2, 3.5), Vec(0, 0, 1));
+    hit = vWorld->intersectTopLevel(stack1, stack2, r11, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
+    CPPUNIT_ASSERT(hit == true);
+    
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 0);
+    //don't care about entry plane at each scale here
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(stack1[4] == 7);
+    
+    CPPUNIT_ASSERT(stack1[6] == 1);
+    CPPUNIT_ASSERT(stack1[7] == 7);
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[3], 2));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[4], 2));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[5], 2));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[6], 3));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[7], 3));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[8], 3));
+
+    CPPUNIT_ASSERT(isInside == true);
+    CPPUNIT_ASSERT(foundValidCube == false);
+
+
+    Ray r12(Point(7.5, 7.5, 7.5), Vec(-1, 0, 0));
+    hit = vWorld->intersectTopLevel(stack1, stack2, r12, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
+    CPPUNIT_ASSERT(hit == true);
+
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 7);
+    //don't care about entry plane at each scale here
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(stack1[4] == 7);
+    
+    CPPUNIT_ASSERT(stack1[6] == 1);
+    CPPUNIT_ASSERT(stack1[7] == 7);
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 4));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 4));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 4));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[3], 6));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[4], 6));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[5], 6));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[6], 7));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[7], 7));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[8], 7));
+
+    CPPUNIT_ASSERT(isInside == true);
+    CPPUNIT_ASSERT(foundValidCube == false);
+
+    Ray r13(Point(2.2, 0.5, 0.5), Vec(-1, 0, 0));
+    hit = vWorld->intersectTopLevel(stack1, stack2, r13, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
+    CPPUNIT_ASSERT(hit == true);
+
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 0);
+    //don't care about entry plane at each scale here
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(stack1[4] == 1);
+    
+    CPPUNIT_ASSERT(stack1[6] == 1);
+    CPPUNIT_ASSERT(stack1[7] == 0);
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[3], 2));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[4], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[5], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[6], 2));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[7], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[8], 0));
+
+    CPPUNIT_ASSERT(isInside == true);
+    CPPUNIT_ASSERT(foundValidCube == true);
+
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(1, 0, 0)));
+
+    Ray r14(Point(0.5, 2.9, 0.5), Vec(0, -1, 0));
+    hit = vWorld->intersectTopLevel(stack1, stack2, r14, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
+    CPPUNIT_ASSERT(hit == true);
+
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 0);
+    //don't care about entry plane at each scale here
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(stack1[4] == 2);
+    
+    CPPUNIT_ASSERT(stack1[6] == 1);
+    CPPUNIT_ASSERT(stack1[7] == 0);
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[3], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[4], 2));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[5], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[6], 0));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[7], 2));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[8], 0));
+
+    CPPUNIT_ASSERT(isInside == true);
+    CPPUNIT_ASSERT(foundValidCube == true);
+
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 1, 0)));
+
+    Ray r15(Point(6.3, 7.2, 1.8), Vec(0.1, 0, 1));
+    hit = vWorld->intersectTopLevel(stack1, stack2, r15, v0x, v0y, v0z, foundValidCube, isInside, norm, voxelType);
+    CPPUNIT_ASSERT(hit == true);
+
+    CPPUNIT_ASSERT(stack1[0] == 3);
+    CPPUNIT_ASSERT(stack1[1] == 3);
+    //don't care about entry plane at each scale here
+    CPPUNIT_ASSERT(stack1[3] == 2);
+    CPPUNIT_ASSERT(stack1[4] == 3);
+    
+    CPPUNIT_ASSERT(stack1[6] == 1);
+    CPPUNIT_ASSERT(stack1[7] == 6);
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[0], 4));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[1], 4));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[2], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[3], 6));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[4], 6));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[5], 0));
+
+    CPPUNIT_ASSERT(roughlyEqual(stack2[6], 6));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[7], 7));
+    CPPUNIT_ASSERT(roughlyEqual(stack2[8], 1));
+
+    CPPUNIT_ASSERT(isInside == true);
+    CPPUNIT_ASSERT(foundValidCube == true);
+
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 0, -1)));
 }
 
 void TestVoxelWorld::testGetNextCube() {
@@ -287,14 +529,16 @@ void TestVoxelWorld::testIntersect() {
     bool hit;
     unsigned char voxelType;
 
+    /*
+     * Tests for intersecting from outside of voxel world
+     */
 
-    std::cout << "Test one: " << std::endl;
+
     Ray r1(Point(1, 1, -1), Vec(0, 0, 1));
     hit = vWorld->intersect(r1, voxelType, p, norm);
     CPPUNIT_ASSERT(hit == false);
     std::cout << std::endl;
 
-    std::cout << "Test two: " << std::endl;
     Ray r2(Point(1, -1, 0.5), Vec(1, 1.5, 0));
     hit = vWorld->intersect(r2, voxelType, p, norm);
     CPPUNIT_ASSERT(hit == true);
@@ -303,7 +547,6 @@ void TestVoxelWorld::testIntersect() {
     CPPUNIT_ASSERT(norm.roughlyEqual(Vec(-1, 0, 0)));
     std::cout << std::endl;
 
-    std::cout << "Test three: " << std::endl;
     Ray r3(Point(6, 5, 9), Vec(0, 0, -1));
     hit = vWorld->intersect(r3, voxelType, p, norm);
     CPPUNIT_ASSERT(hit == true);
@@ -312,7 +555,6 @@ void TestVoxelWorld::testIntersect() {
     CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 0, 1)));
     std::cout << std::endl;
 
-    std::cout << "Test four: " << std::endl;
     Ray r4(Point(10, 6, 6), Vec(-2, 0, -1));
     hit = vWorld->intersect(r4, voxelType, p, norm);
     CPPUNIT_ASSERT(hit == true);
@@ -321,11 +563,98 @@ void TestVoxelWorld::testIntersect() {
     CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 0, 1)));
     std::cout << std::endl;
 
-    std::cout << "Test five: " << std::endl;
     Ray r5(Point(9, 2, 3), Vec(-1, 0, 0));
     hit = vWorld->intersect(r5, voxelType, p, norm);
     CPPUNIT_ASSERT(hit == false);
     std::cout << std::endl;
+
+    Ray r6(Point(9, 2, 3), Vec(0, 1, 2));
+    hit = vWorld->intersect(r6, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == false);
+    std::cout << std::endl;
+
+    Ray r7(Point(6, 5, 9), Vec(0, 0, 11));
+    hit = vWorld->intersect(r7, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == false);
+    std::cout << std::endl;
+
+    /*
+     * Tests for intersecting from inside of voxel world
+     */
+
+
+    Ray r8(Point(0.5, 0.5, 3), Vec(0, 0, -1));
+    hit = vWorld->intersect(r8, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == false);
+
+    Ray r9(Point(1.5, 1.5, 1), Vec(-1, 0, 0));
+    hit = vWorld->intersect(r9, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == false);
+
+    Ray r10(Point(1.5, 3, 3), Vec(1, 0, 0));
+    hit = vWorld->intersect(r10, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == false);
+
+    Ray r11(Point(3.5, 3, 3.5), Vec(0, 0, 1));
+    hit = vWorld->intersect(r11, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(p.roughlyEqual(Point(3.5, 3, 4)));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 0, -1)));
+
+    Ray r12(Point(7.5, 7.5, 7.5), Vec(-1, 0, 0));
+    hit = vWorld->intersect(r12, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(p.roughlyEqual(Point(4, 7.5, 7.5)));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(1, 0, 0)));
+
+
+    Ray r13(Point(2.2, 0.5, 0.5), Vec(-1, 0, 0));
+    hit = vWorld->intersect(r13, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(p.roughlyEqual(Point(2, 0.5, 0.5)));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(1, 0, 0)));
+
+    Ray r14(Point(0.5, 2.9, 0.5), Vec(0, -1, 0));
+    hit = vWorld->intersect(r14, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(p.roughlyEqual(Point(0.5, 2, 0.5)));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 1, 0)));
+
+    Ray r15(Point(6, 7, 1.1), Vec(0, 0, 1));
+    hit = vWorld->intersect(r15, voxelType, p, norm);
+    CPPUNIT_ASSERT(hit == true);
+    CPPUNIT_ASSERT(voxelType == 7);
+    CPPUNIT_ASSERT(p.roughlyEqual(Point(6, 7, 2)));
+    CPPUNIT_ASSERT(norm.roughlyEqual(Vec(0, 0, -1)));
+
+}
+
+void TestVoxelWorld::testGetIntersection() {
+    Ray r1(Point(0.5, 0.5, 3), Vec(0, 0, -1));
+    IntersectionSpec intSpec1 = vWorld->getIntersection(r1);
+    CPPUNIT_ASSERT(intSpec1.hit == false);
+
+    Ray r2(Point(7.5, 7.5, 7.5), Vec(-1, 0, 0));
+    IntersectionSpec intSpec2 = vWorld->getIntersection(r2);
+    CPPUNIT_ASSERT(intSpec2.hit == true);
+    CPPUNIT_ASSERT(intSpec2.norm.roughlyEqual(Vec(1, 0, 0)));
+    CPPUNIT_ASSERT(intSpec2.point.roughlyEqual(Point(4, 7.5, 7.5)));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.ambient, 0.2));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.diffuse, 0.8));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.specular, 0.7));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.shininess, 100));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.n1, 1));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.n2, 1.3));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.reflectivity, 0));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.transparency, 0));
+    CPPUNIT_ASSERT(intSpec2.colour.roughlyEqual(Colour(0.1, 0.8, 0.3)));
+    CPPUNIT_ASSERT(intSpec2.lightVec.roughlyEqual(Vec(0.8, 0.6, 0)));
+    CPPUNIT_ASSERT(intSpec2.lightIntensity.roughlyEqual(Colour(0.9, 0.9, 0.9)));
+    CPPUNIT_ASSERT(intSpec2.isShadowed == false);
 }
 
 CppUnit::Test* TestVoxelWorld::suite()
@@ -337,6 +666,7 @@ CppUnit::Test* TestVoxelWorld::suite()
     testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test get next cube", &TestVoxelWorld::testGetNextCube));
     testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test get child cube", &TestVoxelWorld::testGetChildCube));
     testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test intersection", &TestVoxelWorld::testIntersect));
+    testSuite->addTest(new CppUnit::TestCaller<TestVoxelWorld>("Test intersection", &TestVoxelWorld::testGetIntersection));
 
     return testSuite;
 }
