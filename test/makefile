@@ -1,4 +1,4 @@
-.PHONY = all clean
+.PHONY: depend clean
 
 CORE_CPP := ${shell find ../src -name "*.cpp"}
 CORE_HEADERS := ${shell find ../src -name "*.h"}
@@ -8,18 +8,383 @@ TEST_CPP := ${shell find ./ -name "*.cpp"}
 TEST_HEADERS := ${shell find ./ -name "*.h"}
 TEST_OBJS := ${TEST_CPP:%.cpp=%.o}
 
+#CC := gcc
+INCLUDES := -I/home/william/CPP/Projects/RayTracer2/
+
 MAIN = TestAll.out
 
-all: ${MAIN} clean
+all: ${MAIN}
+	echo Starting
 
 ${MAIN}: ${CORE_OBJS} ${TEST_OBJS}
+	echo linking
 	g++ -o ${MAIN} ${CORE_OBJS} ${TEST_OBJS} -I/home/william/CPP/Projects/RayTracer2/ -L/usr/local/lib/ -lcppunit
 
-${TEST_OBJS}: ${TEST_CPP} ${TEST_HEADERS} ${CORE_HEADERS}
-	g++ -o $@ -c $(subst .o,.cpp,$@) -I/home/william/CPP/Projects/RayTracer2/
-
-${CORE_OBJS}: ${CORE_CPP} ${CORE_HEADERS}
-	g++ -o $@ -c $(subst .o,.cpp,$@) -I/home/william/CPP/Projects/RayTracer2/
+%.o : %.cpp
+	echo creating .o
+	$(CC) $(INCLUDES) -c $< -o $@
 
 clean:
 	rm ${CORE_OBJS} ${TEST_OBJS}
+
+depend: $(CORE_CPP) $(TEST_CPP)
+	makedepend $(INCLUDES) $^
+
+# Do not delete (required for make depend)
+# DO NOT DELETE
+
+../src/shader/Shader.o: ../src/shader/Shader.h /usr/include/math.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/World.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+../src/shader/Shader.o: /home/william/CPP/Projects/RayTracer2/src/voxelWorld/VoxelWorld.h
+../src/world/lightSource/PointLight.o: ../src/world/lightSource/PointLight.h
+../src/world/lightSource/PointLight.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/lightSource/PointLight.o: /usr/include/math.h
+../src/world/lightSource/PointLight.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/lightSource/PointLight.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/object/material/Material.o: ../src/world/object/material/Material.h
+../src/world/object/material/Material.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/object/material/Material.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/object/material/Material.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/object/material/Material.o: /usr/include/math.h
+../src/world/object/Object.o: ../src/world/object/Object.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/object/Object.o: /usr/include/math.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+../src/world/object/Object.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+../src/world/object/Intersection.o: ../src/world/object/Intersection.h
+../src/world/object/Intersection.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/object/Intersection.o: /usr/include/math.h
+../src/world/object/Intersection.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/object/Intersection.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/object/shape/TexelTransform.o: ../src/world/object/shape/TexelTransform.h
+../src/world/object/shape/TexelTransform.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/object/shape/TexelTransform.o: /usr/include/math.h
+../src/world/object/shape/TexelTransform.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/object/shape/Cube.o: ../src/world/object/shape/Cube.h
+../src/world/object/shape/Cube.o: /usr/include/math.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/object/shape/Cube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+../src/world/object/shape/TSphere.o: ../src/world/object/shape/TSphere.h
+../src/world/object/shape/TSphere.o: /usr/include/math.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/object/shape/TSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+../src/world/object/shape/Shape.o: ../src/world/object/shape/Shape.h
+../src/world/object/shape/Shape.o: /usr/include/math.h
+../src/world/object/shape/Shape.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/object/shape/Shape.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/object/shape/Shape.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/world/object/shape/Shape.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/world/object/shape/Shape.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/object/shape/MatTransformShape.o: ../src/world/object/shape/MatTransformShape.h
+../src/world/object/shape/MatTransformShape.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/world/object/shape/MatTransformShape.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/object/shape/MatTransformShape.o: /usr/include/math.h
+../src/world/object/shape/MatTransformShape.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/object/shape/MatTransformShape.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+../src/world/object/shape/MatTransformShape.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+../src/world/object/shape/MatTransformShape.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/world/object/shape/MatTransformShape.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/World.o: ../src/world/World.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/world/World.o: /usr/include/math.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+../src/world/World.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+../src/camera/Camera.o: ../src/camera/Camera.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/camera/Camera.o: /usr/include/math.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/camera/Canvas.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/World.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/shader/Shader.h
+../src/camera/Camera.o: /home/william/CPP/Projects/RayTracer2/src/voxelWorld/VoxelWorld.h
+../src/camera/Canvas.o: ../src/camera/Canvas.h
+../src/camera/Canvas.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/camera/Canvas.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/basicConstructs/Ray.o: ../src/basicConstructs/Ray.h
+../src/basicConstructs/Ray.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/basicConstructs/Ray.o: /usr/include/math.h
+../src/basicConstructs/Ray.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/basicConstructs/Ray.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/basicConstructs/Matrix.o: ../src/basicConstructs/Matrix.h
+../src/basicConstructs/Matrix.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/basicConstructs/Matrix.o: /usr/include/math.h
+../src/basicConstructs/Matrix.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/basicConstructs/Colour.o: ../src/basicConstructs/Colour.h
+../src/basicConstructs/Colour.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/basicConstructs/Tuple.o: ../src/basicConstructs/Tuple.h
+../src/basicConstructs/Tuple.o: /usr/include/math.h
+../src/basicConstructs/Tuple.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/voxelWorld/VoxelWorld.o: ../src/voxelWorld/VoxelWorld.h
+../src/voxelWorld/VoxelWorld.o: /usr/include/math.h
+../src/voxelWorld/VoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+../src/voxelWorld/VoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+../src/voxelWorld/VoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+../src/voxelWorld/VoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+../src/voxelWorld/VoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+../src/voxelWorld/VoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+../src/voxelWorld/VoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+../src/utils/Utils.o: ../src/utils/Utils.h
+shader/TestShader.o: shader/TestShader.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/shader/Shader.h
+shader/TestShader.o: /usr/include/math.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/World.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+shader/TestShader.o: /home/william/CPP/Projects/RayTracer2/src/voxelWorld/VoxelWorld.h
+world/object/TestIntersection.o: world/object/TestIntersection.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+world/object/TestIntersection.o: /usr/include/math.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+world/object/TestIntersection.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+world/object/material/TestMaterial.o: world/object/material/TestMaterial.h
+world/object/material/TestMaterial.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+world/object/material/TestMaterial.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+world/object/material/TestMaterial.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+world/object/material/TestMaterial.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+world/object/material/TestMaterial.o: /usr/include/math.h
+world/object/shape/TestCube.o: world/object/shape/TestCube.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+world/object/shape/TestCube.o: /usr/include/math.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+world/object/shape/TestCube.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+world/object/shape/TestTexelTransforms.o: world/object/shape/TestTexelTransforms.h
+world/object/shape/TestTexelTransforms.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+world/object/shape/TestTexelTransforms.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+world/object/shape/TestTexelTransforms.o: /usr/include/math.h
+world/object/shape/TestTexelTransforms.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+world/object/shape/TestTSphere.o: world/object/shape/TestTSphere.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+world/object/shape/TestTSphere.o: /usr/include/math.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+world/object/shape/TestTSphere.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+world/object/TestObject.o: world/object/TestObject.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+world/object/TestObject.o: /usr/include/math.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+world/object/TestObject.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+world/light/TestPointLight.o: world/light/TestPointLight.h
+world/light/TestPointLight.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+world/light/TestPointLight.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+world/light/TestPointLight.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+world/light/TestPointLight.o: /usr/include/math.h
+world/light/TestPointLight.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+world/TestWorld.o: world/TestWorld.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/World.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+world/TestWorld.o: /usr/include/math.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+world/TestWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+camera/TestCanvas.o: camera/TestCanvas.h
+camera/TestCanvas.o: /home/william/CPP/Projects/RayTracer2/src/camera/Canvas.h
+camera/TestCanvas.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+camera/TestCanvas.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+camera/TestCamera.o: camera/TestCamera.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/camera/Camera.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+camera/TestCamera.o: /usr/include/math.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/camera/Canvas.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/World.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/shader/Shader.h
+camera/TestCamera.o: /home/william/CPP/Projects/RayTracer2/src/voxelWorld/VoxelWorld.h
+basicConstructs/TestTuple.o: basicConstructs/TestTuple.h
+basicConstructs/TestTuple.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+basicConstructs/TestTuple.o: /usr/include/math.h
+basicConstructs/TestTuple.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+basicConstructs/TestRay.o: basicConstructs/TestRay.h
+basicConstructs/TestRay.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+basicConstructs/TestRay.o: /usr/include/math.h
+basicConstructs/TestRay.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+basicConstructs/TestRay.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+basicConstructs/TestRay.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+basicConstructs/TestColour.o: basicConstructs/TestColour.h
+basicConstructs/TestColour.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+basicConstructs/TestColour.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+basicConstructs/TestMatrix.o: basicConstructs/TestMatrix.h
+basicConstructs/TestMatrix.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+basicConstructs/TestMatrix.o: /usr/include/math.h
+basicConstructs/TestMatrix.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+basicConstructs/TestMatrix.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+voxelWorld/TestVoxelWorld.o: voxelWorld/TestVoxelWorld.h
+voxelWorld/TestVoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/voxelWorld/VoxelWorld.h
+voxelWorld/TestVoxelWorld.o: /usr/include/math.h
+voxelWorld/TestVoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+voxelWorld/TestVoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+voxelWorld/TestVoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+voxelWorld/TestVoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+voxelWorld/TestVoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+voxelWorld/TestVoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+voxelWorld/TestVoxelWorld.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+utils/TestUtils.o: utils/TestUtils.h
+utils/TestUtils.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/utils/TestUtils.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/utils/Utils.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/basicConstructs/TestTuple.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Tuple.h
+TestAll.o: /usr/include/math.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/basicConstructs/TestMatrix.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Matrix.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/basicConstructs/TestColour.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Colour.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/basicConstructs/TestRay.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/basicConstructs/Ray.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/world/object/material/TestMaterial.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/object/material/Material.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/world/object/shape/TestTSphere.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TSphere.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/MatTransformShape.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Shape.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Intersection.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/TexelTransform.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/object/Object.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/object/shape/Cube.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/world/object/TestIntersection.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/world/object/TestObject.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/world/light/TestPointLight.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/lightSource/PointLight.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/world/TestWorld.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/world/World.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/camera/TestCanvas.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/camera/Canvas.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/camera/TestCamera.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/camera/Camera.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/shader/Shader.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/src/voxelWorld/VoxelWorld.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/shader/TestShader.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/world/object/shape/TestCube.h
+TestAll.o: /home/william/CPP/Projects/RayTracer2/test/voxelWorld/TestVoxelWorld.h
