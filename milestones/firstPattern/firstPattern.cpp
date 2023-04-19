@@ -1,3 +1,6 @@
+#include <filesystem>
+#include <iostream>
+
 #include "src/camera/Camera.h"
 #include "src/world/World.h"
 #include "src/world/lightSource/PointLight.h"
@@ -19,5 +22,6 @@ int main() {
     std::cout << "Setup complete" << std::endl;
     cam.render(world, shader, 50);
     std::cout << "Image created" << std::endl;
-    cam.save("/home/william/CPP/Projects/RayTracer2/milestones/firstPattern/firstPattern.ppm");
+    std::filesystem::path save_path = std::filesystem::current_path() / "firstPattern.ppm";
+    cam.save(save_path);
 }

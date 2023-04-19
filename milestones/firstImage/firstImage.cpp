@@ -1,3 +1,6 @@
+#include <filesystem>
+#include <iostream>
+
 #include "src/camera/Canvas.h"
 #include "src/basicConstructs/Colour.h"
 
@@ -8,5 +11,6 @@ int main() {
             c.setPixel(row, col, Colour(0, 1, 0));
         }
     }
-    c.saveImage("/home/william/CPP/Projects/RayTracer2/milestones/firstImage/firstImage.ppm");
+    std::filesystem::path save_path = std::filesystem::current_path() / "firstImage.ppm";
+    c.saveImage(save_path);
 }
