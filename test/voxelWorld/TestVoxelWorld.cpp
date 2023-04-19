@@ -651,7 +651,7 @@ void TestVoxelWorld::testGetIntersection() {
     CPPUNIT_ASSERT(roughlyEqual(intSpec2.n2, 1.3));
     CPPUNIT_ASSERT(roughlyEqual(intSpec2.reflectivity, 0));
     CPPUNIT_ASSERT(roughlyEqual(intSpec2.transparency, 0));
-    CPPUNIT_ASSERT(intSpec2.colour.roughlyEqual(Colour(0.1, 0.8, 0.3)));
+    CPPUNIT_ASSERT(intSpec2.colour.roughlyEqual(Colour(0.1, 0.3, 0.8)));
     CPPUNIT_ASSERT(intSpec2.lightVec.roughlyEqual(Vec(0.8, 0.6, 0)));
     CPPUNIT_ASSERT(intSpec2.lightIntensity.roughlyEqual(Colour(0.9, 0.9, 0.9)));
     CPPUNIT_ASSERT(intSpec2.isShadowed == false);
