@@ -48,7 +48,7 @@ Point2D SphereTransform::get2DPoint(const Point& localPoint) const {
     } else {
         theta = atan(ratio) - M_PI/2;
     }
-    return Point2D(theta, localPoint.getElem(1));
+    return Point2D(theta/M_PI, localPoint.getElem(1));
 }
     
 Point2D SphereTransform::transform2DPoint(const Point2D& point) const {

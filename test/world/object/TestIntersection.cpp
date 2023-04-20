@@ -93,20 +93,36 @@ void TestIntersection::testIntersectionHit() {
 }
 
 void TestIntersection::testIntersectionSpec() {
-    Object* o1;
-    Object* o2;
-    IntersectionSpec intSpec(true, Vec(1, 2, 3), Point(1, 1, 1), o2, o1, o2, Vec(3, 4, 5), Colour(1, 1, 1), false, Point(0.99, 0, 0), Point(1.01, 0, 0));
+    IntersectionSpec intSpec(true, 
+                    Vec(1.5, 3.0, 1.2), 
+                    Point(0.2, 0.5, 0.3), 
+                    0.2, 
+                    0.5, 
+                    0.7, 
+                    110,
+                    1.3,
+                    1.5,
+                    0.8,
+                    0.2,
+                    Colour(0.1, 0.2, 0.3), 
+                    Vec(0.5, 0.3, 0.7), 
+                    Colour(0.8, 0.3, 0.6), 
+                    false);
     CPPUNIT_ASSERT(intSpec.hit == true);
-    CPPUNIT_ASSERT(intSpec.norm.roughlyEqual(Vec(1, 2, 3)));
-    CPPUNIT_ASSERT(intSpec.point.roughlyEqual(Point(1, 1, 1)));
-    CPPUNIT_ASSERT(intSpec.hitObj == o2);
-    CPPUNIT_ASSERT(intSpec.obj1 == o1);
-    CPPUNIT_ASSERT(intSpec.obj2 == o2);
-    CPPUNIT_ASSERT(intSpec.lightVec.roughlyEqual(Vec(3, 4, 5)));
-    CPPUNIT_ASSERT(intSpec.lightIntensity.roughlyEqual(Colour(1, 1, 1)));
-    CPPUNIT_ASSERT(intSpec.isShadowed == false);
-    CPPUNIT_ASSERT(intSpec.overPoint.roughlyEqual(Point(0.99, 0, 0)));
-    CPPUNIT_ASSERT(intSpec.underPoint.roughlyEqual(Point(1.01, 0, 0)));
+    CPPUNIT_ASSERT(intSpec.norm.roughlyEqual(Vec(1.5, 3, 1.2)));
+    CPPUNIT_ASSERT(intSpec.point.roughlyEqual(Point(0.2, 0.5, 0.3)));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec.ambient, 0.2));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec.diffuse, 0.5));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec.specular, 0.7));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec.shininess, 110));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec.n1, 1.3));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec.n2, 1.5));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec.reflectivity, 0.8));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec.transparency, 0.2));
+    CPPUNIT_ASSERT(intSpec.colour.roughlyEqual(Colour(0.1, 0.2, 0.3)));
+    CPPUNIT_ASSERT(intSpec.lightVec.roughlyEqual(Vec(0.5, 0.3, 0.7)));
+    CPPUNIT_ASSERT(intSpec.lightIntensity.roughlyEqual(Colour(0.8, 0.3, 0.6)));
+    CPPUNIT_ASSERT(!intSpec.isShadowed);
 }
 
 CppUnit::Test* TestIntersection::suite()

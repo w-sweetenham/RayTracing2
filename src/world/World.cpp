@@ -54,7 +54,7 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
     const Object* obj2;
     bool hit = intersections.getHit(i, obj1, obj2, NULL);
     if(hit == false) {
-        return IntersectionSpec(false, Vec(0, 0, 0), Point(0, 0, 0), NULL, obj1, obj2, Vec(0, 0, 0), light.getIntensity(), false);
+        return IntersectionSpec(false, Vec(0, 0, 0), Point(0, 0, 0), 0, 0, 0, 0, 0, 0, 0, 0, Colour(0, 0, 0), Vec(0, 0, 0), Colour(0, 0, 0), false);
     }
     Point p = ray.getPosition(i.getT());
     Vec norm = i.getObj()->getNorm(p);
@@ -65,8 +65,34 @@ IntersectionSpec World::getIntersection(const Ray& ray) const {
         norm *= -1.0;
     }
     norm.normalize();
-    Point underPoint = p + norm*0.00001;
-    Point overPoint = p - norm*0.00001;
-    return IntersectionSpec(true, norm, p, i.getObj(), obj1, obj2, lightVec, light.getIntensity(), isShadowed(underPoint), overPoint, underPoint);
+    float ambient, diffuse, specular, shininess;
+    const Object* hitObj = i.getObj();
+    hitObj->material->getSurfaceOpticParams(ambient, diffuse, specular, shininess, p);
+    float n1, n2;
+    if(obj1 == NULL) {
+        n1 = 1;
+    } else {
+        n1 = obj1->material->getRefractiveIndex();
+    }
+    if(obj2 == NULL) {
+        n2 = 1.0;
+    } else {
+        n2 = obj2->material->getRefractiveIndex();
+    }
+    return IntersectionSpec(true, 
+                            norm, 
+                            p, 
+                            ambient, 
+                            diffuse, 
+                            specular, 
+                            shininess, 
+                            n1, 
+                            n2, 
+                            hitObj->material->getReflectivity(), 
+                            hitObj->material->getTransparency(),
+                            hitObj->getColour(p),
+                            lightVec,
+                            light.getIntensity(),
+                            isShadowed(p + norm*0.0001));
 }
 

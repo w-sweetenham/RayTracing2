@@ -11,6 +11,8 @@ TEST_CPP := ${shell find ./ -name "*.cpp"}
 TEST_HEADERS := ${shell find ./ -name "*.h"}
 TEST_OBJS := ${TEST_CPP:%.cpp=%.o}
 
+INCLUDES := -I${PROJ_DIR}
+
 MAIN = TestAll.out
 
 all: ${MAIN}
@@ -29,6 +31,7 @@ clean:
 
 depend: $(CORE_CPP) $(TEST_CPP)
 	makedepend -I$(PROJ_DIR) $^
+
 
 # DO NOT DELETE
 

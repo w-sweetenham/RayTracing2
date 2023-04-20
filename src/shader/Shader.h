@@ -8,13 +8,17 @@
 #include "src/basicConstructs/Ray.h"
 #include "src/world/object/Intersection.h"
 #include "src/world/World.h"
+#include "src/voxelWorld/VoxelWorld.h"
 
 class Shader {
     public:
     virtual Colour illumination(const IntersectionSpec& intSpec, const Ray& ray) const = 0;
     Colour getColour(const Ray& ray, const World& world, int recursion = 0) const;
+    Colour getColour(const Ray& ray, const VoxelWorld& world, int recursion = 0) const;
     Colour getReflectedColour(const Ray& ray, const IntersectionSpec& intSpec, const World& world, int recursion = 0) const;
+    Colour getReflectedColour(const Ray& ray, const IntersectionSpec& intSpec, const VoxelWorld& world, int recursion = 0) const;
     Colour getRefractedColour(const Ray& ray, const IntersectionSpec& intSpec, const World& world, int recursion = 0) const;
+    Colour getRefractedColour(const Ray& ray, const IntersectionSpec& intSpec, const VoxelWorld& world, int recursion = 0) const;
 };
 
 

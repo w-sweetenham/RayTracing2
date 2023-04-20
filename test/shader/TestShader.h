@@ -8,6 +8,8 @@
 #include "src/world/object/Object.h"
 #include "src/world/object/material/Material.h"
 
+//random comment
+
 class TestShader : public CppUnit::TestFixture {
     private:
     World* world;

@@ -49,23 +49,35 @@ void TestWorld::testIntersection() {
     CPPUNIT_ASSERT(intSpec1.hit == true);
     CPPUNIT_ASSERT(intSpec1.norm.roughlyEqual(Vec(-1, 0, 0)));
     CPPUNIT_ASSERT(intSpec1.point.roughlyEqual(Point(1, 0, 0)));
-    CPPUNIT_ASSERT(intSpec1.hitObj == w.getObject(1));
-    CPPUNIT_ASSERT(intSpec1.obj1 == w.getObject(1));
-    CPPUNIT_ASSERT(intSpec1.obj2 == w.getObject(0));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec1.ambient, 0.1));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec1.diffuse, 0.2));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec1.specular, 0.3));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec1.shininess, 100));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec1.n1, 1));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec1.n2, 1));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec1.reflectivity, 0));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec1.transparency, 0));
+    CPPUNIT_ASSERT(intSpec1.colour.roughlyEqual(Colour(0.5, 0.6, 0.7)));
     CPPUNIT_ASSERT(intSpec1.lightVec.roughlyEqual(Vec(-1, 0, 0)));
-    CPPUNIT_ASSERT(intSpec1.overPoint.roughlyEqual(Point(1.00001, 0, 0)));
-    CPPUNIT_ASSERT(intSpec1.underPoint.roughlyEqual(Point(0.99999, 0, 0)));
+    CPPUNIT_ASSERT(intSpec1.lightIntensity.roughlyEqual(Colour(1, 1, 1)));
+    CPPUNIT_ASSERT(intSpec1.isShadowed == false);
     
-    CPPUNIT_ASSERT(intSpec1.hit == true);
+    CPPUNIT_ASSERT(intSpec2.hit == true);
     CPPUNIT_ASSERT(intSpec2.norm.roughlyEqual(Vec(0, 1, 0)));
     CPPUNIT_ASSERT(intSpec2.point.roughlyEqual(Point(0, 2, 0)));
-    CPPUNIT_ASSERT(intSpec2.hitObj == w.getObject(0));
-    CPPUNIT_ASSERT(intSpec2.obj1 == NULL);
-    CPPUNIT_ASSERT(intSpec2.obj2 == w.getObject(0));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.ambient, 0.15));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.diffuse, 0.25));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.specular, 0.35));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.shininess, 100));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.n1, 1));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.n2, 1));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.reflectivity, 0));
+    CPPUNIT_ASSERT(roughlyEqual(intSpec2.transparency, 0));
+    CPPUNIT_ASSERT(intSpec2.colour.roughlyEqual(Colour(0.55, 0.65, 0.75)));
     CPPUNIT_ASSERT(intSpec2.lightVec.roughlyEqual(Vec(0, -1, 0)));
-    CPPUNIT_ASSERT(intSpec2.overPoint.roughlyEqual(Point(0, 1.99999, 0)));
-    CPPUNIT_ASSERT(intSpec2.underPoint.roughlyEqual(Point(0, 2.00001, 0)));
-    
+    CPPUNIT_ASSERT(intSpec2.lightIntensity.roughlyEqual(Colour(1, 1, 1)));
+    CPPUNIT_ASSERT(intSpec2.isShadowed == true);
+
     CPPUNIT_ASSERT(intSpec3.hit == false);
 }
 

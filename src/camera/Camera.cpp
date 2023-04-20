@@ -53,6 +53,15 @@ void Camera::render(const World& world, const Shader& shader, int recursion) {
         }
     }
 }
+
+void Camera::render(const VoxelWorld& vWorld, const Shader& shader, int recursion) {
+    for(int row=0; row<numRows; row++) {
+        for(int col=0; col<numCols; col++) {
+            Colour c = shader.getColour(getRay(row, col), vWorld, recursion);
+            image.setPixel(row, col, c);
+        }
+    }
+}
     
 void Camera::save(std::string path) const {
     image.saveImage(path);
